@@ -1,22 +1,16 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_answer, only: %i[ edit show update destroy ]
 
-  def index
-    @answers = Question.find(params[:question_id]).answers
-  end
-
   def create
-    @answer = Answer.new(answer_params)
+    @question = Question.find(params[:question_id])
+    @answer = @question.answers.new(answer_params)
 
     if @answer.save
-      redirect_to @answer
+      redirect_to @question
     else
-      render :new
+      redirect_to @question, alert: "Save was not successful"
     end
-  end
-
-  def new
-    @answer = Answer.new
   end
 
   def edit; end
@@ -39,7 +33,7 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body, :correct, :question_id)
+    params.require(:answer).permit(:body, :correct)
   end
 
   def set_answer
