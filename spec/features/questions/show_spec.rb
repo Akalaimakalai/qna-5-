@@ -15,8 +15,8 @@ feature 'User can see the question and answers for it', %q{
     click_on(question.title)
 
     expect(page).to have_content(question.title)
-    expect(page).to have_content(answers[0].body)
-    expect(page).to have_content(answers[1].body)
-    expect(page).to have_content(answers[2].body)
+    answers.each do |answer|
+      expect(page).to have_content answer.body
+    end
   end
 end

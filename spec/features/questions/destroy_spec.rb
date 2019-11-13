@@ -13,7 +13,7 @@ feature 'Author can can delete his question', %q{
   given(:question) { create(:question, user: user) }
 
   describe 'Authenticated user' do
-    scenario 'Author tries deleting his question' do
+    scenario 'tries deleting his question' do
       sign_in(user)
       visit question_path(question)
 
@@ -24,11 +24,11 @@ feature 'Author can can delete his question', %q{
       expect(page).to_not have_content(question.title)
     end
 
-    scenario 'User tries to delete a question' do
+    scenario 'tries to delete not his question' do
       sign_in(user2)
       visit question_path(question)
 
-      expect(page).to_not have_content('Delete question')
+      expect(page).to_not have_link('Delete question')
     end
   end
 
@@ -36,7 +36,7 @@ feature 'Author can can delete his question', %q{
     scenario 'tries to delete a question' do
       visit question_path(question)
 
-      expect(page).to_not have_content('Delete question')
+      expect(page).to_not have_link('Delete question')
     end
   end
 end

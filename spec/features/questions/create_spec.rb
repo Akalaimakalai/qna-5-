@@ -33,9 +33,11 @@ feature 'User can create question', %q{
     end
   end
 
-  scenario 'unauthenticated user tries asking a question' do
-    visit questions_path
+  describe 'Unauthenticated user' do
+    scenario 'tries asking a question' do
+      visit questions_path
 
-    expect(page).to_not have_content 'Ask question'
+      expect(page).to_not have_button 'Ask question'
+    end
   end
 end

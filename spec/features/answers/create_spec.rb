@@ -37,10 +37,12 @@ feature 'User can write answer', %q{
     end
   end
 
-  scenario 'Unauthenticated user tries to add answer' do
-    visit question_path(question)
+  describe 'Unauthenticated user' do
+    scenario 'tries to add answer' do
+      visit question_path(question)
 
-    expect(page).to_not have_content 'Body'
-    expect(page).to_not have_content 'Add answer'
+      expect(page).to_not have_content 'Body'
+      expect(page).to_not have_button 'Add answer'
+    end
   end
 end
