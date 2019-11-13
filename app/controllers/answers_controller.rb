@@ -9,7 +9,10 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question
     else
-      redirect_to @question, alert: "Save was not successful"
+      errors = ""
+      @answer.errors.full_messages.each { |m| errors += "-#{m}\n" }
+
+      redirect_to @question, alert: errors
     end
   end
 

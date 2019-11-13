@@ -34,7 +34,7 @@ RSpec.describe AnswersController, type: :controller do
 
         include_context 'does not save the answer'
 
-        it 're-renders new view' do
+        it 'redirect to @question' do
           post :create, params: params
           expect(response).to redirect_to assigns(:answer).question
         end
@@ -101,26 +101,28 @@ RSpec.describe AnswersController, type: :controller do
     context 'Authenticated user' do
       before { login(user) }
 
-      context 'with valid attributes' do
-        before { patch :update, params: { id: answer, answer: { body: 'new body', correct: true } } }
+      context 'user is autor of the answer' do
+        context 'with valid attributes' do
+          before { patch :update, params: { id: answer, answer: { body: 'new body', correct: true } } }
 
-        it 'updates the @answer' do
-          answer.reload
-          expect(answer.body).to eq 'new body'
+          it 'updates the @answer' do
+            answer.reload
+            expect(answer.body).to eq 'new body'
+          end
+
+          it 'redirects to updates answer' do
+            expect(response).to redirect_to answer
+          end
         end
 
-        it 'redirects to updates answer' do
-          expect(response).to redirect_to answer
-        end
-      end
+        context 'with invalid attributes' do
+          before { patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) } }
 
-      context 'with invalid attributes' do
-        before { patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) } }
+          include_context 'does not update the answer'
 
-        include_context 'does not update the answer'
-
-        it 're-render edit view' do
-          expect(response).to render_template :edit
+          it 're-render edit view' do
+            expect(response).to render_template :edit
+          end
         end
       end
     end
