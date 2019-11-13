@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
   let(:question) { create(:question) }
-  let(:answer) { create(:answer, question: question) }
+  let(:answer) { create(:answer, question: question, user: user) }
 
   describe 'POST #create' do
 
@@ -101,7 +101,7 @@ RSpec.describe AnswersController, type: :controller do
     context 'Authenticated user' do
       before { login(user) }
 
-      context 'user is autor of the answer' do
+      context 'autor tries to update the answer' do
         context 'with valid attributes' do
           before { patch :update, params: { id: answer, answer: { body: 'new body', correct: true } } }
 
@@ -125,6 +125,20 @@ RSpec.describe AnswersController, type: :controller do
           end
         end
       end
+
+      context "user tries to update someone else's answer" do
+        let(:user2) { create(:user) }
+        before do
+          login(user2)
+          patch :update, params: { id: answer, answer: { body: 'new body', correct: true } }
+        end
+
+        include_context 'does not update the answer'
+
+        it 're-render edit view' do
+          expect(response).to render_template :edit
+        end
+      end
     end
 
     context 'Unauthenticated user' do
@@ -138,19 +152,37 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'DELETE #destroy' do
 
-    let!(:answer) { create(:answer, question: question) }
+    let!(:answer) { create(:answer, question: question, user: user) }
 
     context 'Authenticated user' do
 
-      before { login(user) }
+      context 'autor tries to delete the answer' do
+        before { login(user) }
 
-      it 'deletes the answer' do
-        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+        it 'deletes the answer' do
+          expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+        end
+
+        it 'redirects to index' do
+          delete :destroy, params: { id: answer }
+          expect(response).to redirect_to question_answers_path(question)
+        end
       end
 
-      it 'redirects to index' do
-        delete :destroy, params: { id: answer }
-        expect(response).to redirect_to question_answers_path(question)
+      context "user tries to delete someone else's answer" do
+        let!(:answer2) { create(:answer) }
+        let(:user2) { create(:user) }
+
+        before { login(user2) }
+
+        it 'does not delete the answer' do
+          expect { delete :destroy, params: { id: answer2 } }.to_not change(Answer, :count)
+        end
+
+        it 'redirect to @question' do
+          delete :destroy, params: { id: answer2 }
+          expect(response).to redirect_to answer2.question
+        end
       end
     end
 

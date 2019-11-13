@@ -155,7 +155,7 @@ RSpec.describe QuestionsController, type: :controller do
         end
       end
 
-      context 'user tries to update not his question' do
+      context "user tries to update someone else's question" do
         let(:user2) { create(:user) }
         before do
           login(user2)
@@ -197,7 +197,7 @@ RSpec.describe QuestionsController, type: :controller do
         end
       end
 
-      context 'user tries to delete not his question' do
+      context "user tries to delete someone else's question" do
         let!(:question) { create(:question) }
         let(:user2) { create(:user) }
 

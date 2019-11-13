@@ -5,6 +5,7 @@ class AnswersController < ApplicationController
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params)
+    @answer.user_id = current_user.id
 
     if @answer.save
       redirect_to @question
@@ -21,7 +22,7 @@ class AnswersController < ApplicationController
   def show; end
 
   def update
-    if @answer.update(answer_params)
+    if @answer.is_author?(current_user) && @answer.update(answer_params)
       redirect_to @answer
     else
       render :edit
@@ -29,8 +30,12 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    @answer.destroy
-    redirect_to question_answers_path(@answer.question)
+    if @answer.is_author?(current_user)
+      @answer.destroy
+      redirect_to question_answers_path(@answer.question)
+    else
+      redirect_to @answer.question
+    end
   end
 
   private
