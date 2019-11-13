@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
+  let(:question2) { create(:question, title: "CheckTitle", body: "CheckBody", user: user) }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 3) }
@@ -119,41 +120,58 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'PATCH #update' do
 
     context 'Authenticated user' do
-      before { login(user) }
+      context 'author updates the question' do
+        before { login(user) }
 
-      context 'with valid attributes' do
-        it 'assigns the requested question to @question' do
-          patch :update, params: { id: question, question: attributes_for(:question) }
-          expect(assigns(:question)).to eq question
+        context 'with valid attributes' do
+          it 'assigns the requested question to @question' do
+            patch :update, params: { id: question, question: attributes_for(:question) }
+            expect(assigns(:question)).to eq question
+          end
+
+          it 'changes questions attributes' do
+            patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }
+            question.reload
+
+            expect(question.title).to eq 'new title'
+            expect(question.body).to eq 'new body'
+          end
+
+          it 'redirects to updated question' do
+            patch :update, params: { id: question, question: attributes_for(:question) }
+            expect(response).to redirect_to question
+          end
         end
 
-        it 'changes questions attributes' do
-          patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }
-          question.reload
+        context 'with invalid attributes' do
+          let(:question) { create(:question, title: "CheckTitle", body: "CheckBody") }
+          before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) } }
 
-          expect(question.title).to eq 'new title'
-          expect(question.body).to eq 'new body'
-        end
+          include_context 'does not change the question'
 
-        it 'redirects to updated question' do
-          patch :update, params: { id: question, question: attributes_for(:question) }
-          expect(response).to redirect_to question
+          it 're-renders edit view' do
+            expect(response).to render_template :edit
+          end
         end
       end
 
-      context 'with invalid attributes' do
-        before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) } }
+      context 'user tries to update not his question' do
+        let(:user2) { create(:user) }
+        before do
+          login(user2)
+          patch :update, params: { id: question2, question: { title: 'new title', body: 'new body' } }
+        end
 
         include_context 'does not change the question'
 
-        it 're-renders edit view' do
+        it 're-render edit view' do
           expect(response).to render_template :edit
         end
       end
     end
 
     context 'Unauthenticated user' do
-      before { patch :update, params: { id: question, question: attributes_for(:question) } }
+      before { patch :update, params: { id: question2, question: attributes_for(:question) } }
 
       include_context 'does not change the question'
 
@@ -164,7 +182,7 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'DELETE #destroy' do
 
     context 'Authenticated user' do
-      context 'author delete the question' do
+      context 'author deletes the question' do
         let!(:question) { create(:question, user: user) }
 
         before { login(user) }

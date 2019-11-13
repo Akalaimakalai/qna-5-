@@ -1,10 +1,9 @@
-RSpec.shared_context 'does not change the question'do
+RSpec.shared_context 'does not change the question' do
   it 'does not change the question' do
-    question = create(:question, title: "CheckTitle", body: "CheckBody")
+    question2.reload
 
-    question.reload
-    expect(question.title).to eq "CheckTitle"
-    expect(question.body).to eq "CheckBody"
+    expect(question2.title).to eq 'CheckTitle'
+    expect(question2.body).to eq 'CheckBody'
   end
 end
 
