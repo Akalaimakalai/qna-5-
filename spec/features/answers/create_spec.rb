@@ -22,6 +22,9 @@ feature 'User can write answer', %q{
 
     scenario 'tries to add answer with valid params' do
       fill_in 'Body', with: 'Answer text'
+
+      expect(page).to_not have_content('Answer text')
+      
       click_on 'Add answer'
 
       expect(page).to have_content(question.body)
