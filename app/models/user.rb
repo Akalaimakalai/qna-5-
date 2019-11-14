@@ -7,4 +7,8 @@ class User < ApplicationRecord
          :recoverable,
          :rememberable,
          :validatable
+
+  def is_author?(object)
+    object.user == self
+  end
 end
