@@ -13,14 +13,14 @@ RSpec.describe User, type: :model do
       context 'user is the author of the @question' do
         it 'returns true' do
           question = create(:question, user: user)
-          expect(user.is_author?(question)).to be_truthy
+          expect(user.is_author?(question)).to eq true
         end
       end
 
       context 'user is not the author of the @question' do
         it 'returns false' do
           question = create(:question)
-          expect(user.is_author?(question)).to be_falsey
+          expect(user.is_author?(question)).to eq false
         end
       end
     end
