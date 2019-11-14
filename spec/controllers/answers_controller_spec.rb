@@ -34,9 +34,9 @@ RSpec.describe AnswersController, type: :controller do
 
         include_context 'does not save the answer'
 
-        it 'redirect to @question' do
+        it 'render question show view' do
           post :create, params: params
-          expect(response).to redirect_to assigns(:answer).question
+          expect(response).to render_template 'questions/show'
         end
       end
     end

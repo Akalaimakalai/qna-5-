@@ -10,10 +10,7 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question
     else
-      errors = ""
-      @answer.errors.full_messages.each { |m| errors += "-#{m}\n" }
-
-      redirect_to @question, alert: errors
+      render 'questions/show'
     end
   end
 

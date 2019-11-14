@@ -33,7 +33,7 @@ feature 'User can write answer', %q{
       click_on 'Add answer'
 
       expect(page).to have_content(question.body)
-      expect(page).to have_content("-Body can't be blank")
+      expect(page).to have_content("Body can't be blank")
     end
   end
 
