@@ -1,22 +1,17 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_answer, only: %i[ edit show update destroy ]
 
-  def index
-    @answers = Question.find(params[:question_id]).answers
-  end
-
   def create
-    @answer = Answer.new(answer_params)
+    @question = Question.find(params[:question_id])
+    @answer = @question.answers.new(answer_params)
+    @answer.user_id = current_user.id
 
     if @answer.save
-      redirect_to @answer
+      redirect_to @question
     else
-      render :new
+      render 'questions/show'
     end
-  end
-
-  def new
-    @answer = Answer.new
   end
 
   def edit; end
@@ -24,7 +19,7 @@ class AnswersController < ApplicationController
   def show; end
 
   def update
-    if @answer.update(answer_params)
+    if current_user.is_author?(@answer) && @answer.update(answer_params)
       redirect_to @answer
     else
       render :edit
@@ -32,14 +27,18 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    @answer.destroy
-    redirect_to question_answers_path(@answer.question)
+    if current_user.is_author?(@answer)
+      @answer.destroy
+      redirect_to question_answers_path(@answer.question)
+    else
+      redirect_to @answer.question
+    end
   end
 
   private
 
   def answer_params
-    params.require(:answer).permit(:body, :correct, :question_id)
+    params.require(:answer).permit(:body, :correct)
   end
 
   def set_answer
