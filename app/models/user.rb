@@ -8,7 +8,7 @@ class User < ApplicationRecord
          :rememberable,
          :validatable
 
-  def is_author?(user_id)
-    user_id == id
+  def is_author?(object)
+    object.user_id == id
   end
 end

@@ -13,10 +13,8 @@ RSpec.describe User, type: :model do
     context 'user is the author of the @question' do
       let(:question) { create(:question, user: user) }
 
-      # Я уже вообще не понимаю ничего. Какой вариант лучше?
       it 'returns true' do
-        # Этот: 
-        expect(user).to be_is_author(question.user_id)
+        expect(user).to be_is_author(question)
       end
     end
 
@@ -24,8 +22,7 @@ RSpec.describe User, type: :model do
       let(:question) { create(:question) }
 
       it 'returns false' do
-        # Или вот этот:
-        expect(user.is_author?(question.user_id)).to be false
+        expect(user).to_not be_is_author(question)
       end
     end
   end
