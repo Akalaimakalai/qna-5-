@@ -101,7 +101,13 @@ RSpec.describe AnswersController, type: :controller do
     context 'Authenticated user' do
       before { login(user) }
 
-      context 'autor tries to update the answer' do
+      context 'user is an author' do
+
+        it 'has to prove that user is an author' do
+          patch :update, params: { id: answer, answer: { body: 'new body', correct: true } }
+          expect(user).to be_is_author(answer)
+        end
+
         context 'with valid attributes' do
           before { patch :update, params: { id: answer, answer: { body: 'new body', correct: true } } }
 
@@ -126,11 +132,15 @@ RSpec.describe AnswersController, type: :controller do
         end
       end
 
-      context "user tries to update someone else's answer" do
+      context 'user is NOT an author' do
         let(:user2) { create(:user) }
         before do
           login(user2)
           patch :update, params: { id: answer, answer: { body: 'new body', correct: true } }
+        end
+
+        it 'has to prove that user is NOT an author' do
+          expect(user2).to_not be_is_author(answer)
         end
 
         include_context 'does not update the answer'
@@ -156,8 +166,13 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'Authenticated user' do
 
-      context 'autor tries to delete the answer' do
+      context 'user is an author' do
         before { login(user) }
+
+        it 'has to prove that user is an author' do
+          delete :destroy, params: { id: answer }
+          expect(user).to be_is_author(answer)
+        end
 
         it 'deletes the answer' do
           expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
@@ -169,11 +184,15 @@ RSpec.describe AnswersController, type: :controller do
         end
       end
 
-      context "user tries to delete someone else's answer" do
+      context 'user is NOT an author' do
         let!(:answer2) { create(:answer) }
         let(:user2) { create(:user) }
 
         before { login(user2) }
+
+        it 'has to prove that user is NOT an author' do
+          expect(user2).to_not be_is_author(answer)
+        end
 
         it 'does not delete the answer' do
           expect { delete :destroy, params: { id: answer2 } }.to_not change(Answer, :count)

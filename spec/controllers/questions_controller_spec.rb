@@ -120,8 +120,13 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'PATCH #update' do
 
     context 'Authenticated user' do
-      context 'author updates the question' do
+
+      context 'user is an author' do
         before { login(user) }
+
+        it 'has to prove that user is an author' do
+          expect(user).to be_is_author(question)
+        end
 
         context 'with valid attributes' do
           it 'assigns the requested question to @question' do
@@ -155,11 +160,16 @@ RSpec.describe QuestionsController, type: :controller do
         end
       end
 
-      context "user tries to update someone else's question" do
+      context 'user is NOT an author' do
         let(:user2) { create(:user) }
+
         before do
           login(user2)
           patch :update, params: { id: question2, question: { title: 'new title', body: 'new body' } }
+        end
+
+        it 'has to prove that user is NOT an author' do
+          expect(user2).to_not be_is_author(question)
         end
 
         include_context 'does not change the question'
@@ -182,10 +192,15 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'DELETE #destroy' do
 
     context 'Authenticated user' do
-      context 'author deletes the question' do
+      context 'user is an author' do
         let!(:question) { create(:question, user: user) }
 
         before { login(user) }
+
+        it 'has to prove that user is an author' do
+          delete :destroy, params: { id: question }
+          expect(user).to be_is_author(question)
+        end
 
         it 'deletes the question' do
           expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
@@ -197,19 +212,24 @@ RSpec.describe QuestionsController, type: :controller do
         end
       end
 
-      context "user tries to delete someone else's question" do
+      context "user is NOT an author" do
         let!(:question) { create(:question) }
         let(:user2) { create(:user) }
 
-        before { login(user2) }
+        before do
+          login(user2)
+          delete :destroy, params: { id: question }
+        end
+
+        it 'has to prove that user is NOT an author' do
+          expect(user2).to_not be_is_author(question)
+        end
 
         include_context 'does not delete the question'
 
         it 'redirect to @question' do
-          delete :destroy, params: { id: question }
           expect(response).to redirect_to question
         end
-
       end
     end
 
