@@ -15,16 +15,16 @@ RSpec.describe AnswersController, type: :controller do
 
       context 'with valid attributes' do
         it 'saves the answer' do
-          expect{ post :create, params: params }.to change(Answer, :count).by(1)
+          expect{ post :create, params: params, format: :js }.to change(Answer, :count).by(1)
         end
 
         it 'associates with correct question' do
-          post :create, params: params
+          post :create, params: params, format: :js
           expect(assigns(:answer).question).to eq question
         end
 
         it 'redirects to question show view' do
-          post :create, params: params
+          post :create, params: params,format: :js
           expect(response).to redirect_to assigns(:answer).question
         end
       end
@@ -35,18 +35,20 @@ RSpec.describe AnswersController, type: :controller do
         include_context 'does not save the answer'
 
         it 'render question show view' do
-          post :create, params: params
-          expect(response).to render_template 'questions/show'
+          post :create, params: params, format: :js
+          expect(response).to render_template :create
         end
       end
     end
 
     context 'Unauthenticated user' do
-      before { post :create, params: params }
+      before { post :create, params: params, format: :js }
 
       include_context 'does not save the answer'
 
-      include_context 'Redirects to sing in'
+      it 'declares user is unauthorized' do
+        expect(response).to have_http_status(:unauthorized)
+      end
     end
   end
 

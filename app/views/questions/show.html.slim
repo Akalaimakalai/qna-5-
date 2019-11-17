@@ -2,8 +2,8 @@ h1= @question.title
 p= @question.body
 p= link_to 'Delete question', question_path(@question), method: :delete if current_user&.is_author?(@question)
 
-ul= render @question.answers
+.answers
+  - @question.answers.each do |answer|
+    p= answer.body
 
-= render 'shared/errors', resource: @answer
-
-p= render 'answers/form' if user_signed_in?
+= render 'answers/form' if user_signed_in?

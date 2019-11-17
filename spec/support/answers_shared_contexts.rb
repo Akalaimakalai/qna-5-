@@ -8,6 +8,6 @@ end
 
 RSpec.shared_context 'does not save the answer'do
   it 'does not save the answer' do
-    expect{ post :create, params: params }.to_not change(Answer, :count)
+    expect{ post :create, params: params, format: :js }.to_not change(Answer, :count)
   end
 end
