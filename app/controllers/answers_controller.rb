@@ -14,11 +14,8 @@ class AnswersController < ApplicationController
   def show; end
 
   def update
-    if current_user.is_author?(@answer) && @answer.update(answer_params)
-      redirect_to @answer
-    else
-      render :edit
-    end
+    @question = @answer.question
+    @answer.update(answer_params) if current_user.is_author?(@answer)
   end
 
   def destroy

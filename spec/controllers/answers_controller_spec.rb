@@ -46,9 +46,7 @@ RSpec.describe AnswersController, type: :controller do
 
       include_context 'does not save the answer'
 
-      it 'declares user is unauthorized' do
-        expect(response).to have_http_status(:unauthorized)
-      end
+      include_context 'declares user is unauthorized'
     end
   end
 
@@ -106,31 +104,27 @@ RSpec.describe AnswersController, type: :controller do
       context 'user is an author' do
 
         it 'has to prove that user is an author' do
-          patch :update, params: { id: answer, answer: { body: 'new body', correct: true } }
+          patch :update, params: { id: answer, answer: { body: 'new body', correct: true }, format: :js }
           expect(user).to be_is_author(answer)
         end
 
         context 'with valid attributes' do
-          before { patch :update, params: { id: answer, answer: { body: 'new body', correct: true } } }
+          before { patch :update, params: { id: answer, answer: { body: 'new body', correct: true } }, format: :js }
 
           it 'updates the @answer' do
             answer.reload
             expect(answer.body).to eq 'new body'
           end
 
-          it 'redirects to updates answer' do
-            expect(response).to redirect_to answer
-          end
+          include_context 'render template update'
         end
 
         context 'with invalid attributes' do
-          before { patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) } }
+          before { patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js }
 
           include_context 'does not update the answer'
 
-          it 're-render edit view' do
-            expect(response).to render_template :edit
-          end
+          include_context 'render template update'
         end
       end
 
@@ -138,7 +132,7 @@ RSpec.describe AnswersController, type: :controller do
         let(:user2) { create(:user) }
         before do
           login(user2)
-          patch :update, params: { id: answer, answer: { body: 'new body', correct: true } }
+          patch :update, params: { id: answer, answer: { body: 'new body', correct: true }, format: :js }
         end
 
         it 'has to prove that user is NOT an author' do
@@ -147,18 +141,15 @@ RSpec.describe AnswersController, type: :controller do
 
         include_context 'does not update the answer'
 
-        it 're-render edit view' do
-          expect(response).to render_template :edit
-        end
+        include_context 'render template update'
       end
     end
 
     context 'Unauthenticated user' do
-      before { patch :update, params: { id: answer, answer: { body: 'new body', correct: true } } }
+      before { patch :update, params: { id: answer, answer: { body: 'new body', correct: true } }, format: :js }
 
       include_context 'does not update the answer'
-
-      include_context 'Redirects to sing in'
+      include_context 'declares user is unauthorized'
     end
   end
 
