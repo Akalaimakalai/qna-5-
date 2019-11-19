@@ -1,3 +1,4 @@
-ol= render @questions
+.questions
+  ol= render @questions
 
 p= link_to 'Ask question', new_question_path if user_signed_in?
