@@ -46,11 +46,11 @@ feature 'User can edit his answer', %q{
 
     context 'user is NOT an author' do
       background { sign_in(user2) }
-      include_context 'can not edit answer'
+      include_context 'can not edit an answer'
     end
   end
 
   describe 'Unauthenticated user' do
-    include_context 'can not edit answer'
+    include_context 'can not edit an answer'
   end
 end

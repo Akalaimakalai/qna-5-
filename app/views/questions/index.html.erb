@@ -1,0 +1,17 @@
+<h2>Questions</h2>
+
+<p>
+  <%= link_to 'Ask question', new_question_path if user_signed_in? %>
+</p>
+
+<table class="questions">
+  <thead>
+    <tr>
+      <th>question</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <%= render @questions %>
+
+</table>

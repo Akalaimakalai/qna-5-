@@ -134,32 +134,32 @@ RSpec.describe QuestionsController, type: :controller do
 
         context 'with valid attributes' do
           it 'assigns the requested question to @question' do
-            patch :update, params: { id: question, question: attributes_for(:question) }
+            patch :update, params: { id: question, question: attributes_for(:question), format: :js }
             expect(assigns(:question)).to eq question
           end
 
           it 'changes questions attributes' do
-            patch :update, params: { id: question, question: { title: 'new title', body: 'new body' } }
+            patch :update, params: { id: question, question: { title: 'new title', body: 'new body' }, format: :js }
             question.reload
 
             expect(question.title).to eq 'new title'
             expect(question.body).to eq 'new body'
           end
 
-          it 'redirects to updated question' do
-            patch :update, params: { id: question, question: attributes_for(:question) }
-            expect(response).to redirect_to question
+          it 'render template update' do
+            patch :update, params: { id: question, question: attributes_for(:question), format: :js }
+            expect(response).to render_template :update
           end
         end
 
         context 'with invalid attributes' do
           let(:question) { create(:question, title: "CheckTitle", body: "CheckBody") }
-          before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) } }
+          before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js }
 
           include_context 'does not change the question'
 
-          it 're-renders edit view' do
-            expect(response).to render_template :edit
+          it 'render template update' do
+            expect(response).to render_template :update
           end
         end
       end
@@ -169,7 +169,7 @@ RSpec.describe QuestionsController, type: :controller do
 
         before do
           login(user2)
-          patch :update, params: { id: question2, question: { title: 'new title', body: 'new body' } }
+          patch :update, params: { id: question2, question: { title: 'new title', body: 'new body' }, format: :js }
         end
 
         it 'has to prove that user is NOT an author' do
@@ -178,18 +178,20 @@ RSpec.describe QuestionsController, type: :controller do
 
         include_context 'does not change the question'
 
-        it 're-render edit view' do
-          expect(response).to render_template :edit
+        it 'render template update' do
+          expect(response).to render_template :update
         end
       end
     end
 
     context 'Unauthenticated user' do
-      before { patch :update, params: { id: question2, question: attributes_for(:question) } }
+      before { patch :update, params: { id: question2, question: attributes_for(:question) }, format: :js }
 
       include_context 'does not change the question'
 
-      include_context 'Redirects to sing in'
+      it 'declares user is unauthorized' do
+        expect(response).to have_http_status(:unauthorized)
+      end
     end
   end
 

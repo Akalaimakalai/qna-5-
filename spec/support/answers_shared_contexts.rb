@@ -1,4 +1,4 @@
-# ---Controller--
+# ---Controller---
 
 RSpec.shared_context 'declares user is unauthorized' do
   it 'declares user is unauthorized' do
@@ -28,8 +28,8 @@ end
 
 # ---Features---
 
-RSpec.shared_context 'can not edit answer' do
-  scenario 'can not edit answer' do
+RSpec.shared_context 'can not edit an answer' do
+  scenario 'can not edit an answer' do
     visit question_path(question)
     expect(page).to_not have_link('Edit')
   end
