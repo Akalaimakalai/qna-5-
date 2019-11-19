@@ -4,37 +4,53 @@ feature 'User can edit his answer', %q{
   In order to correct mistakes
   As an author of the answer
   I'd like to be able to edit my answer
-} do
+}, js: true do
 
   given!(:user) { create(:user) }
+  given!(:user2) { create(:user) }
   given!(:question) { create(:question) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
-  describe 'Authenticated user', js: true do
+  describe 'Authenticated user' do
 
-    scenario 'edit his answer' do
-      sign_in(user)
-      visit question_path(question)
+    context 'user is an author' do
 
-      click_on 'Edit'
+      background do
+        sign_in(user)
+        visit question_path(question)
+        click_on 'Edit'
+      end
 
-      within '.answers' do
-        fill_in 'Your answer', with: 'edited answer'
-        click_on 'Save'
+      scenario 'edit his answer' do
+        within '.answers' do
+          fill_in 'Your answer', with: 'edited answer'
+          click_on 'Save'
 
-        expect(page).to_not have_content(answer.body)
-        expect(page).to have_content('edited answer')
-        expect(page).to_not have_selector('textarea')
+          expect(page).to_not have_content(answer.body)
+          expect(page).to have_content('edited answer')
+          expect(page).to_not have_selector('textarea')
+        end
+      end
+
+      scenario 'edit his answer with errors' do
+        within '.answers' do
+          fill_in 'Your answer', with: ''
+          click_on 'Save'
+
+          expect(page).to have_content(answer.body)
+          expect(page).to have_content("Body can't be blank")
+          expect(page).to have_selector('textarea')
+        end
       end
     end
 
-    scenario 'edit his answer with errors'
-    scenario "tries to edit someone's answer"
+    context 'user is NOT an author' do
+      background { sign_in(user2) }
+      include_context 'can not edit answer'
+    end
   end
 
-  scenario 'Unauthenticated user can not edit answer' do
-    visit question_path(question)
-
-    expect(page).to_not have_link('Edit')
+  describe 'Unauthenticated user' do
+    include_context 'can not edit answer'
   end
 end
