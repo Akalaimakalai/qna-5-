@@ -104,12 +104,12 @@ RSpec.describe AnswersController, type: :controller do
       context 'user is an author' do
 
         it 'has to prove that user is an author' do
-          patch :update, params: { id: answer, answer: { body: 'new body', correct: true }, format: :js }
+          patch :update, params: { id: answer, answer: { body: 'new body' }, format: :js }
           expect(user).to be_is_author(answer)
         end
 
         context 'with valid attributes' do
-          before { patch :update, params: { id: answer, answer: { body: 'new body', correct: true } }, format: :js }
+          before { patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js }
 
           it 'updates the @answer' do
             answer.reload
@@ -132,7 +132,7 @@ RSpec.describe AnswersController, type: :controller do
         let(:user2) { create(:user) }
         before do
           login(user2)
-          patch :update, params: { id: answer, answer: { body: 'new body', correct: true }, format: :js }
+          patch :update, params: { id: answer, answer: { body: 'new body' }, format: :js }
         end
 
         it 'has to prove that user is NOT an author' do
@@ -146,7 +146,7 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'Unauthenticated user' do
-      before { patch :update, params: { id: answer, answer: { body: 'new body', correct: true } }, format: :js }
+      before { patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js }
 
       include_context 'does not update the answer'
       include_context 'declares user is unauthorized'

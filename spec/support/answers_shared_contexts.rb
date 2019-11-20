@@ -16,7 +16,6 @@ RSpec.shared_context 'does not update the answer' do
   it 'does not update the answer' do
     answer.reload
     expect(answer.body).to eq "MyAnswerText"
-    expect(answer.correct).to be_falsey
   end
 end
 
