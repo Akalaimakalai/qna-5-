@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature 'Author can can delete his question', %q{
+feature 'Author can delete his question', %q{
   In order to delete the question
   As an author of this question
   I'd like to be able to delete it

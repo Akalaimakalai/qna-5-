@@ -19,12 +19,7 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    if current_user.is_author?(@answer)
-      @answer.destroy
-      redirect_to question_answers_path(@answer.question)
-    else
-      redirect_to @answer.question
-    end
+    @answer.destroy if current_user.is_author?(@answer)
   end
 
   private

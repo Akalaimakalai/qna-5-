@@ -163,17 +163,12 @@ RSpec.describe AnswersController, type: :controller do
         before { login(user) }
 
         it 'has to prove that user is an author' do
-          delete :destroy, params: { id: answer }
+          delete :destroy, params: { id: answer }, format: :js
           expect(user).to be_is_author(answer)
         end
 
         it 'deletes the answer' do
-          expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
-        end
-
-        it 'redirects to index' do
-          delete :destroy, params: { id: answer }
-          expect(response).to redirect_to question_answers_path(question)
+          expect { delete :destroy, params: { id: answer }, format: :js }.to change(Answer, :count).by(-1)
         end
       end
 
@@ -188,24 +183,19 @@ RSpec.describe AnswersController, type: :controller do
         end
 
         it 'does not delete the answer' do
-          expect { delete :destroy, params: { id: answer2 } }.to_not change(Answer, :count)
-        end
-
-        it 'redirect to @question' do
-          delete :destroy, params: { id: answer2 }
-          expect(response).to redirect_to answer2.question
+          expect { delete :destroy, params: { id: answer2 }, format: :js }.to_not change(Answer, :count)
         end
       end
     end
 
     context 'Unauthenticated user' do
-      before { delete :destroy, params: { id: answer } }
+      before { delete :destroy, params: { id: answer }, format: :js }
 
       it 'does not delete the answer' do
         expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
       end
 
-      include_context 'Redirects to sing in'
+      include_context 'declares user is unauthorized'
     end
   end
 end
