@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[ index show ]
-  before_action :load_question, only: %i[ show edit update destroy ]
+  before_action :load_question, only: %i[ show edit update destroy best ]
 
   def index
     @questions = Question.all
@@ -37,6 +37,16 @@ class QuestionsController < ApplicationController
     else
       redirect_to @question, alert: 'You must be an author of the question to delete it.'
     end
+  end
+
+  def best
+    if current_user.is_author?(@question)
+      @answer = Answer.find(params[:answer_id])
+      @question.best_answer = @answer if @answer.question_id == @question.id
+      @question.save
+    end
+
+    redirect_to question_path(@question)
   end
 
   private

@@ -172,9 +172,7 @@ RSpec.describe QuestionsController, type: :controller do
           patch :update, params: { id: question2, question: { title: 'new title', body: 'new body' }, format: :js }
         end
 
-        it 'has to prove that user is NOT an author' do
-          expect(user2).to_not be_is_author(question)
-        end
+        include_context 'has to prove that user is NOT an author'
 
         include_context 'does not change the question'
 
@@ -227,9 +225,7 @@ RSpec.describe QuestionsController, type: :controller do
           delete :destroy, params: { id: question }
         end
 
-        it 'has to prove that user is NOT an author' do
-          expect(user2).to_not be_is_author(question)
-        end
+        include_context 'has to prove that user is NOT an author'
 
         include_context 'does not delete the question'
 
@@ -243,6 +239,56 @@ RSpec.describe QuestionsController, type: :controller do
       before { delete :destroy, params: { id: question } }
 
       include_context 'does not delete the question'
+
+      include_context 'Redirects to sing in'
+    end
+  end
+
+  describe 'POST #best' do
+    let(:answer) { create(:answer, question: question) }
+
+    context 'Authenticated user' do
+      context 'user is an author' do
+        before do
+          login(user)
+          post :best, params: { id: question, answer_id: answer.id }
+        end
+
+        it 'has to prove that user is an author' do
+          expect(user).to be_is_author(question)
+        end
+
+        it 'find right answer' do
+          expect(assigns(:answer)).to eq answer
+        end
+
+        it 'set answer as the best' do
+          expect(question.best_answer).to eq answer
+        end
+
+        include_context 'redirect to @question'
+      end
+
+      context 'user is NOT an author' do
+        let(:user2) { create(:user) }
+
+        before do
+          login(user2)
+          post :best, params: { id: question, answer_id: answer.id }
+        end
+
+        include_context 'has to prove that user is NOT an author'
+
+        include_context 'does not set answer as the best'
+
+        include_context 'redirect to @question'
+      end
+    end
+
+    context 'Unauthenticated user' do
+      before { post :best, params: { id: question, answer_id: answer.id } }
+
+      include_context 'does not set answer as the best'
 
       include_context 'Redirects to sing in'
     end

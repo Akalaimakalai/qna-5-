@@ -17,4 +17,15 @@ $(document).on('turbolinks:load', function() {
 
     $('#answer-id-' + answerId).remove();
   });
+
+  findTheBest();
+
 });
+
+function findTheBest() {
+  var best = $('.best').parent();
+  
+  $('.best').parent().remove();
+
+  $('ul.answers').prepend(best);
+};
