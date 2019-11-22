@@ -5,7 +5,6 @@ Rails.application.routes.draw do
 
   resources :questions do
     resources :answers, except: %i[ index new ], shallow: true
+    post 'best', on: :member
   end
-
-  post '/questions/:id/best', to: 'questions#best'
 end
