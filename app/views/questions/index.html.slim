@@ -1,0 +1,11 @@
+h2 Questions
+
+p= link_to 'Ask question', new_question_path if user_signed_in?
+
+table class="questions"
+  thead
+    tr
+      th
+        b question
+      th
+  = render @questions
