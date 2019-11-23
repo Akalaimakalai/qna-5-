@@ -4,7 +4,7 @@ li class="answer" id="answer-id-#{answer.id}"
 
   p= answer.body
 
-  - if user_signed_in? && current_user.is_author?(answer)
+  - if current_user&.is_author?(answer)
     p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
     p= link_to 'Delete', answer_path(answer), method: :delete, class: 'delete-answer-link', data: { answer_id: answer.id }
 
@@ -14,5 +14,5 @@ li class="answer" id="answer-id-#{answer.id}"
       = f.text_area :body
       p = f.submit 'Save'
 
-  - if user_signed_in? && current_user.is_author?(@question) && !@question.best?(answer)
+  - if current_user&.is_author?(@question) && !@question.best?(answer)
     = button_to 'Correct', { controller: 'questions', action: 'best', id: @question.id, params: { answer_id: answer.id } }, form: { "data-remote" => "true" }, class: 'best-answer-button'

@@ -3,7 +3,7 @@
     <%= link_to question.title, question_path(question) %>
   </td>
   <td>
-    <% if current_user.present? && current_user.is_author?(question) %>
+    <% if current_user&.is_author?(question) %>
       <%= link_to 'Delete question', question_path(question),
                                     method: :delete,
                                     data: { confirm: 'Are you sure?' } %>
