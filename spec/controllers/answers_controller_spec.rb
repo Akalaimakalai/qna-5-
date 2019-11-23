@@ -170,10 +170,15 @@ RSpec.describe AnswersController, type: :controller do
         it 'deletes the answer' do
           expect { delete :destroy, params: { id: answer }, format: :js }.to change(Answer, :count).by(-1)
         end
+
+        it 'redirect to question' do
+          delete :destroy, params: { id: answer }, format: :js
+          expect(response).to redirect_to(question)
+        end
       end
 
       context 'user is NOT an author' do
-        let!(:answer2) { create(:answer) }
+        let!(:answer2) { create(:answer, question: question) }
         let(:user2) { create(:user) }
 
         before { login(user2) }
@@ -184,6 +189,11 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'does not delete the answer' do
           expect { delete :destroy, params: { id: answer2 }, format: :js }.to_not change(Answer, :count)
+        end
+
+        it 'redirect to question' do
+          delete :destroy, params: { id: answer2 }, format: :js
+          expect(response).to redirect_to(question)
         end
       end
     end
