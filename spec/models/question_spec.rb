@@ -27,4 +27,26 @@ RSpec.describe Question, type: :model do
       end
     end
   end
+
+  describe '#sort_answers' do
+    let(:question) { create(:question) }
+    let!(:answer2) { create(:answer, question: question, created_at: Time.now + 100)}
+    let!(:answer1) { create(:answer, question: question, created_at: Time.now)}
+
+    context 'if best answer presents' do
+      let!(:answer) {create(:answer, question: question, best_for: question, created_at: Time.now + 300)}
+
+      it 'it return list of answers sorteted with best - first' do
+        question.sort_answers
+        expect(question.answers_list.first).to eq answer
+      end
+    end
+
+    context 'if is no best answer here' do
+      it 'return sorted list of answrs sorted by created date' do
+        question.sort_answers
+        expect(question.answers_list.first).to eq answer1
+      end
+    end
+  end
 end
