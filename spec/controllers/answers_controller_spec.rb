@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
-  let(:question) { create(:question) }
+  let(:question) { create(:question, user: user) }
   let(:answer) { create(:answer, question: question, user: user) }
 
   describe 'POST #create' do
@@ -206,6 +206,55 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       include_context 'declares user is unauthorized'
+    end
+  end
+
+  describe 'POST #best' do
+
+    context 'Authenticated user' do
+      context 'user is an author' do
+        before do
+          login(user)
+          post :best, params: { id: answer }
+        end
+
+        it 'has to prove that user is an author' do
+          expect(user).to be_is_author(assigns(:question))
+        end
+
+        it 'sets answer as correct' do
+          expect(assigns(:answer)).to be_correct
+        end
+
+        include_context 'redirect to @question'
+      end
+
+      context 'user is NOT an author' do
+        let(:user2) { create(:user) }
+
+        before do
+          login(user2)
+          post :best, params: { id: answer }
+        end
+
+        include_context 'has to prove that user is NOT an author'
+
+        it 'does not set answer as correct' do
+          expect(assigns(:answer)).to_not be_correct
+        end
+
+        include_context 'redirect to @question'
+      end
+    end
+
+    context 'Unauthenticated user' do
+      before { post :best, params: { id: answer } }
+
+      it 'does not set answer as correct' do
+        expect(answer).to_not be_correct
+      end
+
+      include_context 'Redirects to sing in'
     end
   end
 end

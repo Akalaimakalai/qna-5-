@@ -15,4 +15,4 @@ li class="answer" id="answer-id-#{answer.id}"
       p = f.submit 'Save'
 
   - if current_user&.is_author?(@question) && !answer.correct
-    = button_to 'Correct', { controller: 'questions', action: 'best', id: @question.id, params: { answer_id: answer.id } }, form: { "data-remote" => "true" }, class: 'best-answer-button'
+    = button_to 'Correct', { controller: 'answers', action: 'best', id: answer.id }, form: { "data-remote" => "true" }, class: 'best-answer-button'

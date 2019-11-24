@@ -5,6 +5,9 @@ Rails.application.routes.draw do
 
   resources :questions do
     resources :answers, except: %i[ index new ], shallow: true
+  end
+
+  resources :answers do
     post 'best', on: :member
   end
 end

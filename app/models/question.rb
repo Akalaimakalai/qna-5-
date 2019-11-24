@@ -7,6 +7,10 @@ class Question < ApplicationRecord
 
   # attr_reader :answers_list, :var_best_answer
 
+  def sort_answers
+    answers.order(created_at: :asc).sort_by { |a| a.correct ? 0 : 1 }
+  end
+
   # def best?(answer)
   #   best_answer == answer
   # end

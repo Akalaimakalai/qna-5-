@@ -15,11 +15,11 @@ RSpec.shared_context 'does not delete the question' do
   end
 end
 
-RSpec.shared_context 'does not set answer as the best' do
-  it 'does not set answer as the best' do
-    expect(question.best_answer).to_not eq answer
-  end
-end
+# RSpec.shared_context 'does not set answer as the best' do
+#   it 'does not set answer as the best' do
+#     expect(question.best_answer).to_not eq answer
+#   end
+# end
 
 RSpec.shared_context 'redirect to @question' do
   it 'redirect to @question' do

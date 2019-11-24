@@ -1,6 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_answer, only: %i[ edit show update destroy ]
+  before_action :set_answer, only: %i[ edit show update destroy best ]
+  before_action :set_question, only: %i[ update best ]
 
   def create
     @question = Question.find(params[:question_id])
@@ -14,12 +15,21 @@ class AnswersController < ApplicationController
   def show; end
 
   def update
-    @question = @answer.question
     @answer.update(answer_params) if current_user.is_author?(@answer)
   end
 
   def destroy
     @answer.destroy if current_user.is_author?(@answer)
+  end
+
+  def best
+
+    if current_user.is_author?(@question)
+      @question.answers.where(correct: true).update_all(correct: false) unless @question.answers.where(correct: true).empty?
+      @answer.update(correct: true)
+    end
+
+    redirect_to question_path(@question)
   end
 
   private
@@ -30,5 +40,9 @@ class AnswersController < ApplicationController
 
   def set_answer
     @answer = Answer.find(params[:id])
+  end
+
+  def set_question
+    @question = @answer.question
   end
 end
