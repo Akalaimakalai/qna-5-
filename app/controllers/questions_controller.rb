@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[ index show ]
-  before_action :load_question, only: %i[ show edit update destroy best ]
+  before_action :load_question, only: %i[ show edit update destroy ]
 
   def index
     @questions = Question.all
@@ -39,15 +39,15 @@ class QuestionsController < ApplicationController
     end
   end
 
-  def best
-    if current_user.is_author?(@question)
-      @answer = Answer.find(params[:answer_id])
-      @question.best_answer = @answer if @answer.question_id == @question.id
-      @question.save
-    end
+  # def best
+  #   if current_user.is_author?(@question)
+  #     @answer = Answer.find(params[:answer_id])
+  #     @question.best_answer = @answer if @answer.question_id == @question.id
+  #     @question.save
+  #   end
 
-    redirect_to question_path(@question)
-  end
+  #   redirect_to question_path(@question)
+  # end
 
   private
 

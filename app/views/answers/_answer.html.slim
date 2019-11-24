@@ -1,5 +1,5 @@
 li class="answer" id="answer-id-#{answer.id}"
-  - if @question.best?(answer)
+  - if answer.correct
     p class="best" <b>THE BEST!</b>
 
   p= answer.body
@@ -14,5 +14,5 @@ li class="answer" id="answer-id-#{answer.id}"
       = f.text_area :body
       p = f.submit 'Save'
 
-  - if current_user&.is_author?(@question) && !@question.best?(answer)
+  - if current_user&.is_author?(@question) && !answer.correct
     = button_to 'Correct', { controller: 'questions', action: 'best', id: @question.id, params: { answer_id: answer.id } }, form: { "data-remote" => "true" }, class: 'best-answer-button'

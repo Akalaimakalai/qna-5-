@@ -244,53 +244,53 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'POST #best' do
-    let(:answer) { create(:answer, question: question) }
+  # describe 'POST #best' do
+  #   let(:answer) { create(:answer, question: question) }
 
-    context 'Authenticated user' do
-      context 'user is an author' do
-        before do
-          login(user)
-          post :best, params: { id: question, answer_id: answer.id }
-        end
+  #   context 'Authenticated user' do
+  #     context 'user is an author' do
+  #       before do
+  #         login(user)
+  #         post :best, params: { id: question, answer_id: answer.id }
+  #       end
 
-        it 'has to prove that user is an author' do
-          expect(user).to be_is_author(question)
-        end
+  #       it 'has to prove that user is an author' do
+  #         expect(user).to be_is_author(question)
+  #       end
 
-        it 'find right answer' do
-          expect(assigns(:answer)).to eq answer
-        end
+  #       it 'find right answer' do
+  #         expect(assigns(:answer)).to eq answer
+  #       end
 
-        it 'set answer as the best' do
-          expect(question.best_answer).to eq answer
-        end
+  #       it 'set answer as the best' do
+  #         expect(question.best_answer).to eq answer
+  #       end
 
-        include_context 'redirect to @question'
-      end
+  #       include_context 'redirect to @question'
+  #     end
 
-      context 'user is NOT an author' do
-        let(:user2) { create(:user) }
+  #     context 'user is NOT an author' do
+  #       let(:user2) { create(:user) }
 
-        before do
-          login(user2)
-          post :best, params: { id: question, answer_id: answer.id }
-        end
+  #       before do
+  #         login(user2)
+  #         post :best, params: { id: question, answer_id: answer.id }
+  #       end
 
-        include_context 'has to prove that user is NOT an author'
+  #       include_context 'has to prove that user is NOT an author'
 
-        include_context 'does not set answer as the best'
+  #       include_context 'does not set answer as the best'
 
-        include_context 'redirect to @question'
-      end
-    end
+  #       include_context 'redirect to @question'
+  #     end
+  #   end
 
-    context 'Unauthenticated user' do
-      before { post :best, params: { id: question, answer_id: answer.id } }
+  #   context 'Unauthenticated user' do
+  #     before { post :best, params: { id: question, answer_id: answer.id } }
 
-      include_context 'does not set answer as the best'
+  #     include_context 'does not set answer as the best'
 
-      include_context 'Redirects to sing in'
-    end
-  end
+  #     include_context 'Redirects to sing in'
+  #   end
+  # end
 end
