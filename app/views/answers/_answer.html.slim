@@ -1,5 +1,5 @@
 li class="answer" id="answer-id-#{answer.id}"
-  - if answer.correct
+  - if answer.correct?
     p class="best" <b>THE BEST!</b>
 
   p= answer.body
