@@ -39,16 +39,6 @@ class QuestionsController < ApplicationController
     end
   end
 
-  # def best
-  #   if current_user.is_author?(@question)
-  #     @answer = Answer.find(params[:answer_id])
-  #     @question.best_answer = @answer if @answer.question_id == @question.id
-  #     @question.save
-  #   end
-
-  #   redirect_to question_path(@question)
-  # end
-
   private
 
   def load_question
