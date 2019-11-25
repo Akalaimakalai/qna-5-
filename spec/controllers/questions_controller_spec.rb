@@ -52,7 +52,10 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'Unauthenticated user' do
       before { get :new }
-      include_context 'Redirects to sing in'
+
+      it 'redirects to sing in' do
+        expect(response).to redirect_to new_user_session_path
+      end
     end
   end
 
@@ -73,7 +76,10 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'Unauthenticated user' do
       before { get :edit, params: { id: question } }
-      include_context 'Redirects to sing in'
+
+      it 'redirects to sing in' do
+        expect(response).to redirect_to new_user_session_path
+      end
     end
   end
 
@@ -117,7 +123,9 @@ RSpec.describe QuestionsController, type: :controller do
         expect { post :create, params: { question: attributes_for(:question) } }.to_not change(Question, :count)
       end
 
-      include_context 'Redirects to sing in'
+      it 'redirects to sing in' do
+        expect(response).to redirect_to new_user_session_path
+      end
     end
   end
 
@@ -156,7 +164,12 @@ RSpec.describe QuestionsController, type: :controller do
           let(:question) { create(:question, title: "CheckTitle", body: "CheckBody") }
           before { patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js }
 
-          include_context 'does not change the question'
+          it 'does not change the question' do
+            question2.reload
+
+            expect(question2.title).to eq 'CheckTitle'
+            expect(question2.body).to eq 'CheckBody'
+          end
 
           it 'render template update' do
             expect(response).to render_template :update
@@ -172,9 +185,16 @@ RSpec.describe QuestionsController, type: :controller do
           patch :update, params: { id: question2, question: { title: 'new title', body: 'new body' }, format: :js }
         end
 
-        include_context 'has to prove that user is NOT an author'
+        it 'has to prove that user is NOT an author' do
+          expect(user2).to_not be_is_author(question)
+        end
 
-        include_context 'does not change the question'
+        it 'does not change the question' do
+          question2.reload
+
+          expect(question2.title).to eq 'CheckTitle'
+          expect(question2.body).to eq 'CheckBody'
+        end
 
         it 'render template update' do
           expect(response).to render_template :update
@@ -185,7 +205,12 @@ RSpec.describe QuestionsController, type: :controller do
     context 'Unauthenticated user' do
       before { patch :update, params: { id: question2, question: attributes_for(:question) }, format: :js }
 
-      include_context 'does not change the question'
+      it 'does not change the question' do
+        question2.reload
+
+        expect(question2.title).to eq 'CheckTitle'
+        expect(question2.body).to eq 'CheckBody'
+      end
 
       it 'declares user is unauthorized' do
         expect(response).to have_http_status(:unauthorized)
@@ -225,9 +250,13 @@ RSpec.describe QuestionsController, type: :controller do
           delete :destroy, params: { id: question }
         end
 
-        include_context 'has to prove that user is NOT an author'
+        it 'has to prove that user is NOT an author' do
+          expect(user2).to_not be_is_author(question)
+        end
 
-        include_context 'does not delete the question'
+        it 'does not delete the question' do
+          expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+        end
 
         it 'redirect to @question' do
           expect(response).to redirect_to question
@@ -238,9 +267,13 @@ RSpec.describe QuestionsController, type: :controller do
     context 'Unauthenticated user' do
       before { delete :destroy, params: { id: question } }
 
-      include_context 'does not delete the question'
+      it 'does not delete the question' do
+        expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+      end
 
-      include_context 'Redirects to sing in'
+      it 'redirects to sing in' do
+        expect(response).to redirect_to new_user_session_path
+      end
     end
   end
 end

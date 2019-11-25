@@ -46,11 +46,18 @@ feature 'User can edit his answer', %q{
 
     context 'user is NOT an author' do
       background { sign_in(user2) }
-      include_context 'can not edit an answer'
+
+      scenario 'can not edit an answer' do
+        visit question_path(question)
+        expect(page).to_not have_link('Edit')
+      end
     end
   end
 
   describe 'Unauthenticated user' do
-    include_context 'can not edit an answer'
+    scenario 'can not edit an answer' do
+      visit question_path(question)
+      expect(page).to_not have_link('Edit')
+    end
   end
 end
