@@ -23,12 +23,7 @@ class AnswersController < ApplicationController
   end
 
   def best
-
-    if current_user.is_author?(@question)
-      @question.answers.where(correct: true).update_all(correct: false) unless @question.answers.where(correct: true).empty?
-      @answer.update(correct: true)
-    end
-
+    @answer.set_correct if current_user.is_author?(@question)
     redirect_to question_path(@question)
   end
 
