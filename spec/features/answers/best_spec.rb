@@ -97,12 +97,23 @@ feature 'User can choose the best answer', %q{
     end
   end
 
-  scenario 'the best answer is the first in the list' do
-    answer2 = create(:answer, question: question, user: user, correct: true)
+  describe "List's tests" do
+    scenario 'the best answer is the first in the list' do
+      answer2 = create(:answer, question: question, user: user, correct: true)
 
-    sign_in(user)
-    visit question_path(question)
+      sign_in(user)
+      visit question_path(question)
 
-    expect(first('.answer')).to have_content("THE BEST!")
+      expect(first('.answer')).to have_content("THE BEST!")
+    end
+
+    scenario 'answers were sorted by date' do
+      answer2 = create(:answer, question: question, user: user, created_at: answer.created_at - 100)
+
+      sign_in(user)
+      visit question_path(question)
+
+      expect(first('.answer')).to have_content(answer2.body)
+    end
   end
 end
