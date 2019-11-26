@@ -6,9 +6,19 @@ RSpec.describe Answer, type: :model do
 
   it { should validate_presence_of :body }
 
+  let(:question) { create(:question) }
+  let!(:answer) { create(:answer, question: question) }
+
+  describe 'default scope' do
+    let!(:answer2) { create(:answer, question: question, correct: true) }
+    let!(:answer3) { create(:answer, question: question) }
+
+    it 'sorts answrs by correct and date' do
+      expect(question.answers).to eq [answer2, answer, answer3]
+    end
+  end
+
   describe '#set_correct' do
-    let(:question) { create(:question) }
-    let(:answer) { create(:answer, question: question) }
     before { answer.set_correct }
 
     context 'no correct answer before' do

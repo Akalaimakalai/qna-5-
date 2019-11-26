@@ -4,10 +4,12 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
-  default_scope { order(correct: :desc) }
+  default_scope { order(correct: :desc).order(created_at: :asc) }
 
   def set_correct
-    question.answers.where(correct: true).update_all(correct: false) unless question.answers.where(correct: true).empty?
-    update(correct: true)
+    Answer.transaction do
+      question.answers.update_all(correct: false)
+      update!(correct: true)
+    end
   end
 end
