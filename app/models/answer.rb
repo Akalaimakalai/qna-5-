@@ -7,7 +7,7 @@ class Answer < ApplicationRecord
   default_scope { order(correct: :desc).order(created_at: :asc) }
 
   def set_correct
-    Answer.transaction do
+    transaction do
       question.answers.update_all(correct: false)
       update!(correct: true)
     end

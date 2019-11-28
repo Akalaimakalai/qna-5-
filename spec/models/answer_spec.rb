@@ -11,14 +11,14 @@ RSpec.describe Answer, type: :model do
 
   describe 'default scope' do
     let!(:answer3) { create(:answer, question: question) }
+    let!(:answer2) { create(:answer, question: question, correct: true) }
 
     it 'sorts answrs by correct' do
-      answer2 = create(:answer, question: question, correct: true)
       expect(question.answers).to eq [answer2, answer, answer3]
     end
 
     it 'sorts answrs by date' do
-      expect(question.answers).to eq [answer, answer3]
+      expect(question.answers).to eq [answer2, answer, answer3]
     end
   end
 

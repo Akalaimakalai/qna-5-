@@ -108,7 +108,7 @@ feature 'User can choose the best answer', %q{
     end
 
     scenario 'answers were sorted by date' do
-      answer2 = create(:answer, question: question, user: user, created_at: answer.created_at - 100)
+      answer2 = create(:answer, question: question, user: user, created_at: 1.day.ago)
 
       sign_in(user)
       visit question_path(question)
