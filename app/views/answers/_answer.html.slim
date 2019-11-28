@@ -16,6 +16,8 @@ li class="answer" id="answer-id-#{answer.id}"
       .update-answer-errors
       p = f.label :body, 'Your answer'
       = f.text_area :body
+      p = f.label :files
+      = f.file_field :files, multiple: true
       p = f.submit 'Save'
 
   - if current_user&.is_author?(@question) && !answer.correct
