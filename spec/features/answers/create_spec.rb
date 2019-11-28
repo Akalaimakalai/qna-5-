@@ -12,7 +12,7 @@ feature 'User can write answer', %q{
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
 
-  describe 'Authenticated user', js:true do
+  describe 'Authenticated user', js: true do
 
     background do
       sign_in(user)
@@ -24,7 +24,7 @@ feature 'User can write answer', %q{
       fill_in 'Body', with: 'Answer text'
 
       expect(page).to_not have_content('Answer text')
-      
+
       click_on 'Add answer'
 
       expect(current_path).to eq question_path(question)
@@ -33,6 +33,17 @@ feature 'User can write answer', %q{
       within '.answers' do
         expect(page).to have_content('Answer text')
       end
+    end
+
+    scenario 'tries to add answer with attached files' do
+      fill_in 'Body', with: 'Answer text'
+
+      attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+
+      click_on 'Add answer'
+
+      expect(page).to have_link 'rails_helper.rb'
+      expect(page).to have_link 'spec_helper.rb'
     end
 
     scenario 'tries to add answer with invalid params' do
