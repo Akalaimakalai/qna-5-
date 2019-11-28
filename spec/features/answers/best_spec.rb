@@ -97,7 +97,7 @@ feature 'User can choose the best answer', %q{
     end
   end
 
-  describe "List's tests" do
+  describe 'List tests' do
     scenario 'the best answer is the first in the list' do
       answer2 = create(:answer, question: question, user: user, correct: true)
 
