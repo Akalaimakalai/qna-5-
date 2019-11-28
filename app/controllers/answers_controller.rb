@@ -1,17 +1,13 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_answer, only: %i[ edit show update destroy ]
+  before_action :set_answer, only: %i[ edit show update destroy best ]
+  before_action :set_question, only: %i[ update best ]
 
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params)
     @answer.user_id = current_user.id
-
-    if @answer.save
-      redirect_to @question
-    else
-      render 'questions/show'
-    end
+    @answer.save
   end
 
   def edit; end
@@ -19,29 +15,29 @@ class AnswersController < ApplicationController
   def show; end
 
   def update
-    if current_user.is_author?(@answer) && @answer.update(answer_params)
-      redirect_to @answer
-    else
-      render :edit
-    end
+    @answer.update(answer_params) if current_user.is_author?(@answer)
   end
 
   def destroy
-    if current_user.is_author?(@answer)
-      @answer.destroy
-      redirect_to question_answers_path(@answer.question)
-    else
-      redirect_to @answer.question
-    end
+    @answer.destroy if current_user.is_author?(@answer)
+  end
+
+  def best
+    @answer.set_correct if current_user.is_author?(@question)
+    redirect_to question_path(@question)
   end
 
   private
 
   def answer_params
-    params.require(:answer).permit(:body, :correct)
+    params.require(:answer).permit(:body)
   end
 
   def set_answer
     @answer = Answer.find(params[:id])
+  end
+
+  def set_question
+    @question = @answer.question
   end
 end

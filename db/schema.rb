@@ -17,11 +17,11 @@ ActiveRecord::Schema.define(version: 2019_11_13_134126) do
 
   create_table "answers", force: :cascade do |t|
     t.text "body"
-    t.boolean "correct", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "question_id"
     t.bigint "user_id"
+    t.boolean "correct", default: false
     t.index ["question_id"], name: "index_answers_on_question_id"
     t.index ["user_id"], name: "index_answers_on_user_id"
   end

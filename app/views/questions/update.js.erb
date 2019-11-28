@@ -1,0 +1,5 @@
+$('.update-question-errors').html('<%= render 'shared/errors', resource: @question %>');
+
+<% if @question.errors.blank? %>
+  $('<%= "#question-id-#{@question.id}" %>').replaceWith('<%= j render 'questions/show_question', question: @question %>');
+<% end %>

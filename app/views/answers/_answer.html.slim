@@ -1,1 +1,18 @@
-p= answer.body
+li class="answer" id="answer-id-#{answer.id}"
+  - if answer.correct?
+    p class="best" <b>THE BEST!</b>
+
+  p= answer.body
+
+  - if current_user&.is_author?(answer)
+    p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+    p= link_to 'Delete', answer_path(answer), method: :delete, class: 'delete-answer-link', data: { answer_id: answer.id }
+
+    = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
+      .update-answer-errors
+      p = f.label :body, 'Your answer'
+      = f.text_area :body
+      p = f.submit 'Save'
+
+  - if current_user&.is_author?(@question) && !answer.correct
+    = button_to 'Correct', { controller: 'answers', action: 'best', id: answer.id }, form: { "data-remote" => "true" }, class: 'best-answer-button'

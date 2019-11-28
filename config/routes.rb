@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :questions do
-    resources :answers, except: %i[ index new ], shallow: true
+    resources :answers, except: %i[ index new ], shallow: true do
+      post 'best', on: :member
+    end
   end
 end

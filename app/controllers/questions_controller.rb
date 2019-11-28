@@ -7,7 +7,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    @answer = @question.answers.new
+    @answer = Answer.new
   end
 
   def new
@@ -27,11 +27,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if current_user.is_author?(@question) && @question.update(question_params)
-      redirect_to @question
-    else
-      render :edit
-    end
+    @question.update(question_params) if current_user.is_author?(@question)
   end
 
   def destroy

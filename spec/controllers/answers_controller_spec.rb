@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
-  let(:question) { create(:question) }
+  let(:question) { create(:question, user: user) }
   let(:answer) { create(:answer, question: question, user: user) }
 
   describe 'POST #create' do
@@ -15,38 +15,44 @@ RSpec.describe AnswersController, type: :controller do
 
       context 'with valid attributes' do
         it 'saves the answer' do
-          expect{ post :create, params: params }.to change(Answer, :count).by(1)
+          expect{ post :create, params: params, format: :js }.to change(Answer, :count).by(1)
         end
 
         it 'associates with correct question' do
-          post :create, params: params
+          post :create, params: params, format: :js
           expect(assigns(:answer).question).to eq question
         end
 
-        it 'redirects to question show view' do
-          post :create, params: params
-          expect(response).to redirect_to assigns(:answer).question
+        it 'render template create' do
+          post :create, params: params, format: :js
+          expect(response).to render_template :create
         end
       end
 
       context 'with invalid attributes' do
         let(:params) { { question_id: question, answer: attributes_for(:answer, :invalid).merge({ question_id: question }) } }
 
-        include_context 'does not save the answer'
+        it 'does not save the answer' do
+          expect{ post :create, params: params, format: :js }.to_not change(Answer, :count)
+        end
 
-        it 'render question show view' do
-          post :create, params: params
-          expect(response).to render_template 'questions/show'
+        it 'render template create' do
+          post :create, params: params, format: :js
+          expect(response).to render_template :create
         end
       end
     end
 
     context 'Unauthenticated user' do
-      before { post :create, params: params }
+      before { post :create, params: params, format: :js }
 
-      include_context 'does not save the answer'
+      it 'does not save the answer' do
+        expect{ post :create, params: params, format: :js }.to_not change(Answer, :count)
+      end
 
-      include_context 'Redirects to sing in'
+      it 'declares user is unauthorized' do
+        expect(response).to have_http_status(:unauthorized)
+      end
     end
   end
 
@@ -69,7 +75,10 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'Unauthenticated user' do
       before { get :edit, params: { id: answer } }
-      include_context 'Redirects to sing in'
+
+      it 'redirects to sing in' do
+        expect(response).to redirect_to new_user_session_path
+      end
     end
   end
 
@@ -92,7 +101,10 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'Unauthenticated user' do
       before { get :show, params: { id: answer } }
-      include_context 'Redirects to sing in'
+
+      it 'redirects to sing in' do
+        expect(response).to redirect_to new_user_session_path
+      end
     end
   end
 
@@ -104,30 +116,33 @@ RSpec.describe AnswersController, type: :controller do
       context 'user is an author' do
 
         it 'has to prove that user is an author' do
-          patch :update, params: { id: answer, answer: { body: 'new body', correct: true } }
+          patch :update, params: { id: answer, answer: { body: 'new body' }, format: :js }
           expect(user).to be_is_author(answer)
         end
 
         context 'with valid attributes' do
-          before { patch :update, params: { id: answer, answer: { body: 'new body', correct: true } } }
+          before { patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js }
 
           it 'updates the @answer' do
             answer.reload
             expect(answer.body).to eq 'new body'
           end
 
-          it 'redirects to updates answer' do
-            expect(response).to redirect_to answer
+          it 'render template update' do
+            expect(response).to render_template :update
           end
         end
 
         context 'with invalid attributes' do
-          before { patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) } }
+          before { patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js }
 
-          include_context 'does not update the answer'
+          it 'does not update the answer' do
+            answer.reload
+            expect(answer.body).to eq "MyAnswerText"
+          end
 
-          it 're-render edit view' do
-            expect(response).to render_template :edit
+          it 'render template update' do
+            expect(response).to render_template :update
           end
         end
       end
@@ -136,27 +151,35 @@ RSpec.describe AnswersController, type: :controller do
         let(:user2) { create(:user) }
         before do
           login(user2)
-          patch :update, params: { id: answer, answer: { body: 'new body', correct: true } }
+          patch :update, params: { id: answer, answer: { body: 'new body' }, format: :js }
         end
 
         it 'has to prove that user is NOT an author' do
           expect(user2).to_not be_is_author(answer)
         end
 
-        include_context 'does not update the answer'
+        it 'does not update the answer' do
+          answer.reload
+          expect(answer.body).to eq "MyAnswerText"
+        end
 
-        it 're-render edit view' do
-          expect(response).to render_template :edit
+        it 'render template update' do
+          expect(response).to render_template :update
         end
       end
     end
 
     context 'Unauthenticated user' do
-      before { patch :update, params: { id: answer, answer: { body: 'new body', correct: true } } }
+      before { patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js }
 
-      include_context 'does not update the answer'
+      it 'does not update the answer' do
+        answer.reload
+        expect(answer.body).to eq "MyAnswerText"
+      end
 
-      include_context 'Redirects to sing in'
+      it 'declares user is unauthorized' do
+        expect(response).to have_http_status(:unauthorized)
+      end
     end
   end
 
@@ -170,22 +193,22 @@ RSpec.describe AnswersController, type: :controller do
         before { login(user) }
 
         it 'has to prove that user is an author' do
-          delete :destroy, params: { id: answer }
+          delete :destroy, params: { id: answer }, format: :js
           expect(user).to be_is_author(answer)
         end
 
         it 'deletes the answer' do
-          expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+          expect { delete :destroy, params: { id: answer }, format: :js }.to change(Answer, :count).by(-1)
         end
 
-        it 'redirects to index' do
-          delete :destroy, params: { id: answer }
-          expect(response).to redirect_to question_answers_path(question)
+        it 'return no_content' do
+          delete :destroy, params: { id: answer }, format: :js
+          expect(response).to have_http_status(:no_content)
         end
       end
 
       context 'user is NOT an author' do
-        let!(:answer2) { create(:answer) }
+        let!(:answer2) { create(:answer, question: question) }
         let(:user2) { create(:user) }
 
         before { login(user2) }
@@ -195,24 +218,83 @@ RSpec.describe AnswersController, type: :controller do
         end
 
         it 'does not delete the answer' do
-          expect { delete :destroy, params: { id: answer2 } }.to_not change(Answer, :count)
+          expect { delete :destroy, params: { id: answer2 }, format: :js }.to_not change(Answer, :count)
         end
 
-        it 'redirect to @question' do
-          delete :destroy, params: { id: answer2 }
-          expect(response).to redirect_to answer2.question
+        it 'return no_content' do
+          delete :destroy, params: { id: answer2 }, format: :js
+          expect(response).to have_http_status(:no_content)
         end
       end
     end
 
     context 'Unauthenticated user' do
-      before { delete :destroy, params: { id: answer } }
+      before { delete :destroy, params: { id: answer }, format: :js }
 
       it 'does not delete the answer' do
         expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
       end
 
-      include_context 'Redirects to sing in'
+      it 'declares user is unauthorized' do
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
+
+  describe 'POST #best' do
+
+    context 'Authenticated user' do
+      context 'user is an author' do
+        before do
+          login(user)
+          post :best, params: { id: answer }
+        end
+
+        it 'has to prove that user is an author' do
+          expect(user).to be_is_author(assigns(:question))
+        end
+
+        it 'sets answer as correct' do
+          expect(assigns(:answer)).to be_correct
+        end
+
+        it 'redirect to @question' do
+          expect(response).to redirect_to question_path(question)
+        end
+      end
+
+      context 'user is NOT an author' do
+        let(:user2) { create(:user) }
+
+        before do
+          login(user2)
+          post :best, params: { id: answer }
+        end
+
+        it 'has to prove that user is NOT an author' do
+          expect(user2).to_not be_is_author(question)
+        end
+
+        it 'does not set answer as correct' do
+          expect(assigns(:answer)).to_not be_correct
+        end
+
+        it 'redirect to @question' do
+          expect(response).to redirect_to question_path(question)
+        end
+      end
+    end
+
+    context 'Unauthenticated user' do
+      before { post :best, params: { id: answer } }
+
+      it 'does not set answer as correct' do
+        expect(answer).to_not be_correct
+      end
+
+      it 'redirects to sing in' do
+        expect(response).to redirect_to new_user_session_path
+      end
     end
   end
 end
