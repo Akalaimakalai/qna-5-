@@ -37,7 +37,7 @@ feature 'User can edit his question', %q{
           fill_in 'Title', with: 'MyNewTitle'
           fill_in 'Your question', with: 'MyNewBody'
 
-          attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+          attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
 
           click_on 'Save'
         end
