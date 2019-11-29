@@ -10,16 +10,16 @@ feature 'Author can delete any file from his question', %q{
 
   given(:user) { create(:user) }
   given(:user2) { create(:user) }
-  given(:question_with_files) { create(:question, :with_files, user: user) }
+  given(:question_with_file) { create(:question, :with_file, user: user) }
 
   describe 'Authenticated user' do
 
     describe 'as an author' do
       scenario 'deletes file from the question' do
         sign_in(user)
-        visit question_path(question_with_files)
+        visit question_path(question_with_file)
 
-        within '.files' do
+        within '.question-files' do
           expect(page).to have_link('rails_helper.rb')
 
           click_on 'delete'
@@ -32,9 +32,9 @@ feature 'Author can delete any file from his question', %q{
     describe 'as NOT an author' do
       scenario 'tries to delete files from a question' do
         sign_in(user2)
-        visit question_path(question_with_files)
+        visit question_path(question_with_file)
 
-        within '.files' do
+        within '.question-files' do
           expect(page).to have_link('rails_helper.rb')
           expect(page).to_not have_link('delete')
         end
@@ -45,9 +45,9 @@ feature 'Author can delete any file from his question', %q{
   describe 'Unauthenticated user' do
     scenario 'tries to delete files from a question' do
       sign_in(user2)
-      visit question_path(question_with_files)
+      visit question_path(question_with_file)
 
-      within '.files' do
+      within '.question-files' do
         expect(page).to have_link('rails_helper.rb')
         expect(page).to_not have_link('delete')
       end

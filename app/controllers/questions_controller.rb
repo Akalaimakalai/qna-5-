@@ -41,7 +41,7 @@ class QuestionsController < ApplicationController
 
   def destroy_file
     if current_user.is_author? (@question)
-      @file_id = params[:file_id].to_i
+      @file_id = params[:file_id]
       @question.files.find(@file_id).purge
     end
   end

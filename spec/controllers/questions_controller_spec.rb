@@ -5,7 +5,7 @@ RSpec.describe QuestionsController, type: :controller do
   let(:user2) { create(:user) }
   let(:question) { create(:question, user: user) }
   let(:question2) { create(:question, title: "CheckTitle", body: "CheckBody", user: user) }
-  let(:question_with_files) { create(:question, :with_files, user: user) }
+  let(:question_with_file) { create(:question, :with_file, user: user) }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 3) }
@@ -277,7 +277,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'Delete #destroy_file' do
-    let(:file_id) { question_with_files.files.first.id }
+    let(:file_id) { question_with_file.files.first.id }
 
     context 'Authenticated user' do
 
@@ -285,21 +285,21 @@ RSpec.describe QuestionsController, type: :controller do
         before { login(user) }
 
         it 'has to prove that user is an author' do
-          delete :destroy_file, params: { id: question_with_files, file_id: file_id, format: :js }
-          expect(user).to be_is_author(question_with_files)
+          delete :destroy_file, params: { id: question_with_file, file_id: file_id, format: :js }
+          expect(user).to be_is_author(question_with_file)
         end
 
         it "sets file's id to @file_id" do
-          delete :destroy_file, params: { id: question_with_files, file_id: file_id, format: :js }
-          expect(assigns(:file_id)).to eq file_id
+          delete :destroy_file, params: { id: question_with_file, file_id: file_id, format: :js }
+          expect(assigns(:file_id).to_i).to eq file_id
         end
 
         it 'deletes the file' do
-          expect { delete :destroy_file, params: { id: question_with_files, file_id: file_id, format: :js } }.to change(question_with_files.files, :count).by(-1)
+          expect { delete :destroy_file, params: { id: question_with_file, file_id: file_id, format: :js } }.to change(question_with_file.files, :count).by(-1)
         end
 
         it 'renders destroy_file template' do
-          delete :destroy_file, params: { id: question_with_files, file_id: file_id, format: :js }
+          delete :destroy_file, params: { id: question_with_file, file_id: file_id, format: :js }
           expect(response).to render_template :destroy_file
         end
       end
@@ -307,15 +307,15 @@ RSpec.describe QuestionsController, type: :controller do
       context "user is NOT an author" do
         before do
           login(user2)
-          delete :destroy_file, params: { id: question_with_files, file_id: file_id, format: :js }
+          delete :destroy_file, params: { id: question_with_file, file_id: file_id, format: :js }
         end
 
         it 'has to prove that user is NOT an author' do
-          expect(user2).to_not be_is_author(question_with_files)
+          expect(user2).to_not be_is_author(question_with_file)
         end
 
         it 'does not delete the file' do
-          expect { delete :destroy_file, params: { id: question_with_files, file_id: file_id, format: :js } }.to_not change(question_with_files.files, :count)
+          expect { delete :destroy_file, params: { id: question_with_file, file_id: file_id, format: :js } }.to_not change(question_with_file.files, :count)
         end
 
         it 'renders destroy_file template' do
@@ -326,11 +326,11 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'Unauthenticated user' do
       it 'does not delete the file' do
-        expect { delete :destroy_file, params: { id: question_with_files, file_id: file_id, format: :js } }.to_not change(question_with_files.files, :count)
+        expect { delete :destroy_file, params: { id: question_with_file, file_id: file_id, format: :js } }.to_not change(question_with_file.files, :count)
       end
 
       it 'declares user is unauthorized' do
-        delete :destroy_file, params: { id: question_with_files, file_id: file_id, format: :js }
+        delete :destroy_file, params: { id: question_with_file, file_id: file_id, format: :js }
         expect(response).to have_http_status(:unauthorized)
       end
     end

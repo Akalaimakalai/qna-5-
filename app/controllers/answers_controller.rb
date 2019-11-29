@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_answer, only: %i[ edit show update destroy best ]
+  before_action :set_answer, only: %i[ edit show update destroy destroy_file best ]
   before_action :set_question, only: %i[ update best ]
 
   def create
@@ -20,6 +20,13 @@ class AnswersController < ApplicationController
 
   def destroy
     @answer.destroy if current_user.is_author?(@answer)
+  end
+
+  def destroy_file
+    if current_user.is_author?(@answer)
+      @file_id = params[:file_id]
+      @answer.files.find(@file_id).purge
+    end
   end
 
   def best

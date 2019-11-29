@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
     resources :answers, except: %i[ index new ], shallow: true do
       post 'best', on: :member
+      delete 'destroy_file', on: :member
     end
   end
 end

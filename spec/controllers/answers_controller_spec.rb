@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
+  let(:user2) { create(:user) }
   let(:question) { create(:question, user: user) }
   let(:answer) { create(:answer, question: question, user: user) }
 
@@ -148,7 +149,7 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       context 'user is NOT an author' do
-        let(:user2) { create(:user) }
+
         before do
           login(user2)
           patch :update, params: { id: answer, answer: { body: 'new body' }, format: :js }
@@ -209,7 +210,6 @@ RSpec.describe AnswersController, type: :controller do
 
       context 'user is NOT an author' do
         let!(:answer2) { create(:answer, question: question) }
-        let(:user2) { create(:user) }
 
         before { login(user2) }
 
@@ -264,7 +264,6 @@ RSpec.describe AnswersController, type: :controller do
       end
 
       context 'user is NOT an author' do
-        let(:user2) { create(:user) }
 
         before do
           login(user2)
@@ -294,6 +293,65 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'redirects to sing in' do
         expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
+
+  describe 'DELETE #destroy_file' do
+    let!(:answer_with_file) { create(:answer, :with_file, question: question, user: user) }
+    let(:file_id) { answer_with_file.files.first.id }
+
+    context 'Authenticated user' do
+      before { login(user) }
+
+      context 'user is an author' do
+        it 'has to prove that user is an author' do
+          delete :destroy_file, params: { id: answer_with_file, file_id: file_id, format: :js }
+          expect(user).to be_is_author(answer_with_file)
+        end
+
+        it "it sets file's id to @file_id" do
+          delete :destroy_file, params: { id: answer_with_file, file_id: file_id, format: :js }
+          expect(assigns(:file_id).to_i).to eq file_id
+        end
+
+        it 'deletes the file' do
+          expect { delete :destroy_file, params: { id: answer_with_file, file_id: file_id, format: :js } }.to change(answer_with_file.files, :count).by(-1)
+        end
+
+        it 'renders destroy_file template' do
+          delete :destroy_file, params: { id: answer_with_file, file_id: file_id, format: :js }
+          expect(response).to render_template :destroy_file
+        end
+      end
+
+      context 'user is NOT an author' do
+        before { login(user2) }
+
+        it 'has to prove that user is NOT an author' do
+          expect(user2).to_not be_is_author(answer)
+        end
+
+        it 'does not delete the file' do
+          expect { delete :destroy_file, params: { id: answer_with_file, file_id: file_id, format: :js } }.to_not change(answer_with_file.files, :count)
+        end
+
+        it 'renders destroy_file template' do
+          delete :destroy_file, params: { id: answer_with_file, file_id: file_id, format: :js }
+          expect(response).to render_template :destroy_file
+        end
+      end
+    end
+
+    context 'Unauthenticated user' do
+
+      it 'does not delete the file' do
+        expect { delete :destroy_file, params: { id: answer_with_file, file_id: file_id, format: :js } }.to_not change(answer_with_file.files, :count)
+      end
+
+      it 'declares user is unauthorized' do
+        delete :destroy_file, params: { id: answer_with_file, file_id: file_id, format: :js }
+        expect(response).to have_http_status(:unauthorized)
       end
     end
   end
