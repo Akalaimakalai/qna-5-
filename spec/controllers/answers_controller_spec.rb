@@ -202,9 +202,9 @@ RSpec.describe AnswersController, type: :controller do
           expect { delete :destroy, params: { id: answer }, format: :js }.to change(Answer, :count).by(-1)
         end
 
-        it 'return no_content' do
+        it 'renders destroy template' do
           delete :destroy, params: { id: answer }, format: :js
-          expect(response).to have_http_status(:no_content)
+          expect(response).to render_template :destroy
         end
       end
 
@@ -221,9 +221,9 @@ RSpec.describe AnswersController, type: :controller do
           expect { delete :destroy, params: { id: answer2 }, format: :js }.to_not change(Answer, :count)
         end
 
-        it 'return no_content' do
-          delete :destroy, params: { id: answer2 }, format: :js
-          expect(response).to have_http_status(:no_content)
+        it 'renders destroy template' do
+          delete :destroy, params: { id: answer }, format: :js
+          expect(response).to render_template :destroy
         end
       end
     end
