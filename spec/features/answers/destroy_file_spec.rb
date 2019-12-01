@@ -12,7 +12,7 @@ feature 'Author can delete any file frim his answer', %q{
   given(:user2) { create(:user) }
   given(:question) { create(:question, user: user) }
   given!(:answer_with_file) { create(:answer, :with_file, question: question, user: user) }
-  
+
   describe 'Authenticated user' do
 
     describe 'as an author' do
@@ -21,7 +21,7 @@ feature 'Author can delete any file frim his answer', %q{
         sign_in(user)
         visit question_path(question)
 
-        within "#answer-#{answer_with_file.id}-files" do
+        within ".answer-#{answer_with_file.id}-files" do
           expect(page).to have_link('rails_helper.rb')
 
           click_on 'delete'
@@ -36,7 +36,7 @@ feature 'Author can delete any file frim his answer', %q{
         sign_in(user2)
         visit question_path(question)
 
-        within "#answer-#{answer_with_file.id}-files" do
+        within ".answer-#{answer_with_file.id}-files" do
           expect(page).to have_link('rails_helper.rb')
           expect(page).to_not have_link('delete')
         end
@@ -48,7 +48,7 @@ feature 'Author can delete any file frim his answer', %q{
     scenario 'tries to delete file from the answer' do
       visit question_path(question)
 
-      within "#answer-#{answer_with_file.id}-files" do
+      within ".answer-#{answer_with_file.id}-files" do
         expect(page).to have_link('rails_helper.rb')
         expect(page).to_not have_link('delete')
       end
