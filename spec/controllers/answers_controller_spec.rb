@@ -116,11 +116,6 @@ RSpec.describe AnswersController, type: :controller do
 
       context 'user is an author' do
 
-        it 'has to prove that user is an author' do
-          patch :update, params: { id: answer, answer: { body: 'new body' }, format: :js }
-          expect(user).to be_is_author(answer)
-        end
-
         context 'with valid attributes' do
           before { patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js }
 
@@ -153,10 +148,6 @@ RSpec.describe AnswersController, type: :controller do
         before do
           login(user2)
           patch :update, params: { id: answer, answer: { body: 'new body' }, format: :js }
-        end
-
-        it 'has to prove that user is NOT an author' do
-          expect(user2).to_not be_is_author(answer)
         end
 
         it 'does not update the answer' do
@@ -193,11 +184,6 @@ RSpec.describe AnswersController, type: :controller do
       context 'user is an author' do
         before { login(user) }
 
-        it 'has to prove that user is an author' do
-          delete :destroy, params: { id: answer }, format: :js
-          expect(user).to be_is_author(answer)
-        end
-
         it 'deletes the answer' do
           expect { delete :destroy, params: { id: answer }, format: :js }.to change(Answer, :count).by(-1)
         end
@@ -212,10 +198,6 @@ RSpec.describe AnswersController, type: :controller do
         let!(:answer2) { create(:answer, question: question) }
 
         before { login(user2) }
-
-        it 'has to prove that user is NOT an author' do
-          expect(user2).to_not be_is_author(answer)
-        end
 
         it 'does not delete the answer' do
           expect { delete :destroy, params: { id: answer2 }, format: :js }.to_not change(Answer, :count)
@@ -250,10 +232,6 @@ RSpec.describe AnswersController, type: :controller do
           post :best, params: { id: answer }
         end
 
-        it 'has to prove that user is an author' do
-          expect(user).to be_is_author(assigns(:question))
-        end
-
         it 'sets answer as correct' do
           expect(assigns(:answer)).to be_correct
         end
@@ -268,10 +246,6 @@ RSpec.describe AnswersController, type: :controller do
         before do
           login(user2)
           post :best, params: { id: answer }
-        end
-
-        it 'has to prove that user is NOT an author' do
-          expect(user2).to_not be_is_author(question)
         end
 
         it 'does not set answer as correct' do

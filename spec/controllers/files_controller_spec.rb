@@ -24,11 +24,6 @@ RSpec.describe FilesController, type: :controller do
 
       context 'user is an author' do
 
-        it 'has to prove that user is an author' do
-          delete :destroy, params: { id: file, format: :js }
-          expect(user).to be_is_author(answer_with_file)
-        end
-
         it 'deletes the file' do
           expect { delete :destroy, params: { id: file, format: :js } }.to change(answer_with_file.files, :count).by(-1)
         end
@@ -41,11 +36,6 @@ RSpec.describe FilesController, type: :controller do
 
       context 'user is NOT an author' do
         before { login(user2) }
-
-        it 'has to prove that user is NOT an author' do
-          delete :destroy, params: { id: file, format: :js }
-          expect(user2).to_not be_is_author(answer_with_file)
-        end
 
         it 'does not delete the file' do
           expect { delete :destroy, params: { id: file, format: :js } }.to_not change(answer_with_file.files, :count)
