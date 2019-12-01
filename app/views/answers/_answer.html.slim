@@ -7,11 +7,11 @@ li class="answer" id="answer-id-#{answer.id}"
   - if answer.files.attached?
     ul id="answer-#{answer.id}-files"
       - answer.files.each do |file|
-        li id="answer-file-#{file.id}"
+        li id="file-id-#{file.id}"
           = link_to file.filename.to_s, url_for(file)
           - if current_user&.is_author?(answer)
             b   |  
-            = link_to 'delete', { controller: 'answers', action: 'destroy_file', id:answer.id, file_id: file.id }, method: :delete, remote: true
+            = link_to 'delete', file_path(file), method: :delete, remote: true
 
   - if current_user&.is_author?(answer)
     p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }

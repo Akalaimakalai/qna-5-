@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[ index show ]
-  before_action :load_question, only: %i[ show edit update destroy destroy_file ]
+  before_action :load_question, only: %i[ show edit update destroy ]
 
   def index
     @questions = Question.all
@@ -36,13 +36,6 @@ class QuestionsController < ApplicationController
       redirect_to questions_path
     else
       redirect_to @question, alert: 'You must be an author of the question to delete it.'
-    end
-  end
-
-  def destroy_file
-    if current_user.is_author? (@question)
-      @file_id = params[:file_id]
-      @question.files.find(@file_id).purge
     end
   end
 

@@ -19,7 +19,7 @@ feature 'Author can delete any file from his question', %q{
         sign_in(user)
         visit question_path(question_with_file)
 
-        within '.question-files' do
+        within ".question-#{question_with_file.id}-files" do
           expect(page).to have_link('rails_helper.rb')
 
           click_on 'delete'
@@ -34,7 +34,7 @@ feature 'Author can delete any file from his question', %q{
         sign_in(user2)
         visit question_path(question_with_file)
 
-        within '.question-files' do
+        within ".question-#{question_with_file.id}-files" do
           expect(page).to have_link('rails_helper.rb')
           expect(page).to_not have_link('delete')
         end
@@ -47,7 +47,7 @@ feature 'Author can delete any file from his question', %q{
       sign_in(user2)
       visit question_path(question_with_file)
 
-      within '.question-files' do
+      within ".question-#{question_with_file.id}-files" do
         expect(page).to have_link('rails_helper.rb')
         expect(page).to_not have_link('delete')
       end
