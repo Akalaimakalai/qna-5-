@@ -2,8 +2,10 @@ require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:user) { create(:user) }
+  let(:user2) { create(:user) }
   let(:question) { create(:question, user: user) }
   let(:question2) { create(:question, title: "CheckTitle", body: "CheckBody", user: user) }
+  let(:question_with_file) { create(:question, :with_file, user: user) }
 
   describe 'GET #index' do
     let(:questions) { create_list(:question, 3) }
@@ -136,10 +138,6 @@ RSpec.describe QuestionsController, type: :controller do
       context 'user is an author' do
         before { login(user) }
 
-        it 'has to prove that user is an author' do
-          expect(user).to be_is_author(question)
-        end
-
         context 'with valid attributes' do
           it 'assigns the requested question to @question' do
             patch :update, params: { id: question, question: attributes_for(:question), format: :js }
@@ -178,15 +176,9 @@ RSpec.describe QuestionsController, type: :controller do
       end
 
       context 'user is NOT an author' do
-        let(:user2) { create(:user) }
-
         before do
           login(user2)
           patch :update, params: { id: question2, question: { title: 'new title', body: 'new body' }, format: :js }
-        end
-
-        it 'has to prove that user is NOT an author' do
-          expect(user2).to_not be_is_author(question)
         end
 
         it 'does not change the question' do
@@ -226,11 +218,6 @@ RSpec.describe QuestionsController, type: :controller do
 
         before { login(user) }
 
-        it 'has to prove that user is an author' do
-          delete :destroy, params: { id: question }
-          expect(user).to be_is_author(question)
-        end
-
         it 'deletes the question' do
           expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
         end
@@ -243,15 +230,10 @@ RSpec.describe QuestionsController, type: :controller do
 
       context "user is NOT an author" do
         let!(:question) { create(:question) }
-        let(:user2) { create(:user) }
 
         before do
           login(user2)
           delete :destroy, params: { id: question }
-        end
-
-        it 'has to prove that user is NOT an author' do
-          expect(user2).to_not be_is_author(question)
         end
 
         it 'does not delete the question' do

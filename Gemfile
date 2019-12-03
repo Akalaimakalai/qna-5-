@@ -44,6 +44,10 @@ gem 'slim-rails'
 gem 'devise'
 # JS framework
 gem 'jquery-rails'
+# Amazon S3 cloud server
+gem "aws-sdk-s3", require: false
+#ENV_VARIABLES
+gem 'dotenv-rails'
 
 # ---end---
 

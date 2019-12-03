@@ -1,6 +1,9 @@
 h1= question.title
 p= @question.body
 
+- if @question.files.attached?
+  = render 'shared/files_list', resource: @question
+
 - if current_user&.is_author?(question)
     p= link_to 'Edit question', '#', class: 'edit-question-link', data: { question_id: question.id }
 
@@ -10,4 +13,6 @@ p= @question.body
       = f.text_area :title
       p = f.label :body, 'Your question'
       = f.text_area :body
+      p = f.label :files
+      = f.file_field :files, multiple: true, direct_upload: true
       p = f.submit 'Save'

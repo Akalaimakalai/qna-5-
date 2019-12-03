@@ -31,6 +31,21 @@ feature 'User can edit his question', %q{
         expect(page).to have_content('MyNewBody')
       end
 
+      scenario 'edit his question with adding files' do
+
+        within "#edit-question-#{question.id}" do
+          fill_in 'Title', with: 'MyNewTitle'
+          fill_in 'Your question', with: 'MyNewBody'
+
+          attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+
+          click_on 'Save'
+        end
+
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+      end
+
       scenario 'edit his question with errors' do
         fill_in 'Title', with: ''
         fill_in 'Your question', with: ''
