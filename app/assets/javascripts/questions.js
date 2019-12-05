@@ -1,4 +1,8 @@
 $(document).on('turbolinks:load', function() {
+  eventForEditQuestion();
+});
+
+function eventForEditQuestion() {
   $('.edit-question-link').on('click', function(e) {
     e.preventDefault();
     $(this).hide();
@@ -7,4 +11,4 @@ $(document).on('turbolinks:load', function() {
 
     $('form#edit-question-' + questionId).removeClass('hidden');
   });
-});
+};

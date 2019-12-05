@@ -48,6 +48,8 @@ gem 'jquery-rails'
 gem "aws-sdk-s3", require: false
 #ENV_VARIABLES
 gem 'dotenv-rails'
+# Cocoon makes it easier to handle nested forms.
+gem "cocoon"
 
 # ---end---
 

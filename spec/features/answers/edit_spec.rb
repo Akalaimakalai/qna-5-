@@ -46,6 +46,30 @@ feature 'User can edit his answer', %q{
         expect(page).to have_link 'spec_helper.rb'
       end
 
+      scenario 'edit his answer with adding links' do
+
+        within "#answer-id-#{answer.id}" do
+          fill_in 'Your answer', with: 'edited answer'
+
+          click_on 'add link'
+
+          fill_in 'Link name', with: 'QNA'
+          fill_in 'Url', with: 'http://localhost:3000/'
+
+          click_on 'add link'
+
+          within all('.nested-fields')[1] do
+            fill_in 'Link name', with: 'Google'
+            fill_in 'Url', with: 'http://google.ru/'
+          end
+
+          click_on 'Save'
+        end
+
+        expect(page).to have_link('QNA', href: 'http://localhost:3000/')
+        expect(page).to have_link('Google', href: 'http://google.ru/')
+      end
+
       scenario 'edit his answer with errors' do
         within '.answers' do
           fill_in 'Your answer', with: ''

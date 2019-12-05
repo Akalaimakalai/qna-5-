@@ -13,6 +13,9 @@ li class="answer" id="answer-id-#{answer.id}"
       - answer.links.each do |link|
         li id="link-id-#{link.id}"
           = link_to link.name, link.url
+          - if current_user&.is_author?(answer)
+            b   |  
+            = link_to 'delete', link_path(link), method: :delete, remote: true
 
   - if current_user&.is_author?(answer)
     p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
@@ -20,11 +23,19 @@ li class="answer" id="answer-id-#{answer.id}"
 
     = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
       .update-answer-errors
-      p = f.label :body, 'Your answer'
-      = f.text_area :body
-      p = f.label :files
-      = f.file_field :files, multiple: true, direct_upload: true
+      p
+        = f.label :body, 'Your answer'
+        = f.text_area :body
+      p
+        = f.label :files
+        = f.file_field :files, multiple: true, direct_upload: true
+      p Links:
+      p
+        = f.fields_for :links do |link|
+        .new_link
+          = link_to_add_association 'add link', f, :links
       p = f.submit 'Save'
+
 
   - if current_user&.is_author?(@question) && !answer.correct
     = button_to 'Correct', { controller: 'answers', action: 'best', id: answer.id }, form: { "data-remote" => "true" }, class: 'best-answer-button'
