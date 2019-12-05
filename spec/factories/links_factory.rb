@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :link do
-    name { "QNA" }
-    url { "http://localhost:3000/" }
+    name { "Yandex" }
+    url { "http://yandex.ru/" }
     association :linkable
   end
 end

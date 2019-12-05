@@ -53,8 +53,8 @@ feature 'User can edit his answer', %q{
 
           click_on 'add link'
 
-          fill_in 'Link name', with: 'QNA'
-          fill_in 'Url', with: 'http://localhost:3000/'
+          fill_in 'Link name', with: 'Yandex'
+          fill_in 'Url', with: 'http://yandex.ru/'
 
           click_on 'add link'
 
@@ -66,7 +66,7 @@ feature 'User can edit his answer', %q{
           click_on 'Save'
         end
 
-        expect(page).to have_link('QNA', href: 'http://localhost:3000/')
+        expect(page).to have_link('Yandex', href: 'http://yandex.ru/')
         expect(page).to have_link('Google', href: 'http://google.ru/')
       end
 

@@ -19,11 +19,11 @@ feature 'Author can delete any link from his question', %q{
         visit question_path(question)
 
         within ".question-#{question.id}-links" do
-          expect(page).to have_link('QNA', href: "http://localhost:3000/")
+          expect(page).to have_link('Yandex', href: "http://yandex.ru/")
 
           click_on 'delete'
 
-          expect(page).to_not have_link('QNA', href: "http://localhost:3000/")
+          expect(page).to_not have_link('Yandex', href: "http://yandex.ru/")
         end
       end
     end
@@ -34,7 +34,7 @@ feature 'Author can delete any link from his question', %q{
         visit question_path(question)
 
         within ".question-#{question.id}-links" do
-          expect(page).to have_link('QNA', href: "http://localhost:3000/")
+          expect(page).to have_link('Yandex', href: "http://yandex.ru/")
           expect(page).to_not have_link('delete')
         end
       end
@@ -46,7 +46,7 @@ feature 'Author can delete any link from his question', %q{
       visit question_path(question)
 
       within ".question-#{question.id}-links" do
-        expect(page).to have_link('QNA', href: "http://localhost:3000/")
+        expect(page).to have_link('Yandex', href: "http://yandex.ru/")
         expect(page).to_not have_link('delete')
       end
     end
