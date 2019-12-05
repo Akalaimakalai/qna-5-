@@ -50,6 +50,8 @@ gem "aws-sdk-s3", require: false
 gem 'dotenv-rails'
 # Cocoon makes it easier to handle nested forms.
 gem "cocoon"
+#GitClient
+gem "octokit", "~> 4.0"
 
 # ---end---
 
