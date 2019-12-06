@@ -17,14 +17,11 @@ feature 'User can add medal to question', %q{
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'text text text'
 
-    click_on 'create medal'
-
     fill_in 'Medal name', with: 'Test medal'
-    attach_file 'Image', ["/home/artur/Pictures/best_medal.png"]
+    attach_file 'Image', "/home/artur/Pictures/best_medal.png"
 
     click_on 'Ask'
 
     expect(page).to have_content 'Your question successfully created.'
-    expect(page).to have_content 'Your medal successfully created.'
   end
 end
