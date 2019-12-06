@@ -15,5 +15,14 @@
     = f.fields_for :links do |link|
       = render 'link_fields', f: link
     .new_link
-      = link_to_add_association 'add link', f, :links     
-  p = f.submit 'Ask'
+      = link_to_add_association 'add link', f, :links 
+  p= link_to 'create medal', '#', class: 'new-medal-link', data: { question_id: @question.id }
+  p= f.fields_for :medal, class: 'hidden', html: { id: "new-medal-question-#{@question.id}" } do |m|
+    p
+      = m.label :name, 'Medal name'
+      br
+      = m.text_field :name
+    p
+      = m.label :image
+      = m.file_field :image, direct_upload: true
+    p = f.submit 'Ask'
