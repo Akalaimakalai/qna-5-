@@ -11,4 +11,5 @@ Rails.application.routes.draw do
 
   resources :files, only: %i[ destroy ]
   resources :links, only: %i[ destroy ]
+  resources :medals, only: %i[ index ]
 end
