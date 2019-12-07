@@ -8,17 +8,7 @@ li class="answer" id="answer-id-#{answer.id}"
     = render 'shared/files_list', resource: answer
 
   - unless answer.links.empty?
-    ul class="links"
-      b Links:
-      - answer.links.each do |link|
-        li id="link-id-#{link.id}"
-          - if link.gist?
-            = render 'shared/gist', gist: link
-          - else
-            = link_to link.name, link.url
-          - if current_user&.is_author?(answer)
-            b   |  
-            = link_to 'delete', link_path(link), method: :delete, remote: true
+    = render 'shared/links_list', resource: answer
 
   - if current_user&.is_author?(answer)
     p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }

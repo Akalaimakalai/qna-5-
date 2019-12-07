@@ -19,7 +19,7 @@ feature 'Author can delete any link from his answer', %q{
         sign_in(user)
         visit question_path(question)
 
-        within '.links' do
+        within ".answer-#{answer.id}-links" do
           expect(page).to have_link('Yandex', href: "http://yandex.ru/")
 
           click_on 'delete'
@@ -34,7 +34,7 @@ feature 'Author can delete any link from his answer', %q{
         sign_in(user2)
         visit question_path(question)
 
-        within '.links' do
+        within ".answer-#{answer.id}-links" do
           expect(page).to have_link('Yandex', href: "http://yandex.ru/")
           expect(page).to_not have_link('delete')
         end
@@ -46,7 +46,7 @@ feature 'Author can delete any link from his answer', %q{
     scenario 'tries to delete link from the answer' do
       visit question_path(question)
 
-      within '.links' do
+      within ".answer-#{answer.id}-links" do
         expect(page).to have_link('Yandex', href: "http://yandex.ru/")
         expect(page).to_not have_link('delete')
       end
