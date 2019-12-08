@@ -16,23 +16,11 @@ class GistService
     begin
       id = url.split('/').last
       @gist = @client.gist(id)
-      set_data
-      set_name
-      set_content
+      @gist_data = @gist.files.first.last
+      @gist_name = @gist_data.filename
+      @gist_content = @gist_data.content
     rescue Octokit::NotFound
       404
     end
-  end
-
-  def set_data
-    @gist_data = @gist.files.first.last
-  end
-
-  def set_name
-    @gist_name = @gist_data.filename
-  end
-
-  def set_content
-    @gist_content = @gist_data.content
   end
 end

@@ -48,6 +48,9 @@ feature 'User can edit his question', %q{
 
       scenario 'edit his question with adding links' do
 
+        expect(page).to_not have_link('Yandex', href: 'http://yandex.ru/')
+        expect(page).to_not have_link('Google', href: 'http://google.ru/')
+
         within "#edit-question-#{question.id}" do
           fill_in 'Title', with: 'MyNewTitle'
           fill_in 'Your question', with: 'MyNewBody'

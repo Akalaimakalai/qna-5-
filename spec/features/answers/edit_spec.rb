@@ -48,6 +48,9 @@ feature 'User can edit his answer', %q{
 
       scenario 'edit his answer with adding links' do
 
+        expect(page).to_not have_link('Yandex', href: 'http://yandex.ru/')
+        expect(page).to_not have_link('Google', href: 'http://google.ru/')
+
         within "#answer-id-#{answer.id}" do
           fill_in 'Your answer', with: 'edited answer'
 
