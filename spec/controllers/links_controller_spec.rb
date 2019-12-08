@@ -17,11 +17,6 @@ RSpec.describe LinksController, type: :controller do
         expect(assigns(:link)).to eq link
       end
 
-      it 'sets correct record to @record' do
-        delete :destroy, params: { id: link, format: :js }
-        expect(assigns(:record)).to eq answer
-      end
-
       context 'user is an author' do
 
         it 'deletes the link' do
