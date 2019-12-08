@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_06_124756) do
+ActiveRecord::Schema.define(version: 2019_12_08_222902) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,14 @@ ActiveRecord::Schema.define(version: 2019_12_06_124756) do
     t.bigint "user_id"
     t.index ["question_id"], name: "index_answers_on_question_id"
     t.index ["user_id"], name: "index_answers_on_user_id"
+  end
+
+  create_table "link_gists", force: :cascade do |t|
+    t.string "name"
+    t.string "content"
+    t.string "url"
+    t.bigint "link_id"
+    t.index ["link_id"], name: "index_link_gists_on_link_id"
   end
 
   create_table "links", force: :cascade do |t|
@@ -91,6 +99,7 @@ ActiveRecord::Schema.define(version: 2019_12_06_124756) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users"
+  add_foreign_key "link_gists", "links"
   add_foreign_key "medals", "questions"
   add_foreign_key "medals", "users"
   add_foreign_key "questions", "users"

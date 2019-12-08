@@ -1,6 +1,6 @@
 class GistService
 
-  attr_reader :gist_name, :gist_content
+  attr_reader :gist
 
   def initialize
     @client = Octokit::Client.new(:access_token => ENV['OCTOKIT_ACCESS_TOKEN'])
@@ -16,9 +16,6 @@ class GistService
     begin
       id = url.split('/').last
       @gist = @client.gist(id)
-      @gist_data = @gist.files.first.last
-      @gist_name = @gist_data.filename
-      @gist_content = @gist_data.content
     rescue Octokit::NotFound
       404
     end

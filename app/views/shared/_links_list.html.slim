@@ -2,8 +2,8 @@ ul class="#{resource.class.name.downcase}-#{resource.id}-links"
   b Links:
   - resource.links.each do |link|
     li id="link-id-#{link.id}"
-      - if link.gist?
-        = render 'shared/gist', gist: link
+      - if link.gist
+        = render 'shared/gist', gist: link.gist
       - else
         = link_to link.name, link.url
       - if current_user&.is_author?(resource)
