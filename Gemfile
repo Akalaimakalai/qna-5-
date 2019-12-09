@@ -64,6 +64,8 @@ group :development, :test do
   gem 'rspec-rails', '~> 4.0.0.beta3'
   # Gem for creating test dataset
   gem 'factory_bot_rails'
+  # Library for stubbing and setting expectations on HTTP requests in Ruby.
+  gem 'webmock'
 
   # ---end---
 end

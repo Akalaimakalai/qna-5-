@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe GistService do
 
-  let(:service) { GistService.new }
+  let(:service) { GistService.new(client: OktokitImitator.new) }
 
   describe '#gist?(url)' do
 
