@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-feature 'Author can delete any file frim his answer', %q{
+feature 'Author can delete any file from his answer', %q{
   In order to delete useless files
   As an author of this answer
   I'd like to be able to delete a file

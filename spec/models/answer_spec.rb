@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
+  include_examples "links"
+
   it { should belong_to :question }
   it { should belong_to :user }
 
@@ -10,8 +12,9 @@ RSpec.describe Answer, type: :model do
 
   it { should validate_presence_of :body }
 
-  let(:question) { create(:question) }
-  let!(:answer) { create(:answer, question: question) }
+  let(:user) { create(:user) }
+  let(:question) { create(:question, user: user) }
+  let!(:answer) { create(:answer, question: question, user: user) }
 
   describe 'default scope' do
     let!(:answer3) { create(:answer, question: question) }
@@ -27,6 +30,8 @@ RSpec.describe Answer, type: :model do
   end
 
   describe '#set_correct' do
+    let!(:medal) { create(:medal, question: question) }
+
     before { answer.set_correct }
 
     context 'no correct answer before' do
@@ -46,6 +51,12 @@ RSpec.describe Answer, type: :model do
 
       it 'set answer correct: true' do
         expect(answer).to be_correct
+      end
+    end
+
+    context 'question has medal' do
+      it "adds medal to user's medals" do
+        expect(user.medals.first).to eq medal
       end
     end
   end

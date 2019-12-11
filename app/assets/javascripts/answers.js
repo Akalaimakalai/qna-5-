@@ -1,4 +1,8 @@
-$(document).on('turbolinks:load', function() {
+$(document).on('turbolinks:load', function () {
+  eventForEditAnswer();
+});
+
+function eventForEditAnswer() {
 
   $('.answers').on('click', '.edit-answer-link', function(e) {
     e.preventDefault();
@@ -8,4 +12,4 @@ $(document).on('turbolinks:load', function() {
 
     $('form#edit-answer-' + answerId).show();
   });
-});
+}

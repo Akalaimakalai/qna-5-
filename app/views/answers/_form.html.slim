@@ -1,8 +1,16 @@
 .create-answer-errors
 
 = form_with model: [@question, @answer], class: 'new-answer' do |f|
-  p = f.label :body
-  = f.text_area :body
-  p = f.label :files
-  = f.file_field :files, multiple: true, direct_upload: true
+  p
+    = f.label :body
+    = f.text_area :body
+  p
+    = f.label :files
+    = f.file_field :files, multiple: true, direct_upload: true
+  p Links:
+  p
+    = f.fields_for :links do |link|
+      = render 'link_fields', f: link
+    .new_link
+      = link_to_add_association 'add link', f, :links
   p = f.submit 'Add answer'

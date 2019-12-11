@@ -1,4 +1,6 @@
 class Answer < ApplicationRecord
+  include Linkable
+
   belongs_to :question
   belongs_to :user
 
@@ -12,6 +14,7 @@ class Answer < ApplicationRecord
     transaction do
       question.answers.update_all(correct: false)
       update!(correct: true)
+      user.medals.push(question.medal) if question.medal
     end
   end
 end

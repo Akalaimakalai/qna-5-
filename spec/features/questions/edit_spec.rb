@@ -46,6 +46,34 @@ feature 'User can edit his question', %q{
         expect(page).to have_link 'spec_helper.rb'
       end
 
+      scenario 'edit his question with adding links' do
+
+        expect(page).to_not have_link('Yandex', href: 'http://yandex.ru/')
+        expect(page).to_not have_link('Google', href: 'http://google.ru/')
+
+        within "#edit-question-#{question.id}" do
+          fill_in 'Title', with: 'MyNewTitle'
+          fill_in 'Your question', with: 'MyNewBody'
+
+          click_on 'add link'
+
+          fill_in 'Link name', with: 'Yandex'
+          fill_in 'Url', with: 'http://yandex.ru/'
+
+          click_on 'add link'
+
+          within all('.nested-fields')[1] do
+            fill_in 'Link name', with: 'Google'
+            fill_in 'Url', with: 'http://google.ru/'
+          end
+
+          click_on 'Save'
+        end
+
+        expect(page).to have_link('Yandex', href: 'http://yandex.ru/')
+        expect(page).to have_link('Google', href: 'http://google.ru/')
+      end
+
       scenario 'edit his question with errors' do
         fill_in 'Title', with: ''
         fill_in 'Your question', with: ''
