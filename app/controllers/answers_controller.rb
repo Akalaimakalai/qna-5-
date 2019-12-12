@@ -7,7 +7,16 @@ class AnswersController < ApplicationController
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params)
     @answer.user_id = current_user.id
-    @answer.save
+
+    respond_to do |format|
+      if @answer.save
+        format.json { render json: @answer }
+      else
+        format.json do
+          render json: @answer.errors.full_messages, status: :unprocessable_entity 
+        end
+      end
+    end
   end
 
   def edit; end
@@ -30,7 +39,7 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body, files: [], links_attributes: [:name, :url])
+    params.require(:answer).permit(:body, files: [], links_attributes: [:name, :url, :_destroy, :id])
   end
 
   def set_answer
