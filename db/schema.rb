@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_09_133831) do
+ActiveRecord::Schema.define(version: 2019_12_13_100631) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,17 @@ ActiveRecord::Schema.define(version: 2019_12_09_133831) do
     t.index ["user_id"], name: "index_questions_on_user_id"
   end
 
+  create_table "scores", force: :cascade do |t|
+    t.bigint "author_id"
+    t.string "scorable_type"
+    t.bigint "scorable_id"
+    t.integer "sum", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_scores_on_author_id"
+    t.index ["scorable_type", "scorable_id"], name: "index_scores_on_scorable_type_and_scorable_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -103,4 +114,5 @@ ActiveRecord::Schema.define(version: 2019_12_09_133831) do
   add_foreign_key "medals", "questions"
   add_foreign_key "medals", "users"
   add_foreign_key "questions", "users"
+  add_foreign_key "scores", "users", column: "author_id"
 end
