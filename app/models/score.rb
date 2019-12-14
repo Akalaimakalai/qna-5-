@@ -5,10 +5,10 @@ class Score < ApplicationRecord
   validates :sum, presence: true
 
   def vote_for
-    sum += 1
+    self.sum += 1
   end
 
   def vote_against
-    sum -= 1
+    self.sum -= 1
   end
 end
