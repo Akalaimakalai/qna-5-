@@ -19,13 +19,17 @@ RSpec.describe ScoresController, type: :controller do
 
         context 'vote_for' do
           it 'increases sum value' do
-            expect{ patch :vote, params: { id: score, vote: "vote_for" }, format: :js }.to change(score, :sum).by(1)
+            patch :vote, params: { id: score, vote: "vote_for" }, format: :js
+            score.reload
+            expect(score.sum).to eq 1
           end
         end
 
         context 'vote_against' do
           it 'decreases sum value' do
-            expect{ patch :vote, params: { id: score, vote: "vote_against" }, format: :js }.to change(score, :sum).by(-1)
+            patch :vote, params: { id: score, vote: "vote_against" }, format: :js
+            score.reload
+            expect(score.sum).to eq -1
           end
         end
 
