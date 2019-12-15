@@ -8,31 +8,45 @@ feature 'User can vote a question', %q{
 
   given(:user) { create(:user) }
   given(:question) { create(:question) }
+  given(:question2) { create(:question, user: user) }
 
   describe 'Authenticated user' do
 
-    background do
-      sign_in(user)
-      visit question_path(question)
-    end
+    background { sign_in(user) }
 
-    scenario "user vote for the question" do
-      within '.question' do
-        expect(page).to have_content("Score: 0")
+    describe 'user is NOT author' do
 
-        click_on '+'
+      background { visit question_path(question) }
 
-        expect(page).to have_content("Score: 1")
+      scenario "user vote for the question" do
+        within '.question' do
+          expect(page).to have_content("Score: 0")
+
+          click_on '+'
+
+          expect(page).to have_content("Score: 1")
+        end
+      end
+
+      scenario "user vote against the question" do
+        within '.question' do
+          expect(page).to have_content("Score: 0")
+
+          click_on '-'
+
+          expect(page).to have_content("Score: -1")
+        end
       end
     end
 
-    scenario "user vote against the question" do
-      within '.question' do
-        expect(page).to have_content("Score: 0")
+    describe 'user is author' do
+      scenario "user cannot vote the question" do
+        visit question_path(question2)
 
-        click_on '-'
-
-        expect(page).to have_content("Score: -1")
+        within '.question' do
+          expect(page).to_not have_link("+")
+          expect(page).to_not have_link("-")
+        end
       end
     end
   end

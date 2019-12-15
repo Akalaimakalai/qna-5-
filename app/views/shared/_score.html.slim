@@ -1,8 +1,8 @@
-p id="score-id-#{score.scorable.id}"
-  - if user_signed_in? && !current_user&.is_author?(score.scorable)
-    = link_to '+', vote_score_path(score, params: { vote: :vote_for }), method: :patch, class: 'question-score-vote-for', remote: true
+p id="score-id-#{resource.id}"
+  - if user_signed_in? && !current_user&.is_author?(resource)
+    = link_to '+', vote_score_path(score, params: { vote: :vote_for }), method: :patch, class: "#{resource.class.name.downcase}-#{resource}.id-score-vote-for", remote: true
     b  |    
-    => link_to '-', vote_score_path(score, params: { vote: :vote_against }), method: :patch, class: 'question-score-vote-against', remote: true
+    => link_to '-', vote_score_path(score, params: { vote: :vote_against }), method: :patch, class: "#{resource.class.name.downcase}-#{resource}-score-vote-against", remote: true
   b Score:
   span class="score-#{score.id}-sum"
     =< score.sum

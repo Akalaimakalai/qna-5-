@@ -3,7 +3,7 @@ li class="answer" id="answer-id-#{answer.id}"
     p class="best" <b>THE BEST!</b>
 
   p= answer.body
-  = render 'shared/score', score: answer.score
+  = render 'shared/score', resource: answer, score: answer.score
 
   - if answer.files.attached?
     = render 'shared/files_list', resource: answer

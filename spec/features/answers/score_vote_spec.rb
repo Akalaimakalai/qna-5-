@@ -9,6 +9,7 @@ feature 'User can vote an answer', %q{
   given(:user) { create(:user) }
   given(:question) { create(:question) }
   given!(:answer) { create(:answer, question: question) }
+  given!(:answer2) { create(:answer, question: question, user: user) }
 
   describe 'Authenticated user' do
 
@@ -17,23 +18,37 @@ feature 'User can vote an answer', %q{
       visit question_path(question)
     end
 
-    scenario "user vote for the answer" do
-      within "#answer-id-#{answer.id}" do
-        expect(page).to have_content("Score: 0")
+    describe 'user is NOT author' do
 
-        click_on '+'
+      scenario "user vote for the answer" do
+        within "#answer-id-#{answer.id}" do
+          expect(page).to have_content("Score: 0")
 
-        expect(page).to have_content("Score: 1")
+          click_on '+'
+
+          expect(page).to have_content("Score: 1")
+        end
+      end
+
+      scenario "user vote against the answer" do
+        within "#answer-id-#{answer.id}" do
+          expect(page).to have_content("Score: 0")
+
+          click_on '-'
+
+          expect(page).to have_content("Score: -1")
+        end
       end
     end
 
-    scenario "user vote against the answer" do
-      within "#answer-id-#{answer.id}" do
-        expect(page).to have_content("Score: 0")
+    describe 'user is author' do
 
-        click_on '-'
+      scenario "user cannot vote the answer" do
 
-        expect(page).to have_content("Score: -1")
+        within "#answer-id-#{answer2.id}" do
+          expect(page).to_not have_link("+")
+          expect(page).to_not have_link("-")
+        end
       end
     end
   end
