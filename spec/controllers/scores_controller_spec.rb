@@ -5,6 +5,7 @@ RSpec.describe ScoresController, type: :controller do
   let(:user) { create(:user) }
   let!(:score) { create(:score) }
   let(:user_score) {create(:score, voters: { user.id.to_s => "1" }) }
+  let(:author_score) {create(:score, author: user) }
 
   describe 'PATCH #vote' do
     context 'Authenticated user' do
@@ -73,6 +74,20 @@ RSpec.describe ScoresController, type: :controller do
           patch :vote, params: { id: user_score, vote: "vote_for" }, format: :js
           expect(response).to render_template :vote
           expect(flash[:alert]).to eq "You have already voted"
+        end
+      end
+
+      context 'user is author' do
+        it 'does not change sum value' do
+          patch :vote, params: { id: author_score, vote: "vote_for" }, format: :js
+          score.reload
+          expect(score.sum).to eq 0
+        end
+
+        it 'gives flash alert' do
+          patch :vote, params: { id: author_score, vote: "vote_for" }, format: :js
+          expect(response).to render_template :vote
+          expect(flash[:alert]).to eq "You can't vote for yourself"
         end
       end
     end
