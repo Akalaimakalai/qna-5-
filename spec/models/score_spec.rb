@@ -23,4 +23,15 @@ RSpec.describe Score, type: :model do
       end
     end
   end
+
+  describe '#revote' do
+    it 'correct changes sum' do
+      expect { user_score.revote(user.id) }.to change(user_score, :sum).by(-1)
+    end
+
+    it 'deletes user_id from voters' do
+      user_score.revote(user.id)
+      expect(user_score.voters[user.id.to_s]).to be_nil
+    end
+  end
 end

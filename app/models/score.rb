@@ -8,6 +8,11 @@ class Score < ApplicationRecord
     voters.keys.include?(user_id.to_s)
   end
 
+  def revote(user_id)
+    self.sum -= voters[user_id.to_s].to_i
+    voters.delete(user_id.to_s)
+  end
+
   private
 
   def vote_for(user_id)

@@ -1,7 +1,7 @@
 p id="score-id-#{score.id}"
   - if user_signed_in? && !current_user&.is_author?(score.scorable)
     - if score.already_voted?(current_user.id)
-      = link_to 'revote', root_path, class: "score-id-#{score.id}-revote"
+      = link_to 'revote', revote_score_path(score), method: :patch, class: "score-id-#{score.id}-revote", remote: true
     -else
       = link_to '+', vote_score_path(score, params: { vote: :vote_for }), method: :patch, class: "score-id-#{score.id}-vote-for", remote: true
       b  |    

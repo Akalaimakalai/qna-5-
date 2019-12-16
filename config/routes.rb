@@ -17,6 +17,8 @@ Rails.application.routes.draw do
     member do
       patch 'vote'
       put 'vote'
+      patch 'revote'
+      put 'revote'
     end
   end
 end
