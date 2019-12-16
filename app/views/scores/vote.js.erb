@@ -1,3 +1,2 @@
 $(".alert").html("<%= flash[:alert] %>");
-$('<%= "#score-id-#{@score.id}" %>').html('<%= render 'shared/score', resource: @score.scorable, score: @score%>');
-
+$('<%= "#score-id-#{@score.id}" %>').html('<%= render @score %>');
