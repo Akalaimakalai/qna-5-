@@ -6,10 +6,14 @@ class ScoresController < ApplicationController
   def vote
     if VOTE_LIST.include?(params[:vote])
       @score = Score.find(params[:id])
-      @score.send(params[:vote])
+      user_id = current_user.id
+
+      return flash.now[:alert] = "You have already voted" if @score.already_voted?(user_id)
+
+      @score.send(params[:vote], user_id)
       @score.save
     else
-      redirect_to root_path, alert: "Wrong value of vote param"
+      flash.now[:alert] = "Wrong value of vote param"
     end
   end
 end

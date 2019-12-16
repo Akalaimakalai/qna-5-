@@ -14,7 +14,7 @@ feature 'User can vote a question', %q{
 
     background { sign_in(user) }
 
-    describe 'user is NOT author' do
+    describe 'is NOT author' do
 
       background { visit question_path(question) }
 
@@ -25,6 +25,9 @@ feature 'User can vote a question', %q{
           click_on '+'
 
           expect(page).to have_content("Score: 1")
+          expect(page).to_not have_link("+")
+          expect(page).to_not have_link("-")
+          expect(page).to have_link("revote")
         end
       end
 
@@ -35,11 +38,14 @@ feature 'User can vote a question', %q{
           click_on '-'
 
           expect(page).to have_content("Score: -1")
+          expect(page).to_not have_link("+")
+          expect(page).to_not have_link("-")
+          expect(page).to have_link("revote")
         end
       end
     end
 
-    describe 'user is author' do
+    describe 'is author' do
       scenario "user cannot vote the question" do
         visit question_path(question2)
 

@@ -1,6 +1,6 @@
 h1= question.title
 p= @question.body
-= render 'shared/score', resource: @question, score: @question.score
+= render 'shared/score', score: @question.score
 
 - if @question.files.attached?
   = render 'shared/files_list', resource: @question

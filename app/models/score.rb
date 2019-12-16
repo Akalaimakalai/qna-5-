@@ -4,11 +4,19 @@ class Score < ApplicationRecord
 
   validates :sum, presence: true
 
-  def vote_for
-    self.sum += 1
+  def already_voted?(user_id)
+    voters.keys.include?(user_id.to_s)
   end
 
-  def vote_against
+  private
+
+  def vote_for(user_id)
+    self.sum += 1
+    voters[user_id] = 1
+  end
+
+  def vote_against(user_id)
     self.sum -= 1
+    voters[user_id] = -1
   end
 end

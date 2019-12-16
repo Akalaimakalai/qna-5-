@@ -1,1 +1,3 @@
-$('<%= ".score-#{@score.id}-sum" %>').replaceWith('<span class="<%= "score-#{@score.id}-sum" %>"> <%= @score.sum %></span>');
+$(".alert").html("<%= flash[:alert] %>");
+$('<%= "#score-id-#{@score.id}" %>').html('<%= render 'shared/score', resource: @score.scorable, score: @score%>');
+
