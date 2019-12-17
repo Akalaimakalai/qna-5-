@@ -22,16 +22,11 @@ feature 'User can revote', %q{
       within "#answer-id-#{answer.id}" do
         click_on '+'
 
-        expect(page).to_not have_link("+")
-        expect(page).to_not have_link("-")
-        expect(page).to have_content("Score: 1")
+        expect(page).to have_content("Score:1")
 
         click_on 'revote'
 
-        expect(page).to have_content("Score: 0")
-        expect(page).to have_link("+")
-        expect(page).to have_link("-")
-        expect(page).to_not have_link("revote")
+        expect(page).to have_content("Score:0")
       end
     end
   end

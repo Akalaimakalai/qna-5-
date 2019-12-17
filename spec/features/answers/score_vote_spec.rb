@@ -26,10 +26,7 @@ feature 'User can vote an answer', %q{
 
           click_on '+'
 
-          expect(page).to have_content("Score: 1")
-          expect(page).to_not have_link("+")
-          expect(page).to_not have_link("-")
-          expect(page).to have_link("revote")
+          expect(page).to have_content("Score:1")
         end
       end
 
@@ -39,10 +36,8 @@ feature 'User can vote an answer', %q{
 
           click_on '-'
 
-          expect(page).to have_content("Score: -1")
-          expect(page).to_not have_link("+")
-          expect(page).to_not have_link("-")
-          expect(page).to have_link("revote")
+          expect(page).to have_content("Score:-1")
+
         end
       end
     end

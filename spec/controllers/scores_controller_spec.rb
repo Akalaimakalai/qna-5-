@@ -17,13 +17,13 @@ RSpec.describe ScoresController, type: :controller do
         context 'vote_for' do
 
           it 'increases sum value' do
-            patch :vote, params: { id: score, vote: "vote_for" }, format: :js
+            patch :vote, params: { id: score, vote: "vote_for" }, format: :json
             score.reload
             expect(score.sum).to eq 1
           end
 
           it 'correct adds user to voters' do
-            patch :vote, params: { id: score, vote: "vote_for" }, format: :js
+            patch :vote, params: { id: score, vote: "vote_for" }, format: :json
             score.reload
             expect(score.voters[user.id.to_s]).to eq "1"
           end
@@ -32,21 +32,16 @@ RSpec.describe ScoresController, type: :controller do
         context 'vote_against' do
 
           it 'decreases sum value' do
-            patch :vote, params: { id: score, vote: "vote_against" }, format: :js
+            patch :vote, params: { id: score, vote: "vote_against" }, format: :json
             score.reload
             expect(score.sum).to eq -1
           end
 
           it 'correct adds user to voters' do
-            patch :vote, params: { id: score, vote: "vote_against" }, format: :js
+            patch :vote, params: { id: score, vote: "vote_against" }, format: :json
             score.reload
             expect(score.voters[user.id.to_s]).to eq "-1"
           end
-        end
-
-        it 'renders vote template' do
-          patch :vote, params: { id: score, vote: "vote_for" }, format: :js
-          expect(response).to render_template :vote
         end
       end
 
@@ -132,6 +127,18 @@ RSpec.describe ScoresController, type: :controller do
       before { login(user) }
 
       context 'has alresdy voted' do
+
+        it 'deletes user from voters' do
+          patch :revote, params: { id: user_score }, format: :json
+          score.reload
+          expect(score.voters[user.id.to_s]).to be_nil
+        end
+
+        it 'changes sum value' do
+          patch :revote, params: { id: user_score }, format: :json
+          score.reload
+          expect(score.sum).to eq 0
+        end
       end
 
       context 'did not vote yet' do
@@ -149,14 +156,9 @@ RSpec.describe ScoresController, type: :controller do
 
         it 'gives flash alert' do
           patch :revote, params: { id: score }, format: :js
-          expect(response).to render_template :vote
+          expect(response).to render_template :revote
           expect(flash[:alert]).to eq "You didn't vote yet"
         end
-      end
-
-      it 'renders vote template' do
-        patch :revote, params: { id: user_score }, format: :js
-        expect(response).to render_template :vote
       end
     end
 

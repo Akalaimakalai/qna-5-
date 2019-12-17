@@ -12,7 +12,12 @@ class ScoresController < ApplicationController
       return flash.now[:alert] = "You have already voted" if @score.already_voted?(@user_id)
 
       @score.send(params[:vote], @user_id)
-      @score.save
+
+      respond_to do |format|
+        if @score.save
+          format.json { render json: @score }
+        end
+      end
     else
       flash.now[:alert] = "Wrong value of vote param"
     end
@@ -20,14 +25,14 @@ class ScoresController < ApplicationController
 
   def revote
 
-    if @score.already_voted?(@user_id)
-      @score.revote(@user_id)
-      @score.save
-    else
-      flash.now[:alert] = "You didn't vote yet"
-    end
+    return flash.now[:alert] = "You didn't vote yet" unless @score.already_voted?(@user_id)
 
-    render :vote
+    @score.revote(@user_id)
+    respond_to do |format|
+      if @score.save
+        format.json { render json: @score }
+      end
+    end
   end
 
   private
