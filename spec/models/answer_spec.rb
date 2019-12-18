@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
   include_examples "links"
-  it { should have_one(:score).dependent(:destroy) }
+  include_examples "scores", :answer, 2
 
   it { should belong_to :question }
   it { should belong_to :user }
@@ -59,13 +59,6 @@ RSpec.describe Answer, type: :model do
       it "adds medal to user's medals" do
         expect(user.medals.first).to eq medal
       end
-    end
-  end
-
-  describe "#create_score" do
-    it 'has to create score after creating itself' do
-      question = create(:question)
-      expect{ create(:answer, question: question) }.to change(Score, :count).by(1)
     end
   end
 end
