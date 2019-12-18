@@ -18,23 +18,17 @@ feature 'User can vote a question', %q{
 
       background { visit question_path(question) }
 
-      scenario "user vote for the question" do
+      scenario "user vote for the question and revote against" do
         within '.question' do
           expect(page).to have_content("Score: 0")
 
           click_on '+'
 
-          expect(page).to have_content("Score:1")
-        end
-      end
-
-      scenario "user vote against the question" do
-        within '.question' do
-          expect(page).to have_content("Score: 0")
+          expect(page).to have_content("Score: 1")
 
           click_on '-'
 
-          expect(page).to have_content("Score:-1")
+          expect(page).to have_content("Score: -1")
         end
       end
     end

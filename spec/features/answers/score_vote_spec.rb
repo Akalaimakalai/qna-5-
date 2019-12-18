@@ -20,24 +20,17 @@ feature 'User can vote an answer', %q{
 
     describe 'user is NOT author' do
 
-      scenario "user vote for the answer" do
+      scenario "user vote for the answer and revote against" do
         within "#answer-id-#{answer.id}" do
           expect(page).to have_content("Score: 0")
 
           click_on '+'
 
-          expect(page).to have_content("Score:1")
-        end
-      end
-
-      scenario "user vote against the answer" do
-        within "#answer-id-#{answer.id}" do
-          expect(page).to have_content("Score: 0")
+          expect(page).to have_content("Score: 1")
 
           click_on '-'
 
-          expect(page).to have_content("Score:-1")
-
+          expect(page).to have_content("Score: -1")
         end
       end
     end

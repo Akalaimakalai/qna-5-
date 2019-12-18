@@ -5,24 +5,14 @@ class Score < ApplicationRecord
 
   validates :sum, presence: true
 
-  def already_voted?(user_id)
-    voters.keys.include?(user_id.to_s)
+  def delete_voter(user)
+    vote_arr = votes.select { |vote| vote.user == user }
+    votes.delete(vote_arr.first) unless vote_arr.empty?
   end
 
-  def revote(user_id)
-    self.sum -= voters[user_id.to_s].to_i
-    voters.delete(user_id.to_s)
-  end
-
-  private
-
-  def vote_for(user_id)
-    self.sum += 1
-    voters[user_id] = 1
-  end
-
-  def vote_against(user_id)
-    self.sum -= 1
-    voters[user_id] = -1
+  def count_sum
+    vote_sum = 0
+    votes.each { |vote| vote_sum += vote.value }
+    self.sum = vote_sum
   end
 end

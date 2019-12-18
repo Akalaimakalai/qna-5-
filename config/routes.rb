@@ -12,13 +12,5 @@ Rails.application.routes.draw do
   resources :files, only: %i[ destroy ]
   resources :links, only: %i[ destroy ]
   resources :medals, only: %i[ index ]
-
-  resources :scores, only: [] do
-    member do
-      patch 'vote'
-      put 'vote'
-      patch 'revote'
-      put 'revote'
-    end
-  end
+  resources :scores, only: %i[ update ]
 end

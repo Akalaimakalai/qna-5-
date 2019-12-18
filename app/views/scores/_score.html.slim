@@ -1,10 +1,8 @@
 p id="score-id-#{score.id}"
   - if user_signed_in? && !current_user&.is_author?(score.scorable)
-    = link_to '+', vote_score_path(score, params: { vote: :vote_for }), method: :patch, class: "score-vote-link", data: { score_id: score.id, type: :json }, remote: true
+    = link_to '+', score_path(score, params: { vote: { value: 1 } }), method: :patch, class: "score-vote-link", data: { score_id: score.id }, remote: true
     b  |    
-    => link_to '-', vote_score_path(score, params: { vote: :vote_against }), method: :patch, class: "score-vote-link", data: { score_id: score.id, type: :json }, remote: true
-    br
-    = link_to 'revote', revote_score_path(score), method: :patch, class: "score-revote-link", data: { score_id: score.id, type: :json }, remote: true
+    => link_to '-', score_path(score, params: { vote: { value: -1 } }), method: :patch, class: "score-vote-link", data: { score_id: score.id }, remote: true
   b Score:
   span class="score-sum" data-score-id="#{score.id}"
     =< score.sum
