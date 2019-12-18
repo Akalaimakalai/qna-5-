@@ -1,6 +1,7 @@
 class Score < ApplicationRecord
   belongs_to :author, class_name: "User"
   belongs_to :scorable, polymorphic: true
+  has_many :votes, dependent: :destroy
 
   validates :sum, presence: true
 

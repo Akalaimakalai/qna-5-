@@ -2,7 +2,8 @@ class User < ApplicationRecord
   has_many :questions, dependent: :destroy
   has_many :answers
   has_many :medals
-  has_many :votes, class_name: "Score", foreign_key: "author_id"
+  has_many :scores, foreign_key: "author_id"
+  has_many :votes
 
   devise :database_authenticatable,
          :registerable,
