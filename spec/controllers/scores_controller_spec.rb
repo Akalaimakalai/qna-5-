@@ -12,34 +12,30 @@ RSpec.describe ScoresController, type: :controller do
       before { login(user) }
 
       it 'sets correct score to @score' do
-        patch :update, params: { id: score, vote: { value: 1 } }, format: :js
+        patch :update, params: { id: score, vote: { value: 1 } }, format: :json
         expect(assigns(:score)).to eq score
       end
 
       context 'user is author' do
         it 'shows flash alert' do
           patch :update, params: { id: user_score, vote: { value: 1 } }, format: :js
+          expect(response).to render_template :update
           expect(flash[:alert]).to eq "You can't vote for yourself"
         end
       end
 
       context 'user is NOT author' do
         it 'increases sum correctly' do
-          patch :update, params: { id: score, vote: { value: 1 } }, format: :js
+          patch :update, params: { id: score, vote: { value: 1 } }, format: :json
           score.reload
           expect(score.sum).to eq 1
         end
 
         it 'decreases sum correctly' do
-          patch :update, params: { id: score, vote: { value: -1 } }, format: :js
+          patch :update, params: { id: score, vote: { value: -1 } }, format: :json
           score.reload
           expect(score.sum).to eq -1
         end
-      end
-
-      it 'renders update view' do
-        patch :update, params: { id: score, vote: { value: 1 } }, format: :js
-        expect(response).to render_template :update
       end
     end
 

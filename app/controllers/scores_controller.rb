@@ -10,7 +10,10 @@ class ScoresController < ApplicationController
     @score.delete_voter(user)
     @score.votes.create(vote_params)
     @score.count_sum
-    @score.save
+
+    respond_to do |format|
+      format.json { render json: @score } if @score.save
+    end
   end
 
   private
