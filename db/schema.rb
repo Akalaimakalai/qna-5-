@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_15_192023) do
+ActiveRecord::Schema.define(version: 2019_12_18_030633) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "hstore"
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -38,7 +37,7 @@ ActiveRecord::Schema.define(version: 2019_12_15_192023) do
   end
 
   create_table "answers", force: :cascade do |t|
-    t.text "body"
+    t.text "body", null: false
     t.boolean "correct", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -49,16 +48,16 @@ ActiveRecord::Schema.define(version: 2019_12_15_192023) do
   end
 
   create_table "gists", force: :cascade do |t|
-    t.string "name"
-    t.string "content"
-    t.string "url"
+    t.string "name", null: false
+    t.string "content", null: false
+    t.string "url", null: false
     t.bigint "link_id"
     t.index ["link_id"], name: "index_gists_on_link_id"
   end
 
   create_table "links", force: :cascade do |t|
-    t.string "name"
-    t.string "url"
+    t.string "name", null: false
+    t.string "url", null: false
     t.string "linkable_type"
     t.bigint "linkable_id"
     t.datetime "created_at", null: false
@@ -67,7 +66,7 @@ ActiveRecord::Schema.define(version: 2019_12_15_192023) do
   end
 
   create_table "medals", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.bigint "question_id"
     t.bigint "user_id"
     t.datetime "created_at", null: false
@@ -77,8 +76,8 @@ ActiveRecord::Schema.define(version: 2019_12_15_192023) do
   end
 
   create_table "questions", force: :cascade do |t|
-    t.string "title"
-    t.text "body"
+    t.string "title", null: false
+    t.text "body", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
@@ -89,8 +88,7 @@ ActiveRecord::Schema.define(version: 2019_12_15_192023) do
     t.bigint "author_id"
     t.string "scorable_type"
     t.bigint "scorable_id"
-    t.integer "sum", default: 0
-    t.hstore "voters", default: {}
+    t.integer "sum", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_scores_on_author_id"
