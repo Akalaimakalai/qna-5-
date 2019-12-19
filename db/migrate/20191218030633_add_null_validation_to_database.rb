@@ -9,6 +9,5 @@ class AddNullValidationToDatabase < ActiveRecord::Migration[5.2]
     change_column_null(:medals, :name, false)
     change_column_null(:questions, :title, false)
     change_column_null(:questions, :body, false)
-    change_column_null(:scores, :sum, false)
   end
 end

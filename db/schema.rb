@@ -84,17 +84,6 @@ ActiveRecord::Schema.define(version: 2019_12_18_042909) do
     t.index ["user_id"], name: "index_questions_on_user_id"
   end
 
-  create_table "scores", force: :cascade do |t|
-    t.bigint "author_id"
-    t.string "scorable_type"
-    t.bigint "scorable_id"
-    t.integer "sum", default: 0, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["author_id"], name: "index_scores_on_author_id"
-    t.index ["scorable_type", "scorable_id"], name: "index_scores_on_scorable_type_and_scorable_id"
-  end
-
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -110,12 +99,13 @@ ActiveRecord::Schema.define(version: 2019_12_18_042909) do
   create_table "votes", force: :cascade do |t|
     t.integer "value", null: false
     t.bigint "user_id"
-    t.bigint "score_id"
+    t.string "votable_type"
+    t.bigint "votable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["score_id"], name: "index_votes_on_score_id"
-    t.index ["user_id", "score_id"], name: "index_votes_on_user_id_and_score_id", unique: true
+    t.index ["user_id", "votable_type", "votable_id"], name: "index_votes_on_user_id_and_votable_type_and_votable_id", unique: true
     t.index ["user_id"], name: "index_votes_on_user_id"
+    t.index ["votable_type", "votable_id"], name: "index_votes_on_votable_type_and_votable_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -125,7 +115,5 @@ ActiveRecord::Schema.define(version: 2019_12_18_042909) do
   add_foreign_key "medals", "questions"
   add_foreign_key "medals", "users"
   add_foreign_key "questions", "users"
-  add_foreign_key "scores", "users", column: "author_id"
-  add_foreign_key "votes", "scores"
   add_foreign_key "votes", "users"
 end
