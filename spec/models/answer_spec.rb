@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
   include_examples "links"
-  include_examples "votes"
+  include_examples "votes", :answer
 
   it { should belong_to :question }
   it { should belong_to :user }

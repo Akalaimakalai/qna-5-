@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[ index show ]
-  before_action :load_question, only: %i[ show edit update destroy ]
+  before_action :load_question, only: %i[ show edit update destroy create_vote ]
 
   def index
     @questions = Question.all
@@ -50,5 +50,11 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body, files: [], links_attributes: [:name, :url, :_destroy, :id], medal_attributes: [:name, :image])
+  end
+
+  def vote_params
+    vote_hash = params[:vote].permit(:value)
+    vote_hash[:user_id] = current_user.id
+    vote_hash
   end
 end

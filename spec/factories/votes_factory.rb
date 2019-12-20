@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :vote do
-    score
+    association :votable
     user
     value { 1 }
   end

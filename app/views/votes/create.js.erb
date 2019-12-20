@@ -1,0 +1,2 @@
+$(".alert").html("<%= flash[:alert] %>");
+$("#<%= @record.class.name.underscore %>-id-<%= @record.id %>-vote").replaceWith('<%= render 'shared/score', resource: @record %>');
