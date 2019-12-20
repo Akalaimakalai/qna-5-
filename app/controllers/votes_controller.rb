@@ -11,6 +11,11 @@ class VotesController < ApplicationController
     @record.delete_voter(@user)
     @vote.save
     @record.reload
+    @record.sum_votes
+
+    respond_to do |format|
+      format.json { render json: @record }
+    end
   end
 
   private

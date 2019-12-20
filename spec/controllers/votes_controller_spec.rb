@@ -13,7 +13,7 @@ RSpec.describe VotesController, type: :controller do
       before { login(user) }
 
       it 'sets correct object to @record' do
-        post :create, params: params , format: :js
+        post :create, params: params , format: :json
         expect(assigns(:record)).to eq question
       end
 
@@ -34,13 +34,8 @@ RSpec.describe VotesController, type: :controller do
       context 'is NOT author of the @record' do
 
         it 'create new vote' do
-          expect { post :create, params: params, format: :js }.to change(Vote, :count).by(1)
+          expect { post :create, params: params, format: :json }.to change(Vote, :count).by(1)
         end
-      end
-
-      it 'renders template create' do
-        post :create, params: params, format: :js
-        expect(response).to render_template :create
       end
     end
 

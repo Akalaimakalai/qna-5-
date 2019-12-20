@@ -1,12 +1,12 @@
 $(document).on('turbolinks:load', function() {
-  // scoreVoteLink();
+  scoreVoteLink();
 });
 
 function scoreVoteLink() {
   $('.vote-link').on('ajax:success', function(e) {
-    var score = e.detail[0];
-    var scoreSum = $('.score[data-score-id="' + score.id + '"]');
-  
-    scoreSum.html(' ' + score.sum);
+    var record = e.detail[0];
+    var score = $(this).parent().find('.score');
+
+    score.html(' ' + record.score);
   });
 };
