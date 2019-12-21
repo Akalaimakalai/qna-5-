@@ -9,14 +9,10 @@ module Votable
   end
 
   def sum_votes
-    sum = 0
-    self.votes.each { |vote| sum += vote.value }
-    self.score = sum
-    self.save
+    self.score = votes.sum(:value)
   end
 
   def delete_voter(user)
-    vote_arr = votes.select { |vote| vote.user == user }
-    votes.delete(vote_arr.first) unless vote_arr.empty?
+    votes.where(user: user).delete_all
   end
 end
