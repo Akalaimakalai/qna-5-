@@ -12,12 +12,7 @@ RSpec.describe VotesController, type: :controller do
     context 'Authenticated user' do
       before { login(user) }
 
-      it 'sets correct object to @record' do
-        post :create, params: params , format: :json
-        expect(assigns(:record)).to eq question
-      end
-
-      context 'is author of the @record' do
+      context 'is author of the record' do
         let(:params) { { vote: { votable_type: user_question.class.name, votable_id: user_question.id, value: 1 } } }
 
         it 'does not create vote' do
@@ -31,7 +26,7 @@ RSpec.describe VotesController, type: :controller do
         end
       end
 
-      context 'is NOT author of the @record' do
+      context 'is NOT author of the record' do
 
         it 'create new vote' do
           expect { post :create, params: params, format: :json }.to change(Vote, :count).by(1)

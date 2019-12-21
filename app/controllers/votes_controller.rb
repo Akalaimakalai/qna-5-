@@ -2,19 +2,15 @@ class VotesController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    @user = current_user
-    @vote = @user.votes.new(vote_params)
-    @record = @vote.votable
 
-    return flash.now[:alert] = "You can't vote for youself" if @user.is_author?(@record)
+    @vote = current_user.votes.new(vote_params)
 
-    @record.delete_voter(@user)
-    @vote.save
-    @record.reload
-    @record.sum_votes
-
-    respond_to do |format|
-      format.json { render json: @record }
+    if !current_user.is_author?(@vote.votable) && @vote.save
+      respond_to do |format|
+        format.json { render json: @vote.votable }
+      end
+    else
+      flash.now[:alert] = "You can't vote for youself"
     end
   end
 
