@@ -27,26 +27,40 @@ feature 'User can vote for/against question/answer', %q{
     end
 
     context 'is NOT author of the record' do
+
+      background { visit question_path(question) }
+
       scenario 'can vote and revote' do
-        visit question_path(question)
 
         within ".question#question-id-#{question.id}" do
           expect(page).to have_content('Score: 0')
           expect(page).to have_link('+')
           expect(page).to have_link('-')
-        end
 
-        click_on '+'
+          click_on '+'
+
+          expect(page).to have_content('Score: 1')
+
+          click_on '-'
+
+          expect(page).to have_content('Score: -1')
+        end
+      end
+
+      scenario 'cannot vote twice' do
 
         within ".question#question-id-#{question.id}" do
+          expect(page).to have_content('Score: 0')
+
+          click_on '+'
+
+          expect(page).to have_content('Score: 1')
+
+          click_on '+'
+
           expect(page).to have_content('Score: 1')
         end
 
-        click_on '-'
-
-        within ".question#question-id-#{question.id}" do
-          expect(page).to have_content('Score: -1')
-        end
       end
     end
   end
