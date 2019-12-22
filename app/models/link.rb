@@ -11,8 +11,8 @@ class Link < ApplicationRecord
 
   private
 
-  def set_gist
-    @client = GistService.new
+  def set_gist(arg: nil)
+    @client = GistService.new(client: arg)
 
     Gist.create!(gist_params) if @client.gist?(url)
   end
