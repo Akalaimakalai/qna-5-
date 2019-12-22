@@ -26,10 +26,12 @@ RSpec.describe Link, type: :model do
   describe '#set_gist' do
 
     context 'url is a gist' do
-      let(:link_with_gist) { create(:link, :gist, linkable: question) }
+      let!(:link_with_gist) { Link.new(id: correct_link.id, name: "Gist", url: "https://gist.github.com/Akalaimakalai/52052829173db67ca71032268fd65e84", linkable: question) }
 
       it 'creates gist' do
-        expect(link_with_gist.gist).to_not be_nil
+        expect{ link_with_gist.send('set_gist', arg: OktokitImitator.new) }.to change(Gist, :count).by(1)
+        expect(link_with_gist.gist.name).to eq "TestFilename"
+        expect(link_with_gist.gist.content).to eq "TestContent"
       end
     end
 
