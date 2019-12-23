@@ -4,10 +4,15 @@ class VotesController < ApplicationController
   def create
 
     @vote = current_user.votes.new(vote_params)
+    @record = @vote.votable
 
-    if !current_user.is_author?(@vote.votable) && @vote.save
+    if !current_user.is_author?(@record) && @vote.save
+      @record.reload
       respond_to do |format|
-        format.json { render json: @vote.votable }
+        format.json { render json: { klass: @record.class.name.underscore,
+                                     id: @record.id,
+                                     sum: @record.sum_votes }
+                    }
       end
     else
       flash.now[:alert] = "You can't vote for youself"

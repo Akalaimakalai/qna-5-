@@ -5,11 +5,10 @@ module Votable
 
   included do
     has_many :votes, dependent: :destroy, as: :votable
-    validates :score, presence: true
   end
 
   def sum_votes
-    self.score = votes.sum(:value)
+    votes.sum(:value)
   end
 
   def delete_voter(user)

@@ -31,6 +31,13 @@ RSpec.describe VotesController, type: :controller do
         it 'create new vote' do
           expect { post :create, params: params, format: :json }.to change(Vote, :count).by(1)
         end
+
+        it 'returns correct json' do
+          post :create, params: params, format: :json
+          expect(JSON.parse(response.body)).to eq({ 'id' => question.id,
+                                                    'klass' => question.class.name.underscore,
+                                                    'sum' => 1 })
+        end
       end
     end
 
