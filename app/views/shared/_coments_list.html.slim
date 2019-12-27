@@ -1,0 +1,8 @@
+ul class="coments" data-resource="#{resource.class.name.downcase}" data-resource-id="#{resource.id}"
+  - unless resource.coments.empty?
+    - resource.coments.each do |c|
+      li class="coment" data-id="#{c.id}"
+        = c.body
+        - if current_user&.is_author?(c)
+        br  
+        = link_to 'delete', coment_path(c), method: :delete, remote: true
