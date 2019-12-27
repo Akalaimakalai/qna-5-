@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_18_042909) do
+ActiveRecord::Schema.define(version: 2019_12_27_123939) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,17 @@ ActiveRecord::Schema.define(version: 2019_12_18_042909) do
     t.bigint "user_id"
     t.index ["question_id"], name: "index_answers_on_question_id"
     t.index ["user_id"], name: "index_answers_on_user_id"
+  end
+
+  create_table "coments", force: :cascade do |t|
+    t.text "body", null: false
+    t.bigint "user_id"
+    t.string "comentable_type"
+    t.bigint "comentable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comentable_type", "comentable_id"], name: "index_coments_on_comentable_type_and_comentable_id"
+    t.index ["user_id"], name: "index_coments_on_user_id"
   end
 
   create_table "gists", force: :cascade do |t|
@@ -111,6 +122,7 @@ ActiveRecord::Schema.define(version: 2019_12_18_042909) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users"
+  add_foreign_key "coments", "users"
   add_foreign_key "gists", "links"
   add_foreign_key "medals", "questions"
   add_foreign_key "medals", "users"
