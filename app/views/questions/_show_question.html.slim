@@ -29,17 +29,4 @@ p= @question.body
           = link_to_add_association 'add link', f, :links     
       p = f.submit 'Save'
 
-b comments:
-ul class="comments" data-resource="question" data-resource-id="#{@question.id}"
-  = render @question.comments
-
-- if user_signed_in?
-  p= link_to 'add comment', '#', class: 'add-comment-link', data: { resource: 'question', resource_id: @question.id}
-
-  = form_with model: [@question, @comment], class: 'hidden', html: { id: "add-comment-#{@question.class.name.downcase}-#{@question.id}" } do |f|
-    .add-comment-errors data-resource="#{@question.class.name.downcase}" data-id="#{@question.id}"
-    p
-      = f.label :body, 'Your comment'
-      = f.text_area :body
-    p 
-      = f.submit 'comment'
+= render 'shared/comments_list', resource: @question

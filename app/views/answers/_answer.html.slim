@@ -34,17 +34,4 @@ li class="answer" id="answer-id-#{answer.id}"
   - if current_user&.is_author?(@question) && !answer.correct
     = button_to 'Correct', { controller: 'answers', action: 'best', id: answer.id }, form: { "data-remote" => "true" }, class: 'best-answer-button'
 
-  b comments:
-  ul class="comments" data-resource="answer" data-resource-id="#{answer.id}"
-    = render answer.comments
-
-  - if user_signed_in?
-    p= link_to 'add comment', '#', class: 'add-comment-link', data: { resource: 'answer', resource_id: answer.id}
-
-    = form_with model: [answer, @comment], class: 'hidden', html: { id: "add-comment-#{answer.class.name.downcase}-#{answer.id}" } do |f|
-      .add-comment-errors data-resource="#{answer.class.name.downcase}" data-id="#{answer.id}"
-      p
-        = f.label :body, 'Your comment'
-        = f.text_area :body
-      p 
-        = f.submit 'comment'
+  = render 'shared/comments_list', resource: answer

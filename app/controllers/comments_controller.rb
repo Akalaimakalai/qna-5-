@@ -19,7 +19,7 @@ class CommentsController < ApplicationController
   end
 
   def find_resource
-    Question.find(params[:question_id]) if params[:question_id]
-    Answer.find(params[:answer_id]) if params[:answer_id]
+    return Question.find(params[:question_id]) if params[:question_id]
+    return Answer.find(params[:answer_id]) if params[:answer_id]
   end
 end
