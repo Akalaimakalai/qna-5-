@@ -1,6 +1,7 @@
-$('.add-coment-errors').html('<%= render 'shared/errors', resource: @coment %>');
+$('.add-coment-errors[data-resource="<%= @coment.comentable_type.downcase %>"][data-id="<%= @coment.comentable_id %>"]').html('<%= render 'shared/errors', resource: @coment %>');
 
 <% if @coment.persisted? %>
-  $('.coments').append('<%= j render @answer %>');
-  $('.new-answer #answer_body').val('');
+  $('.coments').append('<%= j render @coment %>');
+  $('form#add-coment-<%= @coment.comentable_type.downcase %>-<%= @coment.comentable_id %>').hide();
+  $('.add-coment-link').show();
 <% end %>

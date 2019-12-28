@@ -6,6 +6,11 @@ class ComentsController < ApplicationController
     @coment.save
   end
 
+  def destroy
+    @coment = Coment.find(params[:id])
+    @coment.destroy if current_user.is_author?(@coment)
+  end
+
   private
 
   def coment_params
