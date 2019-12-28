@@ -47,15 +47,15 @@ ActiveRecord::Schema.define(version: 2019_12_27_123939) do
     t.index ["user_id"], name: "index_answers_on_user_id"
   end
 
-  create_table "coments", force: :cascade do |t|
+  create_table "comments", force: :cascade do |t|
     t.text "body", null: false
     t.bigint "user_id"
-    t.string "comentable_type"
-    t.bigint "comentable_id"
+    t.string "commentable_type"
+    t.bigint "commentable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["comentable_type", "comentable_id"], name: "index_coments_on_comentable_type_and_comentable_id"
-    t.index ["user_id"], name: "index_coments_on_user_id"
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "gists", force: :cascade do |t|
@@ -122,7 +122,7 @@ ActiveRecord::Schema.define(version: 2019_12_27_123939) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users"
-  add_foreign_key "coments", "users"
+  add_foreign_key "comments", "users"
   add_foreign_key "gists", "links"
   add_foreign_key "medals", "questions"
   add_foreign_key "medals", "users"

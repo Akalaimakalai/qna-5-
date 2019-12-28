@@ -1,15 +1,15 @@
 $(document).on('turbolinks:load', function() {
-  eventForAddComent();
+  eventForAddComment();
 });
 
-function eventForAddComent() {
-  $('.add-coment-link').on('click', function(e) {
+function eventForAddComment() {
+  $('.add-comment-link').on('click', function(e) {
     e.preventDefault();
     $(this).hide();
 
     var resource = $(this).data('resource')
     var resourceId = $(this).data('resourceId');
 
-    $('form#add-coment-' + resource + '-' + resourceId).removeClass('hidden');
+    $('form#add-comment-' + resource + '-' + resourceId).removeClass('hidden');
   });
 };

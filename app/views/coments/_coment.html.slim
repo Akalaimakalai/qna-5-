@@ -1,5 +1,0 @@
-li class="coment" data-id="#{coment.id}"
-  = coment.body
-  - if current_user&.is_author?(coment)
-  br  
-  = link_to 'delete', coment_path(coment), method: :delete, remote: true

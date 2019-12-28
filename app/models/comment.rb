@@ -1,6 +1,6 @@
-class Coment < ApplicationRecord
+class Comment < ApplicationRecord
   belongs_to :user
-  belongs_to :comentable, polymorphic: true
+  belongs_to :commentable, polymorphic: true
 
   validates :body, presence: true
 
