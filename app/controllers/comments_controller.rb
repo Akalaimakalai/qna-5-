@@ -2,7 +2,8 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    @comment = current_user.comments.new(comment_params)
+    @resousce = find_resource
+    @comment = @resousce.comments.new(comment_params)
     @comment.save
   end
 
@@ -14,6 +15,11 @@ class CommentsController < ApplicationController
   private
 
   def comment_params
-    params[:comment].permit(:commentable_type, :commentable_id, :body)
+    params[:comment].permit(:body).merge({ user_id: current_user.id })
+  end
+
+  def find_resource
+    Question.find(params[:question_id]) if params[:question_id]
+    Answer.find(params[:answer_id]) if params[:answer_id]
   end
 end

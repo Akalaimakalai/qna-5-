@@ -36,12 +36,10 @@ ul class="comments" data-resource="question" data-resource-id="#{@question.id}"
 - if user_signed_in?
   p= link_to 'add comment', '#', class: 'add-comment-link', data: { resource: 'question', resource_id: @question.id}
 
-  = form_with model: @comment, class: 'hidden', html: { id: "add-comment-#{@question.class.name.downcase}-#{@question.id}" } do |f|
+  = form_with model: [@question, @comment], class: 'hidden', html: { id: "add-comment-#{@question.class.name.downcase}-#{@question.id}" } do |f|
     .add-comment-errors data-resource="#{@question.class.name.downcase}" data-id="#{@question.id}"
     p
       = f.label :body, 'Your comment'
       = f.text_area :body
-      = f.text_field :commentable_id, value: @question.id, class: 'hidden'
-      = f.text_field :commentable_type, value: @question.class.name, class: 'hidden'
     p 
       = f.submit 'comment'

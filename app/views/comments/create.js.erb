@@ -2,6 +2,8 @@ $('.add-comment-errors[data-resource="<%= @comment.commentable_type.downcase %>"
 
 <% if @comment.persisted? %>
   $('.comments').append('<%= j render @comment %>');
-  $('form#add-comment-<%= @comment.commentable_type.downcase %>-<%= @comment.commentable_id %>').hide();
+  var form = $('form#add-comment-<%= @comment.commentable_type.downcase %>-<%= @comment.commentable_id %>');
+  form.hide();
+  form[0].reset();
   $('.add-comment-link').show();
 <% end %>

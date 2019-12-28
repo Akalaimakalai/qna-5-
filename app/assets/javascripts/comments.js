@@ -10,6 +10,6 @@ function eventForAddComment() {
     var resource = $(this).data('resource')
     var resourceId = $(this).data('resourceId');
 
-    $('form#add-comment-' + resource + '-' + resourceId).removeClass('hidden');
+    $('form#add-comment-' + resource + '-' + resourceId).show();
   });
 };
