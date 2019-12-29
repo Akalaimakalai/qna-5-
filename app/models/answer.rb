@@ -3,6 +3,8 @@ class Answer < ApplicationRecord
   include Votable
   include Commentable
 
+  after_create_commit :broadcast_answer
+
   belongs_to :question
   belongs_to :user
 
@@ -18,5 +20,39 @@ class Answer < ApplicationRecord
       update!(correct: true)
       user.medals.push(question.medal) if question.medal
     end
+  end
+
+  private
+
+  def broadcast_answer
+    ActionCable.server.broadcast("question-#{question_id}", data: answer_data)
+  end
+
+  def answer_data
+  { answer: self,
+    files: all_files,
+    links: all_links,
+    score: sum_votes
+  }
+  end
+
+  def all_files
+    files_arr = []
+
+    files.each do |file|
+      files_arr << { name: file.filename.to_s, url: file.service_url, id: file.id }
+    end
+
+    files_arr
+  end
+
+  def all_links
+    links_arr = []
+
+    links.each do |link|
+      links_arr << { name: link.name, url: link.url, id: link.id }
+    end
+
+    links_arr
   end
 end

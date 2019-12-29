@@ -5,5 +5,6 @@ p
     = link_to 'My medals', medals_path
     b  |  
     = link_to "Exit", destroy_user_session_path, method: :delete
+    =< current_user.email
   - else
     = link_to "Sign in", new_user_session_path

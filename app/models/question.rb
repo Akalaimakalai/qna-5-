@@ -3,6 +3,8 @@ class Question < ApplicationRecord
   include Votable
   include Commentable
 
+  after_create_commit :broadcast_question
+
   belongs_to :user
   has_many :answers, dependent: :destroy
   has_one :medal, dependent: :destroy
@@ -12,4 +14,10 @@ class Question < ApplicationRecord
   accepts_nested_attributes_for :medal, reject_if: :all_blank
 
   validates :title, :body, presence: true
+
+  private
+
+  def broadcast_question
+    ActionCable.server.broadcast('questions', data: self)
+  end
 end

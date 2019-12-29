@@ -8,6 +8,7 @@ class AnswersController < ApplicationController
     @answer = @question.answers.new(answer_params)
     @answer.user_id = current_user.id
     @answer.save
+    @comment = Comment.new
   end
 
   def edit; end

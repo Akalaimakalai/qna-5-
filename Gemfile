@@ -50,8 +50,12 @@ gem "aws-sdk-s3", require: false
 gem 'dotenv-rails'
 # Cocoon makes it easier to handle nested forms.
 gem "cocoon"
-#GitClient
+# GitClient
 gem "octokit", "~> 4.0"
+# Skim is the Slim templating engine
+gem "skim"
+# Add params to views
+gem 'gon'
 
 # ---end---
 

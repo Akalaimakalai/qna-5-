@@ -1,0 +1,4 @@
+- comment = @data['data']
+
+li
+  .comment data-id="#{comment['comment'].id}" #{comment['comment'].body}

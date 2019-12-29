@@ -2,8 +2,6 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[ index show ]
   before_action :load_question, only: %i[ show edit update destroy ]
 
-  after_action :publish_question, only: %i[ create ]
-
   def index
     @questions = Question.all
   end
@@ -12,6 +10,9 @@ class QuestionsController < ApplicationController
     @answer = Answer.new
     @answer.links.new
     @comment = Comment.new
+
+    gon.current_user_id = current_user&.id
+    gon.question_id = @question.id
   end
 
   def new
@@ -53,21 +54,5 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body, files: [], links_attributes: [:name, :url, :_destroy, :id], medal_attributes: [:name, :image])
-  end
-
-  def publish_question
-    return if @question.errors.any?
-    renderer = ApplicationController.renderer.new
-    warden = request.env["warden"]
-    renderer.instance_variable_set(:@env, {"HTTP_HOST"=>"localhost:3000", 
-    "HTTPS"=>"off", 
-    "REQUEST_METHOD"=>"GET", 
-    "SCRIPT_NAME"=>"", 
-    "warden" => warden})
-    ActionCable.server.broadcast( 'questions',
-                                  renderer.render(partial: 'questions/question',
-                                                              locals: { question: @question }
-                                                              )
-                                  )
   end
 end
