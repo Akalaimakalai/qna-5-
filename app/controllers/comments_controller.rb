@@ -2,8 +2,8 @@ class CommentsController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    @resousce = find_resource
-    @comment = @resousce.comments.new(comment_params)
+    @resource = find_resource
+    @comment = @resource.comments.new(comment_params)
     @comment.save
   end
 
