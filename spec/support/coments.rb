@@ -1,3 +1,3 @@
-RSpec.shared_examples "coments" do
-  it { should have_many(:coments).dependent(:destroy) }
+RSpec.shared_examples "comments" do
+  it { should have_many(:comments).dependent(:destroy) }
 end

@@ -28,3 +28,5 @@ p= @question.body
         .new_link
           = link_to_add_association 'add link', f, :links     
       p = f.submit 'Save'
+
+= render 'shared/comments_list', resource: @question

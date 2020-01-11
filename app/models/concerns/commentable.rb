@@ -1,9 +1,9 @@
 require 'active_support/concern'
 
-module Comentable
+module Commentable
   extend ActiveSupport::Concern
 
   included do
-    has_many :coments, dependent: :destroy, as: :comentable
+    has_many :comments, dependent: :destroy, as: :commentable
   end
 end

@@ -2,6 +2,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_answer, only: %i[ edit show update destroy best ]
   before_action :set_question, only: %i[ update best ]
+  before_action :set_new_comment, only: %i[ create update ]
 
   def create
     @question = Question.find(params[:question_id])
@@ -39,5 +40,9 @@ class AnswersController < ApplicationController
 
   def set_question
     @question = @answer.question
+  end
+
+  def set_new_comment
+    @comment = Comment.new
   end
 end

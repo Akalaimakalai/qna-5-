@@ -42,6 +42,8 @@ feature 'User can edit his answer', %q{
           click_on 'Save'
         end
 
+        sleep(3)
+
         expect(page).to have_link 'rails_helper.rb'
         expect(page).to have_link 'spec_helper.rb'
       end

@@ -15,4 +15,5 @@
 //= require activestorage
 //= require turbolinks
 //= require cocoon
+//= require skim
 //= require_tree .

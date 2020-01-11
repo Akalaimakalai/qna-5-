@@ -33,3 +33,5 @@ li class="answer" id="answer-id-#{answer.id}"
 
   - if current_user&.is_author?(@question) && !answer.correct
     = button_to 'Correct', { controller: 'answers', action: 'best', id: answer.id }, form: { "data-remote" => "true" }, class: 'best-answer-button'
+
+  = render 'shared/comments_list', resource: answer

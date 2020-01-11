@@ -1,0 +1,9 @@
+$('.add-comment-errors[data-resource="<%= @comment.commentable_type.downcase %>"][data-id="<%= @comment.commentable_id %>"]').html('<%= render 'shared/errors', resource: @comment %>');
+
+<% if @comment.persisted? %>
+  $('.<%= @comment.commentable_type.downcase %>#<%= @comment.commentable_type.downcase %>-id-<%= @comment.commentable_id %> .comments').append('<%= j render @comment %>');
+  var form = $('form#add-comment-<%= @comment.commentable_type.downcase %>-<%= @comment.commentable_id %>');
+  form.hide();
+  form[0].reset();
+  $('.add-comment-link').show();
+<% end %>
