@@ -1,6 +1,9 @@
 class Question < ApplicationRecord
   include Linkable
   include Votable
+  include Commentable
+
+  after_create_commit :broadcast_question
 
   belongs_to :user
   has_many :answers, dependent: :destroy
@@ -11,4 +14,12 @@ class Question < ApplicationRecord
   accepts_nested_attributes_for :medal, reject_if: :all_blank
 
   validates :title, :body, presence: true
+
+  default_scope { order(created_at: :asc) }
+
+  private
+
+  def broadcast_question
+    ActionCable.server.broadcast('questions', data: self)
+  end
 end

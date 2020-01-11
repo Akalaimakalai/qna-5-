@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[ index show ]
   before_action :load_question, only: %i[ show edit update destroy ]
+  before_action :set_new_comment, only: %i[ show update ]
 
   def index
     @questions = Question.all
@@ -9,6 +10,9 @@ class QuestionsController < ApplicationController
   def show
     @answer = Answer.new
     @answer.links.new
+
+    gon.current_user_id = current_user&.id
+    gon.question_id = @question.id
   end
 
   def new
@@ -50,5 +54,9 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body, files: [], links_attributes: [:name, :url, :_destroy, :id], medal_attributes: [:name, :image])
+  end
+
+  def set_new_comment
+    @comment = Comment.new
   end
 end

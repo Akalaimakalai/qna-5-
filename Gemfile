@@ -50,14 +50,18 @@ gem "aws-sdk-s3", require: false
 gem 'dotenv-rails'
 # Cocoon makes it easier to handle nested forms.
 gem "cocoon"
-#GitClient
+# GitClient
 gem "octokit", "~> 4.0"
+# Skim is the Slim templating engine
+gem "skim"
+# Add params to views
+gem 'gon'
 
 # ---end---
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  # gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # ===MY GEMS===
 
   # New test-gem
@@ -66,6 +70,10 @@ group :development, :test do
   gem 'factory_bot_rails'
   # Library for stubbing and setting expectations on HTTP requests in Ruby.
   gem 'webmock'
+  # Upgraded byebug
+  gem 'pry-rails'
+  gem 'pry-byebug'
+
 
   # ---end---
 end

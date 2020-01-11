@@ -9,6 +9,12 @@ RSpec.describe FilesController, type: :controller do
     let(:answer_with_file) { create(:answer, :with_file, question: question, user: user) }
     let(:file) { answer_with_file.files.first }
 
+    # before do
+    #   ActiveStorage::Current.set(host: "https://www.example.com") do
+    #     file.service_url
+    #   end
+    # end
+
     context 'Authenticated user' do
       before { login(user) }
 
