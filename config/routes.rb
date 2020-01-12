@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   root to: 'questions#index'
 
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
 
   resources :questions, concerns: %i[commentable] do
     resources :answers, except: %i[ index new ], shallow: true, concerns: %i[commentable] do

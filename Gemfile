@@ -42,11 +42,14 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'slim-rails'
 # Authentication
 gem 'devise'
+# Authentication through other providers (GitHub, Facebook, etc.)
+gem 'omniauth'
+gem 'omniauth-github'
 # JS framework
 gem 'jquery-rails'
 # Amazon S3 cloud server
 gem "aws-sdk-s3", require: false
-#ENV_VARIABLES
+# ENV_VARIABLES
 gem 'dotenv-rails'
 # Cocoon makes it easier to handle nested forms.
 gem "cocoon"
