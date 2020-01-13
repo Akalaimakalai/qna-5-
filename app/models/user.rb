@@ -12,6 +12,7 @@ class User < ApplicationRecord
          :recoverable,
          :rememberable,
          :validatable,
+         :confirmable,
          :omniauthable, omniauth_providers: %i[ github ]
 
   def is_author?(object)

@@ -88,6 +88,13 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+
+  # ===MY GEMS===
+
+  # Auto opening letters from ActionMailer
+  gem "letter_opener"
+
+  # ---end---
 end
 
 group :test do
@@ -105,6 +112,8 @@ group :test do
   gem 'launchy'
   # Instead gem 'chromedriver-helper'
   gem 'webdrivers', '~> 4.0'
+  # Opening letters in tests
+  gem 'capybara-email'
 
   # ---end---
 end
