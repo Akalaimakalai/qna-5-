@@ -45,6 +45,7 @@ gem 'devise'
 # Authentication through other providers (GitHub, Facebook, etc.)
 gem 'omniauth'
 gem 'omniauth-github'
+gem 'omniauth-vkontakte'
 # JS framework
 gem 'jquery-rails'
 # Amazon S3 cloud server
