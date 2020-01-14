@@ -17,7 +17,21 @@ feature 'User can sign up', %q{
       fill_in 'Password confirmation', with: 'qwerty'
       click_on 'Sign up'
 
-      expect(page).to have_content('Welcome! You have signed up successfully.')
+      open_email('user@test.xxx')
+
+      expect(current_email).to have_content 'You can confirm your account email through the link below:'
+
+      current_email.click_link 'Confirm my account'
+      clear_emails
+
+      expect(page).to have_content('Your email address has been successfully confirmed.')
+
+      fill_in 'Email', with: 'user@test.xxx'
+      fill_in 'Password', with: 'qwerty'
+
+      click_on 'Log in'
+
+      expect(page).to have_content('Signed in successfully.')
     end
 
     scenario 'with wrong input' do
