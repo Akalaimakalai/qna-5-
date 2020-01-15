@@ -8,41 +8,46 @@ feature 'User can log in through the third-party providers ', %q{
   i'd like to be able to sign up through the third-party providers
 } do
 
+  background { OmniAuth.config.test_mode = true }
+
   describe 'Registered user' do
     given!(:user) { create(:user) }
     given!(:authorization) { create(:authorization, user: user) }
 
-    scenario 'User want to log in through the third-party provider' do
-
-      OmniAuth.config.test_mode = true
+    background do
       OmniAuth.config.mock_auth[:github] = OmniAuth::AuthHash.new({
-                                                                    :provider => 'authorization.provider',
-                                                                    :uid => authorization.uid,
+                                                                    provider: 'authorization.provider',
+                                                                    uid: authorization.uid,
                                                                     info: {
                                                                       email: user.email
                                                                     }
                                                                   })
+    end
+
+    scenario 'User want to log in through the third-party provider' do
 
       visit new_user_session_path
 
       click_on 'Sign in with GitHub'
-      
+
       expect(page).to have_content(user.email)
       expect(page).to have_content('Successfully authenticated from GitHub account.')
     end
   end
 
   describe 'Unregistered user' do
-    scenario 'User want to log in through the third-party provider' do
 
-      OmniAuth.config.test_mode = true
+    background do
       OmniAuth.config.mock_auth[:vkontakte] = OmniAuth::AuthHash.new({
-                                                                      :provider => 'vkontakte',
-                                                                      :uid => '123545',
+                                                                      provider: 'vkontakte',
+                                                                      uid: '123545',
                                                                       info: {
                                                                         email: "secrettest@gmail.com"
                                                                       }
                                                                     })
+    end
+
+    scenario 'User want to log in through the third-party provider' do
 
       visit new_user_session_path
 
