@@ -6,10 +6,14 @@ RSpec.describe FindForOauthService do
   subject { FindForOauthService }
 
   context 'user already has authorization' do
+    before { user.authorizations.create(provider: 'facebook', uid: '123456') }
 
     it 'returns the user' do
-      user.authorizations.create(provider: 'facebook', uid: '123456')
       expect(subject.call(auth)).to eq user
+    end
+
+    it 'does not create new user' do
+      expect{ subject.call(auth) }.to_not change(User, :count)
     end
   end
 
@@ -23,7 +27,7 @@ RSpec.describe FindForOauthService do
       end
 
       it 'create authorization for user' do
-        expect{ subject.call(auth) }.to change(user.authorizations, :count)
+        expect{ subject.call(auth) }.to change(user.authorizations, :count).by(1)
       end
 
       it 'creates authorization with provider and uid' do
@@ -52,6 +56,10 @@ RSpec.describe FindForOauthService do
       it 'fills user email' do
         user = subject.call(auth)
         expect(user.email).to eq auth.info[:email]
+      end
+
+      it 'creates new authorization' do
+        expect { subject.call(auth) }.to change(Authorization, :count).by(1)
       end
 
       it 'create authorization for user' do
