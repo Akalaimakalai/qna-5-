@@ -20,6 +20,6 @@ class User < ApplicationRecord
   end
 
   def self.find_for_oauth(auth)
-    FindForOauthService.new(auth).call
+    FindForOauthService.call(auth)
   end
 end
