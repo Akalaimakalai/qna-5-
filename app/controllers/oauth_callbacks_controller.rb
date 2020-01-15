@@ -1,21 +1,18 @@
 class OauthCallbacksController < Devise::OmniauthCallbacksController
-  before_action :set_user
 
   def github
-    standart_method_logic('GitHub')
+    authenticate_with_provider('GitHub')
   end
 
   def vkontakte
-    standart_method_logic('Vkontakte')
+    authenticate_with_provider('Vkontakte')
   end
 
   private
 
-  def set_user
+  def authenticate_with_provider(provider_name)
     @user = User.find_for_oauth(request.env['omniauth.auth'])
-  end
 
-  def standart_method_logic(provider_name)
     if @user&.persisted?
       sign_in_and_redirect @user, event: :authentication
       set_flash_message(:notice, :success, kind: provider_name) if is_navigational_format?
