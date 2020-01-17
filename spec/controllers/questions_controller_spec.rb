@@ -196,8 +196,8 @@ RSpec.describe QuestionsController, type: :controller do
           expect(question2.body).to eq 'CheckBody'
         end
 
-        it 'render template update' do
-          expect(response).to render_template :update
+        it 'redirects to root' do
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -248,8 +248,8 @@ RSpec.describe QuestionsController, type: :controller do
           expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
         end
 
-        it 'redirect to @question' do
-          expect(response).to redirect_to question
+        it 'redirects to root' do
+          expect(response).to redirect_to root_path
         end
       end
     end

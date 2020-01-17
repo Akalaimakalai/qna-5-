@@ -9,6 +9,7 @@ FactoryBot.define do
     end
 
     trait :with_file do
+      ActiveStorage::Current.host = 'localhost:3000'
       files { Rack::Test::UploadedFile.new("#{Rails.root}/spec/rails_helper.rb") }
     end
   end
