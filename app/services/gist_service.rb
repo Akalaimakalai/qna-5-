@@ -3,7 +3,7 @@ class GistService
   attr_reader :gist
 
   def initialize(client: nil)
-    @client = client || Octokit::Client.new(:access_token => ENV['OCTOKIT_ACCESS_TOKEN'])
+    @client = client || Octokit::Client.new(:access_token => Rails.application.credentials[Rails.env.to_sym][:oktokit_access_token])
   end
 
   def gist?(url)

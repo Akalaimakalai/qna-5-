@@ -5,14 +5,21 @@ class User < ApplicationRecord
   has_many :scores, foreign_key: "author_id"
   has_many :votes
   has_many :comments
+  has_many :authorizations, dependent: :destroy
 
   devise :database_authenticatable,
          :registerable,
          :recoverable,
          :rememberable,
-         :validatable
+         :validatable,
+         :confirmable,
+         :omniauthable, omniauth_providers: %i[ github vkontakte ]
 
   def is_author?(object)
     object.user_id == id
+  end
+
+  def self.find_for_oauth(auth)
+    FindForOauthService.call(auth)
   end
 end
