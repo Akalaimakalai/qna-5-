@@ -3,6 +3,8 @@ class QuestionsController < ApplicationController
   before_action :load_question, only: %i[ show edit update destroy ]
   before_action :set_new_comment, only: %i[ show update ]
 
+  authorize_resource
+
   def index
     @questions = Question.all
   end

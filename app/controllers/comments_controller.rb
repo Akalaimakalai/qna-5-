@@ -1,6 +1,8 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
 
+  authorize_resource
+
   def create
     @resource = find_resource
     @comment = @resource.comments.new(comment_params)

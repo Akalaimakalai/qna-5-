@@ -4,6 +4,8 @@ class AnswersController < ApplicationController
   before_action :set_question, only: %i[ update best ]
   before_action :set_new_comment, only: %i[ create update ]
 
+  authorize_resource
+
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params)
