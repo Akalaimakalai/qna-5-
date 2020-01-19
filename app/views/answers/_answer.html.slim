@@ -11,7 +11,7 @@ li class="answer" id="answer-id-#{answer.id}"
   - unless answer.links.empty?
     = render 'shared/links_list', resource: answer
 
-  - if current_user&.is_author?(answer)
+  - if can? :update, answer
     p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
     p= link_to 'Delete', answer_path(answer), method: :delete, remote: true, class: 'delete-answer-link', data: { answer_id: answer.id }
 
@@ -31,7 +31,7 @@ li class="answer" id="answer-id-#{answer.id}"
       p = f.submit 'Save'
 
 
-  - if current_user&.is_author?(@question) && !answer.correct
+  - if !answer.correct && (can? :update, @question)
     = button_to 'Correct', { controller: 'answers', action: 'best', id: answer.id }, form: { "data-remote" => "true" }, class: 'best-answer-button'
 
   = render 'shared/comments_list', resource: answer

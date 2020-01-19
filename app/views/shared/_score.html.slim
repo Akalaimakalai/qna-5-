@@ -1,5 +1,5 @@
 p id="#{resource.class.name.underscore}-id-#{resource.id}-vote"
-  - if user_signed_in? && !current_user&.is_author?(resource)
+  - if can? :create, Vote.new(votable: resource)
     = link_to '+', votes_path(params: { vote: { votable_type: resource.class.name, votable_id: resource.id, value: 1 } }), method: :post, class: "vote-link", data: { type: :json }, remote: true
     b  |    
     => link_to '-', votes_path(params: { vote: { votable_type: resource.class.name, votable_id: resource.id, value: -1 } }), method: :post, class: "vote-link", data: { type: :json }, remote: true

@@ -3,6 +3,6 @@ ul class="#{resource.class.name.downcase}-#{resource.id}-files"
   - resource.files.each do |file|
     li id="file-id-#{file.id}"
       = link_to file.filename.to_s, url_for(file)
-      - if current_user&.is_author?(resource)
+      - if can? :destroy, resource
         b   |  
         = link_to 'delete', file_path(file), method: :delete, remote: true
