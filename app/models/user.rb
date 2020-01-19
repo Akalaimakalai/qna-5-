@@ -15,10 +15,6 @@ class User < ApplicationRecord
          :confirmable,
          :omniauthable, omniauth_providers: %i[ github vkontakte ]
 
-  def is_author?(object)
-    object.user_id == id
-  end
-
   def self.find_for_oauth(auth)
     FindForOauthService.call(auth)
   end
