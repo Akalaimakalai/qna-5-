@@ -18,15 +18,15 @@ class AnswersController < ApplicationController
   def show; end
 
   def update
-    @answer.update(answer_params) if current_user.is_author?(@answer)
+    @answer.update(answer_params)
   end
 
   def destroy
-    @answer.destroy if current_user.is_author?(@answer)
+    @answer.destroy
   end
 
   def best
-    @answer.set_correct if current_user.is_author?(@question)
+    @answer.set_correct
     redirect_to question_path(@question)
   end
 

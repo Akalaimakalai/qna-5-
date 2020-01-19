@@ -16,13 +16,7 @@ RSpec.describe VotesController, type: :controller do
         let(:params) { { vote: { votable_type: user_question.class.name, votable_id: user_question.id, value: 1 } } }
 
         it 'does not create vote' do
-          expect { post :create, params: params, format: :js }.to_not change(Vote, :count)
-        end
-
-        it 'shows flash alert' do
-          post :create, params: params, format: :js
-          expect(response).to render_template(:create)
-          expect(flash[:alert]).to eq "You can't vote for youself"
+          expect { post :create, params: params, format: :json }.to_not change(Vote, :count)
         end
       end
 

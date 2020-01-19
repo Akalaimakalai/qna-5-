@@ -87,9 +87,9 @@ RSpec.describe CommentsController, type: :controller do
           expect{ delete :destroy, params: { id: comment }, format: :js }.to_not change(Comment, :count)
         end
 
-        it 'renders template destroy' do
+        it 'resirects to root' do
           delete :destroy, params: { id: comment }, format: :js
-          expect(response).to render_template :destroy
+          expect(response).to redirect_to root_path
         end
       end
     end

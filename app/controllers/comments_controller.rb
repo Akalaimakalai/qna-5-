@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_comment, only: %i[ destroy ]
 
   authorize_resource
 
@@ -10,11 +11,14 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    @comment = Comment.find(params[:id])
-    @comment.destroy if current_user.is_author?(@comment)
+    @comment.destroy
   end
 
   private
+
+  def set_comment
+    @comment = Comment.find(params[:id])
+  end
 
   def comment_params
     params[:comment].permit(:body).merge({ user_id: current_user.id })

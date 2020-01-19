@@ -7,7 +7,7 @@ class FilesController < ApplicationController
   def destroy
     @record = @file.record
 
-    @file.purge if current_user.is_author?(@record)
+    @file.purge
   end
 
   private

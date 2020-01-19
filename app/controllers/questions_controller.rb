@@ -36,16 +36,12 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question.update(question_params) if current_user.is_author?(@question)
+    @question.update(question_params)
   end
 
   def destroy
-    if current_user.is_author?(@question)
-      @question.destroy
-      redirect_to questions_path
-    else
-      redirect_to @question, alert: 'You must be an author of the question to delete it.'
-    end
+    @question.destroy
+    redirect_to questions_path
   end
 
   private
