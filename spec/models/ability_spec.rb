@@ -22,16 +22,16 @@ RSpec.describe Ability do
 
   describe "for user" do
     let(:user) { create(:user) }
-    let(:user_question) { create(:question, user: user) }
-    let(:question) { create(:question) }
-    let(:user_answer) { create(:answer, user: user) }
-    let(:answer) { create(:answer) }
-    let(:user_comment) { create(:comment, commentable: question, user: user) }
-    let(:comment) { create(:comment, commentable: question) }
-    let(:user_file) { create(:answer, :with_file, user: user).files.first }
-    let(:file) { create(:answer, :with_file).files.first }
-    let(:user_link) { create(:link, linkable: user_question) }
-    let(:link) { create(:link, linkable: question) }
+    let(:user_question) { build(:question, user: user) }
+    let(:question) { build(:question) }
+    let(:user_answer) { build(:answer, user: user) }
+    let(:answer) { build(:answer) }
+    let(:user_comment) { build(:comment, commentable: question, user: user) }
+    let(:comment) { build(:comment, commentable: question) }
+    let(:user_file) { build(:answer, :with_file, user: user).files.first }
+    let(:file) { build(:answer, :with_file).files.first }
+    let(:user_link) { build(:link, linkable: user_question) }
+    let(:link) { build(:link, linkable: question) }
 
     it { should be_able_to :read, :all }
 

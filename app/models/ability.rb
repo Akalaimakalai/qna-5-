@@ -3,7 +3,7 @@
 class Ability
   include CanCan::Ability
 
-  attr_reader :user 
+  attr_reader :user
 
   def initialize(user)
     @user = user
@@ -20,11 +20,12 @@ class Ability
   end
 
   def admin_abilities
+    guest_abilities
     can :manage, :all
   end
 
   def user_abilities
-    can :read, :all
+    guest_abilities
 
     can :create, [ Question, Answer, Comment ]
     can :create, Vote do |vote|
