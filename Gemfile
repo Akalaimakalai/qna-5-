@@ -60,6 +60,8 @@ gem "octokit", "~> 4.0"
 gem "skim"
 # Add params to views
 gem 'gon'
+# Authorization
+gem 'cancancan'
 
 # ---end---
 
@@ -74,7 +76,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   # Library for stubbing and setting expectations on HTTP requests in Ruby.
   gem 'webmock'
-  # Upgraded byebug
+  # Upgraded byebug (binding.pry)
   gem 'pry-rails'
   gem 'pry-byebug'
 

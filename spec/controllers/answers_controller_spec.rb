@@ -155,8 +155,8 @@ RSpec.describe AnswersController, type: :controller do
           expect(answer.body).to eq "MyAnswerText"
         end
 
-        it 'render template update' do
-          expect(response).to render_template :update
+        it 'redirects to root' do
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -203,9 +203,9 @@ RSpec.describe AnswersController, type: :controller do
           expect { delete :destroy, params: { id: answer2 }, format: :js }.to_not change(Answer, :count)
         end
 
-        it 'renders destroy template' do
+        it 'redirects to root' do
           delete :destroy, params: { id: answer }, format: :js
-          expect(response).to render_template :destroy
+          expect(response).to redirect_to root_path
         end
       end
     end
@@ -252,8 +252,8 @@ RSpec.describe AnswersController, type: :controller do
           expect(assigns(:answer)).to_not be_correct
         end
 
-        it 'redirect to @question' do
-          expect(response).to redirect_to question_path(question)
+        it 'redirects to root' do
+          expect(response).to redirect_to root_path
         end
       end
     end

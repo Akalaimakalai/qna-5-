@@ -47,9 +47,9 @@ RSpec.describe FilesController, type: :controller do
           expect { delete :destroy, params: { id: file, format: :js } }.to_not change(answer_with_file.files, :count)
         end
 
-        it 'renders destroy template' do
+        it 'redirects to root' do
           delete :destroy, params: { id: file, format: :js }
-          expect(response).to render_template :destroy
+          expect(response).to redirect_to root_path
         end
       end
     end

@@ -4,6 +4,8 @@ class AnswersController < ApplicationController
   before_action :set_question, only: %i[ update best ]
   before_action :set_new_comment, only: %i[ create update ]
 
+  authorize_resource
+
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params)
@@ -16,15 +18,15 @@ class AnswersController < ApplicationController
   def show; end
 
   def update
-    @answer.update(answer_params) if current_user.is_author?(@answer)
+    @answer.update(answer_params)
   end
 
   def destroy
-    @answer.destroy if current_user.is_author?(@answer)
+    @answer.destroy
   end
 
   def best
-    @answer.set_correct if current_user.is_author?(@question)
+    @answer.set_correct
     redirect_to question_path(@question)
   end
 
