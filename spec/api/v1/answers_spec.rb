@@ -19,18 +19,10 @@ describe 'Profiles API', type: :request do
 
     before { get "/api/v1/questions/#{question.id}/answers", params: { access_token: access_token.token }, headers: headers }
 
-    it 'returns 200 status' do
-      expect(response).to be_successful
-    end
+    it_behaves_like 'Successful'
 
-    it 'returns list of answers' do
-      expect(json['answers'].size).to eq 2
-    end
-
-    it 'returns all public fields' do
-      %w[ id body user_id created_at updated_at ].each do |attr|
-        expect(json['answers'].first[attr]).to eq answers.first.send(attr).as_json
-      end
+    it_behaves_like 'List of answers' do
+      let(:answers_response) { json['answers'] }
     end
   end
 end

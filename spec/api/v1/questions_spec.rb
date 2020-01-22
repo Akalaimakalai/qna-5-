@@ -20,9 +20,7 @@ describe 'Profiles API', type: :request do
 
       before { get '/api/v1/questions', params: { access_token: access_token.token }, headers: headers }
 
-      it 'returns 200 status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'Successful'
 
       it 'returns list of questions' do
         expect(json['questions'].size).to eq 2
@@ -43,17 +41,8 @@ describe 'Profiles API', type: :request do
       end
 
       describe 'answers' do
-        let(:answer) { answers.first }
-        let(:answer_response) { question_response['answers'].first }
-
-        it 'returns list of answers' do
-          expect(question_response['answers'].size).to eq 3
-        end
-
-        it 'returns all public fields' do
-          %w[ id body user_id created_at updated_at ].each do |attr|
-            expect(answer_response[attr]).to eq answer.send(attr).as_json
-          end
+        it_behaves_like 'List of answers' do
+          let(:answers_response) { question_response['answers'] }
         end
       end
     end
@@ -76,9 +65,7 @@ describe 'Profiles API', type: :request do
 
       before { get "/api/v1/questions/#{question.id}", params: { access_token: access_token.token }, headers: headers }
 
-      it 'returns 200 status' do
-        expect(response).to be_successful
-      end
+      it_behaves_like 'Successful'
 
       it 'returns all public fields' do
         %w[ id title body created_at updated_at ].each do |attr|
@@ -87,8 +74,8 @@ describe 'Profiles API', type: :request do
       end
 
       it 'returns all associations' do
-        %w[ user links files comments answers ].each do |ass|
-          expect(json['question']).to be_include(ass)
+        %w[ user links files comments answers ].each do |association|
+          expect(json['question']).to be_include(association)
         end
       end
 
