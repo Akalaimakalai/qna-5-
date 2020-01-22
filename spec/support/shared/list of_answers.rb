@@ -3,9 +3,11 @@ shared_examples_for 'List of answers' do
     expect(answers_response.size).to eq answers.size
   end
 
-  it 'returns all public fields' do
-    %w[ id body created_at updated_at ].each do |attr|
-      expect(answers_response.first[attr]).to eq answers.first.send(attr).as_json
+  context 'every answer' do
+    it_behaves_like 'Public object' do
+      let(:object) { answers.first }
+      let(:public_fields) { %w[ id body created_at updated_at ] }
+      let(:response_object) { answers_response.first }
     end
   end
 end

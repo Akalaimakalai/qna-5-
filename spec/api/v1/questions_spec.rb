@@ -26,10 +26,10 @@ describe 'Profiles API', type: :request do
         expect(json['questions'].size).to eq 2
       end
 
-      it 'returns all public fields' do
-        %w[ id title body created_at updated_at ].each do |attr|
-          expect(question_response[attr]).to eq question.send(attr).as_json
-        end
+      it_behaves_like 'Public object' do
+        let(:object) { question }
+        let(:public_fields) { %w[ id title body created_at updated_at ] }
+        let(:response_object) { question_response }
       end
 
       it 'contains user object' do
@@ -58,7 +58,7 @@ describe 'Profiles API', type: :request do
 
     context 'authorized' do
       let!(:question) { create(:question, :with_file) }
-      let!(:file) { question.files.first }
+      let!(:answers) { create_list(:answer, 2, question: question)}
       let!(:link) { create(:link, linkable: question) }
       let!(:comments) { create_list(:comment, 2, commentable: question)}
 
@@ -66,20 +66,15 @@ describe 'Profiles API', type: :request do
 
       it_behaves_like 'Successful'
 
-      it 'returns all public fields' do
-        %w[ id title body created_at updated_at ].each do |attr|
-          expect(json['question'][attr]).to eq question.send(attr).as_json
-        end
+      it_behaves_like 'Public object' do
+        let(:object) { question }
+        let(:public_fields) { %w[ id title body created_at updated_at ] }
+        let(:response_object) { json['question'] }
       end
 
-      it 'returns all associations' do
-        %w[ user links files comments answers ].each do |association|
-          expect(json['question']).to be_include(association)
-        end
-      end
-
-      it 'returns files as url' do
-        expect(json['question']['files'].first['service_url']).to eq file.service_url
+      it_behaves_like 'Got associations' do
+        let(:object) { question }
+        let(:list_of_associations) { %w[ user links files comments answers ] }
       end
     end
   end

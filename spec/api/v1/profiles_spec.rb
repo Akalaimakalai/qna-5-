@@ -19,10 +19,10 @@ describe 'Profiles API', type: :request do
 
       it_behaves_like 'Successful'
 
-      it 'returns all public fields' do
-        %w[ id email admin created_at updated_at ].each do |attr|
-          expect(json['user'][attr]).to eq me.send(attr).as_json
-        end
+      it_behaves_like 'Public object' do
+        let(:object) { me }
+        let(:public_fields) { %w[ id email admin created_at updated_at ] }
+        let(:response_object) { json['user'] }
       end
 
       it 'does not return private fields' do
@@ -55,6 +55,20 @@ describe 'Profiles API', type: :request do
 
       it 'does not include current user' do
         expect(json['users']).to_not be_include(user)
+      end
+
+      context 'every user' do
+        it_behaves_like 'Public object' do
+          let(:object) { users.last }
+          let(:public_fields) { %w[ id email admin created_at updated_at ] }
+          let(:response_object) { json['users'].last }
+        end
+
+        it 'does not return private fields' do
+          %w[ password encrypted_password ].each do |attr|
+            expect(json['users'].last).to_not have_key(attr)
+          end
+        end
       end
     end
   end

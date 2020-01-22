@@ -27,8 +27,7 @@ describe 'Profiles API', type: :request do
   end
 
   describe 'GET /api/v1/answers/:id' do
-    let!(:answer) { create(:answer, :with_file, question: question) }
-    let(:file) { answer.files.first }
+    let!(:answer) { create(:answer, question: question) }
 
     it_behaves_like 'API Authorizable' do
       let(:method) { :get }
@@ -36,25 +35,23 @@ describe 'Profiles API', type: :request do
     end
 
     context 'authorized' do
+      let!(:answer) { create(:answer, :with_file, question: question) }
+      let!(:link) { create(:link, linkable: answer) }
+      let!(:comments) { create_list(:comment, 2, commentable: answer)}
 
       before { get "/api/v1/answers/#{answer.id}", params: { access_token: access_token.token }, headers: headers }
 
       it_behaves_like 'Successful'
 
-      it 'returns all public fields' do
-        %w[ id body created_at updated_at ].each do |attr|
-          expect(json['answer'][attr]).to eq answer.send(attr).as_json
-        end
+      it_behaves_like 'Public object' do
+        let(:object) { answer }
+        let(:public_fields) { %w[ id body created_at updated_at ] }
+        let(:response_object) { json['answer'] }
       end
 
-      it 'returns all associations' do
-        %w[ user links files comments ].each do |association|
-          expect(json['answer']).to be_include(association)
-        end
-      end
-
-      it 'returns files as url' do
-        expect(json['answer']['files'].first['service_url']).to eq file.service_url
+      it_behaves_like 'Got associations' do
+        let(:object) { answer }
+        let(:list_of_associations) { %w[ user links files comments ] }
       end
     end
   end
