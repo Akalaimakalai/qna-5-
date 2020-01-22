@@ -13,12 +13,12 @@ amazon:
   bucket: <%= Rails.application.credentials[Rails.env.to_sym][:aws][:bucket] %>
   region: us-east-2
 
-# amazon_test:
-#   service: S3
-#   access_key_id: <%= ENV['AWS_TEST_ACCESS_KEY_ID'] %>
-#   secret_access_key: <%= ENV['AWS_TEST_SECRET_ACCESS_KEY'] %>
-#   bucket: <%= ENV['AWS_TEST_BUCKET'] %>
-#   region: us-east-2
+amazon_test:
+  service: S3
+  access_key_id: <%= Rails.application.credentials[Rails.env.to_sym][:aws][:access_key_id] %>
+  secret_access_key: <%= Rails.application.credentials[Rails.env.to_sym][:aws][:secret_access_key] %>
+  bucket: <%= Rails.application.credentials[Rails.env.to_sym][:aws][:bucket] %>
+  region: us-east-2
 
 
 # Use rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
