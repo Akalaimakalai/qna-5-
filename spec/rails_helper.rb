@@ -50,6 +50,7 @@ RSpec.configure do |config|
   # Add my own helpers
   config.include ControllerHelpers, type: :controller
   config.include FeatureHelpers, type: :feature
+  config.include ApiHelpers, type: :request
   # Capybara runs js tests in browser
   Capybara.javascript_driver = :selenium_chrome_headless
 

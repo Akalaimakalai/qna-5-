@@ -62,6 +62,12 @@ gem "skim"
 gem 'gon'
 # Authorization
 gem 'cancancan'
+# OAuth provider
+gem 'doorkeeper'
+# Serializers for worcking with json
+gem 'active_model_serializers', '~> 0.10'
+# Render json much more faster
+gem 'oj'
 
 # ---end---
 
