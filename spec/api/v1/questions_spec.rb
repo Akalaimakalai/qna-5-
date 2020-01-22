@@ -3,6 +3,7 @@ require 'rails_helper'
 describe 'Profiles API', type: :request do
   let(:headers) { { "CONTENT_TYPE" => "application/json",
                     "ACCEPT" => "application/json" } }
+  let(:access_token) { create(:access_token) }
 
   describe 'GET /api/v1/questions' do
 
@@ -12,7 +13,6 @@ describe 'Profiles API', type: :request do
     end
 
     context 'authorized' do
-      let(:access_token) { create(:access_token) }
       let!(:questions) { create_list(:question, 2) }
       let(:question) { questions.first }
       let(:question_response) { json['questions'].first }
@@ -57,7 +57,6 @@ describe 'Profiles API', type: :request do
     end
 
     context 'authorized' do
-      let(:access_token) { create(:access_token) }
       let!(:question) { create(:question, :with_file) }
       let!(:file) { question.files.first }
       let!(:link) { create(:link, linkable: question) }
