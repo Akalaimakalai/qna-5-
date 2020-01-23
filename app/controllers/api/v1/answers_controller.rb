@@ -1,8 +1,10 @@
 class Api::V1::AnswersController < Api::V1::BaseController
+  before_action :find_question, only: %i[ index ]
   before_action :find_answer, only: %i[ show update destroy ]
 
+  authorize_resource
+
   def index
-    @question = Question.find(params[:question_id])
     @answers = @question.answers
     render json: @answers
   end
@@ -27,6 +29,10 @@ class Api::V1::AnswersController < Api::V1::BaseController
   end
 
   private
+
+  def find_question
+    @question = Question.find(params[:question_id])
+  end
 
   def find_answer
     @answer = Answer.find(params[:id])

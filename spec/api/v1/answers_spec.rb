@@ -3,8 +3,9 @@ require 'rails_helper'
 describe 'Profiles API', type: :request do
   let(:headers) { { "CONTENT_TYPE" => "application/json",
                     "ACCEPT" => "application/json" } }
-  let!(:question) { create(:question) }
   let(:access_token) { create(:access_token) }
+  let(:user) { User.find(access_token.resource_owner_id)}
+  let!(:question) { create(:question, user: user) }
 
   describe 'GET /api/v1/questions/:question_id/answers' do
     let!(:answers) { create_list(:answer, 2, question: question) }
@@ -81,7 +82,7 @@ describe 'Profiles API', type: :request do
 
   describe 'PATH /api/v1/answers/:id' do
     let(:headers) { { "ACCEPT" => "application/json" } }
-    let!(:answer) { create(:answer, question: question) }
+    let!(:answer) { create(:answer, question: question, user: user) }
     let(:params) { { access_token: access_token.token, answer: { body: "AnswerBody" } } }
 
     it_behaves_like 'API Authorizable' do
@@ -105,7 +106,7 @@ describe 'Profiles API', type: :request do
 
   describe 'DELETE /api/v1/answers/:id' do
     let(:headers) { { "ACCEPT" => "application/json" } }
-    let!(:answer) { create(:answer, question: question) }
+    let!(:answer) { create(:answer, question: question, user: user) }
 
     it_behaves_like 'API Authorizable' do
       let(:method) { :delete }

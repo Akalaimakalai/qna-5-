@@ -4,6 +4,7 @@ describe 'Profiles API', type: :request do
   let(:headers) { { "CONTENT_TYPE" => "application/json",
                     "ACCEPT" => "application/json" } }
   let(:access_token) { create(:access_token) }
+  let(:user) { User.find(access_token.resource_owner_id)}
 
   describe 'GET /api/v1/questions' do
 
@@ -105,7 +106,7 @@ describe 'Profiles API', type: :request do
 
   describe 'PATCH /api/v1/questions/:id' do
     let(:headers) { { "ACCEPT" => "application/json" } }
-    let(:question) { create(:question) }
+    let(:question) { create(:question, user: user) }
 
     it_behaves_like 'API Authorizable' do
       let(:method) { :patch }
@@ -129,7 +130,7 @@ describe 'Profiles API', type: :request do
 
   describe 'DELETE /api/v1/questions/:id' do
     let(:headers) { { "ACCEPT" => "application/json" } }
-    let!(:question) { create(:question) }
+    let!(:question) { create(:question, user: user) }
 
     it_behaves_like 'API Authorizable' do
       let(:method) { :delete }
