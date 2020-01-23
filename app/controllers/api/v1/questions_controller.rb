@@ -23,6 +23,12 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     render json: @question, status: 201
   end
 
+  def update
+    @question = Question.find(params[:id])
+    @question.update(question_params)
+    render json: @question, status: 202
+  end
+
   private
 
   def question_params

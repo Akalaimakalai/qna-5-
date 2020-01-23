@@ -100,10 +100,37 @@ describe 'Profiles API', type: :request do
       end
 
       it 'renders new question' do
-        expect(response.status).to eq 201
         expect(json['question']['title']).to eq "NewTestQuestionTitile"
         expect(json['question']['body']).to eq "LookAtThatBody"
         expect(json['question']['user']['id']).to eq access_token.resource_owner_id
+      end
+    end
+  end
+
+  describe 'PATCH /api/v1/questions/:id' do
+    let(:headers) { { "ACCEPT" => "application/json" } }
+    let(:question) { create(:question) }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :patch }
+      let(:api_path) { "/api/v1/questions/#{question.id}" }
+    end
+
+    context 'authorized' do
+      let!(:old_title) { question.title }
+      let!(:old_body) { question.body }
+      let(:params) { { access_token: access_token.token,
+                       question: { title: "NewTestQuestionTitile", body: "LookAtThatBody" } } }
+
+      before { patch "/api/v1/questions/#{question.id}", params: params, headers: headers }
+
+      it_behaves_like 'Successful'
+
+      it 'renders changed qiestion' do
+        expect(json['question']['title']).to_not eq old_title
+        expect(json['question']['body']).to_not eq old_body
+        expect(json['question']['title']).to eq "NewTestQuestionTitile"
+        expect(json['question']['body']).to eq "LookAtThatBody"
       end
     end
   end
