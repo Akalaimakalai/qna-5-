@@ -1,6 +1,4 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
-  protect_from_forgery with: :null_session
-
   before_action :find_question, only: %i[ show update destroy ]
 
   def index
@@ -18,9 +16,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def create
-    @question = Question.new(question_params)
-    @question.user_id = current_resource_owner.id
-    @question.save!
+    @question = current_resource_owner.questions.create!(question_params)
     render json: @question, status: 201
   end
 
