@@ -1,6 +1,8 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
   protect_from_forgery with: :null_session
 
+  before_action :find_question, only: %i[ show update destroy ]
+
   def index
     @questions = Question.all
     render json: @questions
@@ -12,7 +14,6 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def show
-    @question = Question.find(params[:id])
     render json: @question
   end
 
@@ -24,12 +25,20 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   end
 
   def update
-    @question = Question.find(params[:id])
     @question.update(question_params)
     render json: @question, status: 202
   end
 
+  def destroy
+    @question.destroy
+    head 204
+  end
+
   private
+
+  def find_question
+    @question = Question.find(params[:id])
+  end
 
   def question_params
     params.require(:question).permit(:title, :body)

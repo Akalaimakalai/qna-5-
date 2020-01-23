@@ -134,4 +134,26 @@ describe 'Profiles API', type: :request do
       end
     end
   end
+
+  describe 'DELETE /api/v1/questions/:id' do
+    let(:headers) { { "ACCEPT" => "application/json" } }
+    let!(:question) { create(:question) }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :delete }
+      let(:api_path) { "/api/v1/questions/#{question.id}" }
+    end
+
+    context 'authorized' do
+
+      it 'destroys question' do
+        expect{
+                delete "/api/v1/questions/#{question.id}",
+                params: { access_token: access_token.token },
+                headers: headers
+              }.to change(Question, :count).by(-1)
+        expect(response.status).to eq 204
+      end
+    end
+  end
 end
