@@ -78,4 +78,33 @@ describe 'Profiles API', type: :request do
       end
     end
   end
+
+  describe 'POST /api/v1/questions' do
+    let(:headers) { { "ACCEPT" => "application/json" } }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :post }
+      let(:api_path) { '/api/v1/questions' }
+    end
+
+    context 'authorized' do
+      let(:params) { { access_token: access_token.token,
+                       question: { title: "NewTestQuestionTitile", body: "LookAtThatBody" } } }
+
+      before { post "/api/v1/questions", params: params, headers: headers }
+
+      it_behaves_like 'Successful'
+
+      it 'creates new question' do
+        expect{ post "/api/v1/questions", params: params, headers: headers }.to change(Question, :count).by(1)
+      end
+
+      it 'renders new question' do
+        expect(response.status).to eq 201
+        expect(json['question']['title']).to eq "NewTestQuestionTitile"
+        expect(json['question']['body']).to eq "LookAtThatBody"
+        expect(json['question']['user']['id']).to eq access_token.resource_owner_id
+      end
+    end
+  end
 end

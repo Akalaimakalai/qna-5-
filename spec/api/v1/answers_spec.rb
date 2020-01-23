@@ -36,8 +36,8 @@ describe 'Profiles API', type: :request do
 
     context 'authorized' do
       let!(:answer) { create(:answer, :with_file, question: question) }
-      let!(:link) { create(:link, linkable: answer) }
       let!(:comments) { create_list(:comment, 2, commentable: answer)}
+      let!(:link) { create(:link, linkable: answer) }
 
       before { get "/api/v1/answers/#{answer.id}", params: { access_token: access_token.token }, headers: headers }
 
