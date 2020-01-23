@@ -71,13 +71,10 @@ describe 'Profiles API', type: :request do
 
       it_behaves_like 'Successful'
 
-      it 'creates new answer' do
-        expect{ post "/api/v1/questions/#{question.id}/answers", params: params, headers: headers }.to change(Answer, :count).by(1)
-      end
-
-      it 'renders new question' do
-        expect(json['answer']['body']).to eq "AnswerBody"
-        expect(json['answer']['user']['id']).to eq access_token.resource_owner_id
+      it_behaves_like 'Could be created' do
+        let(:klass) { Answer }
+        let(:api_path) { "/api/v1/questions/#{question.id}/answers" }
+        let(:hash_of_fields) { { 'body' => "AnswerBody"} }
       end
     end
   end
@@ -99,10 +96,9 @@ describe 'Profiles API', type: :request do
 
       it_behaves_like 'Successful'
 
-
-      it 'renders changed answer' do
-        expect(json['answer']['body']).to_not eq old_body
-        expect(json['answer']['body']).to eq "AnswerBody"
+      it_behaves_like 'Could be updated' do
+        let(:object) { answer }
+        let(:hash_of_fields) { { 'body' => "AnswerBody"} }
       end
     end
   end
@@ -117,14 +113,9 @@ describe 'Profiles API', type: :request do
     end
 
     context 'authorized' do
-
-      it 'destroys answer' do
-        expect{
-                delete "/api/v1/answers/#{answer.id}",
-                params: { access_token: access_token.token },
-                headers: headers
-              }.to change(Answer, :count).by(-1)
-        expect(response.status).to eq 204
+      it_behaves_like 'Could be deleted' do
+        let(:klass) { Answer }
+        let(:api_path) { "/api/v1/answers/#{answer.id}" }
       end
     end
   end

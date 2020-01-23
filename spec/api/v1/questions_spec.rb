@@ -95,14 +95,10 @@ describe 'Profiles API', type: :request do
 
       it_behaves_like 'Successful'
 
-      it 'creates new question' do
-        expect{ post "/api/v1/questions", params: params, headers: headers }.to change(Question, :count).by(1)
-      end
-
-      it 'renders new question' do
-        expect(json['question']['title']).to eq "NewTestQuestionTitile"
-        expect(json['question']['body']).to eq "LookAtThatBody"
-        expect(json['question']['user']['id']).to eq access_token.resource_owner_id
+      it_behaves_like 'Could be created' do
+        let(:klass) { Question }
+        let(:api_path) { "/api/v1/questions" }
+        let(:hash_of_fields) { { 'title' => "NewTestQuestionTitile", 'body' => "LookAtThatBody"} }
       end
     end
   end
@@ -117,8 +113,6 @@ describe 'Profiles API', type: :request do
     end
 
     context 'authorized' do
-      let!(:old_title) { question.title }
-      let!(:old_body) { question.body }
       let(:params) { { access_token: access_token.token,
                        question: { title: "NewTestQuestionTitile", body: "LookAtThatBody" } } }
 
@@ -126,11 +120,9 @@ describe 'Profiles API', type: :request do
 
       it_behaves_like 'Successful'
 
-      it 'renders changed qiestion' do
-        expect(json['question']['title']).to_not eq old_title
-        expect(json['question']['body']).to_not eq old_body
-        expect(json['question']['title']).to eq "NewTestQuestionTitile"
-        expect(json['question']['body']).to eq "LookAtThatBody"
+      it_behaves_like 'Could be updated' do
+        let(:object) { question }
+        let(:hash_of_fields) { { 'title' => "NewTestQuestionTitile", 'body' => "LookAtThatBody"} }
       end
     end
   end
@@ -146,13 +138,9 @@ describe 'Profiles API', type: :request do
 
     context 'authorized' do
 
-      it 'destroys question' do
-        expect{
-                delete "/api/v1/questions/#{question.id}",
-                params: { access_token: access_token.token },
-                headers: headers
-              }.to change(Question, :count).by(-1)
-        expect(response.status).to eq 204
+      it_behaves_like 'Could be deleted' do
+        let(:klass) { Question }
+        let(:api_path) { "/api/v1/questions/#{question.id}" }
       end
     end
   end
