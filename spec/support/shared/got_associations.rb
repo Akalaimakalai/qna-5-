@@ -9,19 +9,23 @@ shared_examples_for 'Got associations' do
     end
   end
 
-  it 'returns files as url' do
-    expect(object_response['files'].first['service_url']).to eq object.files.first.service_url
-  end
+  context 'check association objects' do
+    before { object.reload }
 
-  it 'returns correct objects with has_many' do
-    list_of_has_many.each do |association|
-      expect(object_response[association].first['id']).to eq object.send(association).first.id
+    it 'returns files as url' do
+      expect(object_response['files'].first['service_url']).to eq object.files.first.service_url
     end
-  end
 
-  it 'returns correct objects with has_one, belongs_to' do
-    list_of_has_one.each do |association|
-      expect(object_response[association]['id']).to eq object.send(association).id
+    it 'returns correct objects with has_many' do
+      list_of_has_many.each do |association|
+        expect(object_response[association].first['id']).to eq object.send(association).first.id
+      end
+    end
+
+    it 'returns correct objects with has_one, belongs_to' do
+      list_of_has_one.each do |association|
+        expect(object_response[association]['id']).to eq object.send(association).id
+      end
     end
   end
 end
