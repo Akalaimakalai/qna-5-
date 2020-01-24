@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Profiles API', type: :request do
+describe 'Questions API', type: :request do
   let(:headers) { { "CONTENT_TYPE" => "application/json",
                     "ACCEPT" => "application/json" } }
   let(:access_token) { create(:access_token) }
@@ -99,7 +99,7 @@ describe 'Profiles API', type: :request do
       it_behaves_like 'Could be created' do
         let(:klass) { Question }
         let(:api_path) { "/api/v1/questions" }
-        let(:hash_of_fields) { { 'title' => "NewTestQuestionTitile", 'body' => "LookAtThatBody"} }
+        let(:hash_of_fields) { { 'title' => "NewTestQuestionTitile", 'body' => "LookAtThatBody" } }
       end
     end
   end
@@ -123,7 +123,7 @@ describe 'Profiles API', type: :request do
 
       it_behaves_like 'Could be updated' do
         let(:object) { question }
-        let(:hash_of_fields) { { 'title' => "NewTestQuestionTitile", 'body' => "LookAtThatBody"} }
+        let(:hash_of_fields) { { 'title' => "NewTestQuestionTitile", 'body' => "LookAtThatBody" } }
       end
     end
   end

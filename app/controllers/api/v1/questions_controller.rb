@@ -4,13 +4,8 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   authorize_resource
 
   def index
-    @questions = Question.all
+    @questions = Question.includes(:answers, :comments, :links, :user)
     render json: @questions
-    # При необходимости отрендерить объект другим сериалайзером
-    # render json: @question, serializer: NameSerializer
-
-    # При необходимости отрендерить коллекцию объектов другим сериалайзером
-    # render json: @questions, each_serializer: NameSerializer
   end
 
   def show

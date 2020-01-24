@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Profiles API', type: :request do
+describe 'Answers API', type: :request do
   let(:headers) { { "CONTENT_TYPE" => "application/json",
                     "ACCEPT" => "application/json" } }
   let(:access_token) { create(:access_token) }
@@ -75,12 +75,12 @@ describe 'Profiles API', type: :request do
       it_behaves_like 'Could be created' do
         let(:klass) { Answer }
         let(:api_path) { "/api/v1/questions/#{question.id}/answers" }
-        let(:hash_of_fields) { { 'body' => "AnswerBody"} }
+        let(:hash_of_fields) { { 'body' => "AnswerBody" } }
       end
     end
   end
 
-  describe 'PATH /api/v1/answers/:id' do
+  describe 'PATCH /api/v1/answers/:id' do
     let(:headers) { { "ACCEPT" => "application/json" } }
     let!(:answer) { create(:answer, question: question, user: user) }
     let(:params) { { access_token: access_token.token, answer: { body: "AnswerBody" } } }
@@ -99,7 +99,7 @@ describe 'Profiles API', type: :request do
 
       it_behaves_like 'Could be updated' do
         let(:object) { answer }
-        let(:hash_of_fields) { { 'body' => "AnswerBody"} }
+        let(:hash_of_fields) { { 'body' => "AnswerBody" } }
       end
     end
   end
