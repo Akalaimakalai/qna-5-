@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  use_doorkeeper
+
   concern :commentable do
     resources :comments, shallow: true, only: %i[create destroy]
   end
@@ -17,6 +19,18 @@ Rails.application.routes.draw do
   resources :links, only: %i[ destroy ]
   resources :medals, only: %i[ index ]
   resources :votes, only: %i[ create ]
+
+  namespace :api do
+    namespace :v1 do
+      resources :profiles, only: %i[ index ] do
+        get :me, on: :collection
+      end
+
+      resources :questions, only: %i[ index show create update destroy ] do
+        resources :answers, only: %i[ index show create update destroy ], shallow: true
+      end
+    end
+  end
 
   mount ActionCable.server => '/cable'
 end
