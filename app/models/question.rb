@@ -4,6 +4,7 @@ class Question < ApplicationRecord
   include Commentable
 
   after_create_commit :broadcast_question
+  after_create :calculate_reputation
 
   belongs_to :user
   has_many :answers, dependent: :destroy
@@ -21,5 +22,9 @@ class Question < ApplicationRecord
 
   def broadcast_question
     ActionCable.server.broadcast('questions', data: self)
+  end
+
+  def calculate_reputation
+    ReputationJob.perform_later(self)
   end
 end

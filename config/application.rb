@@ -17,5 +17,8 @@ module Qna5
     # the framework and any gems in your application.
 
     config.action_cable.disable_request_forgery_protection = true
+
+    # config for ActiveJob
+    config.active_job.queue_adapter = :sidekiq
   end
 end
