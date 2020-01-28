@@ -4,6 +4,7 @@ class Answer < ApplicationRecord
   include Commentable
 
   after_create_commit :broadcast_answer
+  after_create_commit :send_notification
 
   belongs_to :question
   belongs_to :user
@@ -29,12 +30,12 @@ class Answer < ApplicationRecord
   end
 
   def answer_data
-  { 
-    answer: self,
-    files: all_files,
-    links: all_links,
-    score: sum_votes
-  }
+    { 
+      answer: self,
+      files: all_files,
+      links: all_links,
+      score: sum_votes
+    }
   end
 
   def all_files
@@ -55,5 +56,9 @@ class Answer < ApplicationRecord
     end
 
     links_arr
+  end
+
+  def send_notification
+    NotificationMailer.new_answer_for(question).deliver_later
   end
 end
