@@ -1,6 +1,9 @@
 class DailyDigestMailer < ApplicationMailer
 
   def digest(user)
-    mail to: user.email
+    @user = user
+    @questions = Questions.yesterday
+
+    mail to: @user.email
   end
 end

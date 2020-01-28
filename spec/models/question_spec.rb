@@ -18,6 +18,22 @@ RSpec.describe Question, type: :model do
   it { should validate_presence_of :title }
   it { should validate_presence_of :body }
 
+  describe "scope :yesterday" do
+
+    before { Question.delete_all }
+
+    it 'shows all questions for last 24 hours' do
+      questions = create_list(:question, 2, created_at: (Time.zone.now - 300))
+      question = create(:question, created_at: (Time.zone.now + 500))
+
+      expect(Question.yesterday.count).to eq 2
+      questions.each do |q|
+        expect(Question.yesterday).to be_include(q)
+      end
+      expect(Question.yesterday).to_not be_include(question)
+    end
+  end
+
   describe 'reputation' do
     let(:question) { build(:question) }
 

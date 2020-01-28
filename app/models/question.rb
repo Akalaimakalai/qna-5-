@@ -18,6 +18,8 @@ class Question < ApplicationRecord
 
   default_scope { order(created_at: :asc) }
 
+  scope :yesterday, -> { where(created_at: (1.day.ago..Time.zone.now)) }
+
   private
 
   def broadcast_question
