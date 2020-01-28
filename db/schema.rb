@@ -153,6 +153,7 @@ ActiveRecord::Schema.define(version: 2020_01_28_030437) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["question_id"], name: "index_subscriptions_on_question_id"
+    t.index ["user_id", "question_id"], name: "index_subscriptions_on_user_id_and_question_id", unique: true
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 

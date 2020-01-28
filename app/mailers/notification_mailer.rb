@@ -1,9 +1,8 @@
 class NotificationMailer < ApplicationMailer
 
-  def new_answer_for(question)
+  def new_answer(question, user)
     @question = question
-    @user = @question.user
-
+    @user = user
     mail to: @user.email
   end
 end

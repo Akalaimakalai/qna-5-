@@ -3,6 +3,7 @@ class Question < ApplicationRecord
   include Votable
   include Commentable
 
+  before_create :add_author_to_followers
   after_create_commit :broadcast_question
   after_create :calculate_reputation
 
@@ -30,5 +31,9 @@ class Question < ApplicationRecord
 
   def calculate_reputation
     ReputationJob.perform_later(self)
+  end
+
+  def add_author_to_followers
+    followers << user
   end
 end

@@ -1,0 +1,5 @@
+div class="follow"
+  - if current_user&.follower?(resource)
+    p class="best" <b>Following</b>
+  - else
+    = button_to 'Follow', { controller: 'subscriptions', action: 'create', params: { resource: { type: resource.class.name.underscore, id: resource.id } } }, form: { "data-remote" => "true" }, class: 'follow-button'

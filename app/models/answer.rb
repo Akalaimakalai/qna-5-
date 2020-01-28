@@ -59,6 +59,6 @@ class Answer < ApplicationRecord
   end
 
   def send_notification
-    NotificationMailer.new_answer_for(question).deliver_later
+    NotificationService.new.new_answer_for(question)
   end
 end

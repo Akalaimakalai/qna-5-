@@ -1,0 +1,5 @@
+$(".alert").html("<%= flash[:alert] %>");
+
+<% if @subscription.persisted? %>
+  $('<%= "#question-id-#{@subscription.question_id} .follow" %>').replaceWith('<%= render 'shared/follow', resource: @subscription.question %>');
+<% end %>

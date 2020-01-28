@@ -20,4 +20,8 @@ class User < ApplicationRecord
   def self.find_for_oauth(auth)
     FindForOauthService.call(auth)
   end
+
+  def follower?(resource)
+    subs.include?(resource)
+  end
 end
