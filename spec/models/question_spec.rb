@@ -7,6 +7,8 @@ RSpec.describe Question, type: :model do
 
   it { should belong_to :user }
   it { should have_many(:answers).dependent(:destroy) }
+  it { should have_many(:subscriptions).dependent(:destroy) }
+  it { should have_many(:followers).through(:subscriptions).source(:user) }
   it { should have_one(:medal).dependent(:destroy) }
 
   it 'have many attached file' do

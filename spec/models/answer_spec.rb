@@ -64,7 +64,7 @@ RSpec.describe Answer, type: :model do
   end
 
   describe 'send_notification' do
-  
+
     it 'calls send_notification after creating new answer' do
       answer = build(:answer)
       expect(answer).to receive(:send_notification)

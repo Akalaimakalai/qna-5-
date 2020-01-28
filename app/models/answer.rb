@@ -30,7 +30,7 @@ class Answer < ApplicationRecord
   end
 
   def answer_data
-    { 
+    {
       answer: self,
       files: all_files,
       links: all_links,

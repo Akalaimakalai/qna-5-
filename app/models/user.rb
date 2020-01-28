@@ -6,6 +6,8 @@ class User < ApplicationRecord
   has_many :votes
   has_many :comments
   has_many :authorizations, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
+  has_many :subs, through: :subscriptions, source: :question
 
   devise :database_authenticatable,
          :registerable,

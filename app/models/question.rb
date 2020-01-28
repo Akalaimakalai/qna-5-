@@ -8,6 +8,8 @@ class Question < ApplicationRecord
 
   belongs_to :user
   has_many :answers, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
+  has_many :followers, through: :subscriptions, source: :user
   has_one :medal, dependent: :destroy
 
   has_many_attached :files
