@@ -33,11 +33,6 @@ RSpec.describe SubscriptionsController, type: :controller do
           post :create, params: { question_id: question }, format: :js
           expect(response).to render_template(:create)
         end
-
-        it 'shows alert' do
-          post :create, params: { question_id: question }, format: :js
-          expect(flash[:alert]).to eq "You are already following question"
-        end
       end
     end
 

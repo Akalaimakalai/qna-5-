@@ -3,7 +3,7 @@ class Question < ApplicationRecord
   include Votable
   include Commentable
 
-  before_create :add_author_to_followers
+  before_create { followers << user }
   after_create_commit :broadcast_question
   after_create :calculate_reputation
 
@@ -21,8 +21,6 @@ class Question < ApplicationRecord
 
   default_scope { order(created_at: :asc) }
 
-  scope :yesterday, -> { where(created_at: (1.day.ago..Time.zone.now)) }
-
   private
 
   def broadcast_question
@@ -31,9 +29,5 @@ class Question < ApplicationRecord
 
   def calculate_reputation
     ReputationJob.perform_later(self)
-  end
-
-  def add_author_to_followers
-    followers << user
   end
 end
