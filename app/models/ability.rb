@@ -34,7 +34,7 @@ class Ability
 
     can :update, [ Question, Answer ], user_id: user.id
 
-    can :destroy, [ Question, Answer, Comment ], user_id: user.id
+    can :destroy, [ Question, Answer, Comment, Subscription ], user_id: user.id
     can :destroy, ActiveStorage::Attachment do |file|
       file.record.user_id == user.id
     end

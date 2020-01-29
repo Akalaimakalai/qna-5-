@@ -21,7 +21,11 @@ class User < ApplicationRecord
     FindForOauthService.call(auth)
   end
 
-  def follower?(resource)
-    subs.include?(resource)
+  def follower?(question)
+    subs.include?(question)
+  end
+
+  def find_sub(question)
+    subscriptions.find_by(question_id: question.id)
   end
 end

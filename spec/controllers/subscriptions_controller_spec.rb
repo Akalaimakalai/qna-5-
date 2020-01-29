@@ -1,58 +1,85 @@
 require 'rails_helper'
 
 RSpec.describe SubscriptionsController, type: :controller do
+  let(:user) { create(:user) }
 
   describe 'POST #create' do
     let!(:question) { create(:question) }
 
     context 'Authenticated user' do
-      let(:user) { create(:user) }
 
       before { login(user) }
 
       context 'is not following question yet' do
-        let(:params) { { resource: { id: question } } }
 
         it 'creates subscription' do
-          expect{ post :create, params: params, format: :js }.to change(Subscription, :count).by(1)
+          expect{ post :create, params: { question_id: question }, format: :js }.to change(Subscription, :count).by(1)
         end
 
         it 'rensers template :create' do
-          post :create, params: params, format: :js
+          post :create, params: { question_id: question }, format: :js
           expect(response).to render_template(:create)
         end
       end
 
       context 'is following question' do
         let!(:question) { create(:question, user: user) }
-        let(:params) { { resource: { id: question } } }
 
         it 'does not save the subscription' do
-          expect{ post :create, params: params, format: :js }.to_not change(Subscription, :count)
+          expect{ post :create, params: { question_id: question }, format: :js }.to_not change(Subscription, :count)
         end
 
         it 'rensers template :create' do
-          post :create, params: params, format: :js
+          post :create, params: { question_id: question }, format: :js
           expect(response).to render_template(:create)
         end
 
         it 'shows alert' do
-          post :create, params: params, format: :js
+          post :create, params: { question_id: question }, format: :js
           expect(flash[:alert]).to eq "You are already following question"
         end
       end
     end
 
     context 'Unauthenticated user' do
-      let(:params) { { resource: { id: question } } }
-
-      before { post :create, params: params, format: :js }
 
       it 'does not save the subscription' do
-        expect{ post :create, params: params, format: :js }.to_not change(Subscription, :count)
+        expect{ post :create, params: { question_id: question }, format: :js }.to_not change(Subscription, :count)
       end
 
       it 'redirects to root' do
+        post :create, params: { question_id: question }, format: :js
+        expect(response).to redirect_to root_path
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    let!(:question) { create(:question, user: user) }
+    let(:subscription) { user.find_sub(question) }
+
+    context 'Authenticated user' do
+
+      before { login(user) }
+
+      it 'deletes subscrption' do
+        expect{ delete :destroy, params: { id: subscription }, format: :js }.to change(Subscription, :count).by(-1)
+      end
+
+      it 'renders template :destroy' do
+        delete :destroy, params: { id: subscription }, format: :js
+        expect(response).to render_template(:destroy)
+      end
+    end
+
+    context 'Unauthenticated user' do
+
+      it 'does not save the subscription' do
+        expect{ delete :destroy, params: { id: subscription }, format: :js }.to_not change(Subscription, :count)
+      end
+
+      it 'redirects to root' do
+        delete :destroy, params: { id: subscription }, format: :js
         expect(response).to redirect_to root_path
       end
     end

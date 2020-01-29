@@ -1,7 +1,7 @@
 h1= question.title
 p= @question.body
 -if can? :create, Subscription
-  => render 'shared/follow', resource: @question
+  => render 'questions/follow'
 = render 'shared/score', resource: @question
 
 - if @question.files.attached?

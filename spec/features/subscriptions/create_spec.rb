@@ -17,11 +17,11 @@ feature 'User can subscribe to question', %q{
 
     describe 'is already following question' do
 
-      scenario "visits question_path and sees 'Following' message" do
+      scenario "visits question_path and sees 'Stop following' botton" do
         visit question_path(user_question)
 
         within '.question' do
-          expect(page).to have_content('Following')
+          expect(page).to have_button('Stop following')
           expect(page).to_not have_button('Follow')
         end
       end
@@ -33,7 +33,7 @@ feature 'User can subscribe to question', %q{
         visit question_path(question)
 
         within '.question' do
-          expect(page).to_not have_content('Following')
+          expect(page).to_not have_button('Stop following')
           expect(page).to have_button('Follow')
         end
       end
@@ -44,7 +44,7 @@ feature 'User can subscribe to question', %q{
         within '.question' do
           click_on 'Follow'
 
-          expect(page).to have_content('Following')
+          expect(page).to have_button('Stop following')
           expect(page).to_not have_button('Follow')
         end
       end
@@ -53,11 +53,11 @@ feature 'User can subscribe to question', %q{
 
   describe 'Unauthenticated user' do
 
-    scenario 'visits question_path and sees no message, no button' do
+    scenario 'visits question_path and sees no button' do
       visit question_path(user_question)
 
       within '.question' do
-        expect(page).to_not have_content('Following')
+        expect(page).to_not have_button('Stop following')
         expect(page).to_not have_button('Follow')
       end
     end

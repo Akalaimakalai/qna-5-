@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     resources :answers, except: %i[ index new ], shallow: true, concerns: %i[ commentable ] do
       post 'best', on: :member
     end
+
+    resources :subscriptions, only: %i[ create destroy ], shallow: true
   end
 
   resources :files, only: %i[ destroy ]
@@ -33,8 +35,6 @@ Rails.application.routes.draw do
       end
     end
   end
-
-  resources :subscriptions, only: %i[ create ]
 
   mount ActionCable.server => '/cable'
   authenticate :user, lambda { |u| u.admin? } do

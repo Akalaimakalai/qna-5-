@@ -1,0 +1,5 @@
+div class="follow"
+  - if current_user&.follower?(@question)
+    = button_to 'Stop following', subscription_path(current_user.find_sub(@question)), method: :delete, form: { "data-remote" => "true" }, class: 'stop-follow-button'
+  - else
+    = button_to 'Follow', question_subscriptions_path(@question), form: { "data-remote" => "true" }, class: 'follow-button'
