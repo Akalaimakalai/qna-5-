@@ -59,6 +59,6 @@ class Answer < ApplicationRecord
   end
 
   def send_notification
-    NotificationService.new.new_answer_for(question)
+    NotificationService.new_answer_for(question, self)
   end
 end

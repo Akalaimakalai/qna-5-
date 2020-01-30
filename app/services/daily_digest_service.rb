@@ -1,7 +1,9 @@
 class DailyDigestService
 
   def send_digest
-    User.find_each(batch_size: 500) do |user|
+    return if Question.where(created_at: 1.day.ago.all_day).empty?
+
+    User.find_each do |user|
       DailyDigestMailer.digest(user).deliver_later
     end
   end

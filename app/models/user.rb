@@ -7,7 +7,7 @@ class User < ApplicationRecord
   has_many :comments
   has_many :authorizations, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
-  has_many :subs, through: :subscriptions, source: :question
+  has_many :subscribed_to_questions, through: :subscriptions, source: :question
 
   devise :database_authenticatable,
          :registerable,
@@ -22,7 +22,7 @@ class User < ApplicationRecord
   end
 
   def follower?(question)
-    subs.include?(question)
+    subscribed_to_questions.include?(question)
   end
 
   def find_sub(question)

@@ -77,7 +77,7 @@ RSpec.describe Answer, type: :model do
     end
 
     it 'calls NotificationService' do
-      expect(service).to receive(:new_answer_for).with(answer.question)
+      expect(NotificationService).to receive(:new_answer_for).with(answer.question)
       answer.save!
     end
   end

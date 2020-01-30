@@ -1,5 +1,6 @@
 <h1>Оповещение для <%= @user.email %></h1>
 
 <p>  
-  На вопрос <%= link_to @question.title, question_url(@question) %> был дан новый ответ.
+  На вопрос <%= link_to @question.title, question_url(@question) %> был дан новый ответ:<br>
+  <%= @answer.body %>
 </p>
