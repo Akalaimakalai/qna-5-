@@ -65,11 +65,6 @@ RSpec.describe Answer, type: :model do
 
   describe 'send_notification' do
     let!(:answer) { build(:answer) }
-    let(:service) { double('NotificationService') }
-
-    before do
-      allow(NotificationService).to receive(:new).and_return(service)
-    end
 
     it 'calls send_notification after creating new answer' do
       expect(answer).to receive(:send_notification)
@@ -77,7 +72,7 @@ RSpec.describe Answer, type: :model do
     end
 
     it 'calls NotificationService' do
-      expect(NotificationService).to receive(:new_answer_for).with(answer.question)
+      expect(NotificationService).to receive(:new_answer_for).with(answer.question, answer)
       answer.save!
     end
   end

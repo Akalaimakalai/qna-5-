@@ -16,7 +16,13 @@ RSpec.describe SubscriptionsController, type: :controller do
           expect{ post :create, params: { question_id: question }, format: :js }.to change(Subscription, :count).by(1)
         end
 
-        it 'rensers template :create' do
+        it 'creates subscription with correct attr' do
+          post :create, params: { question_id: question }, format: :js
+          expect(Subscription.last.question).to eq question
+          expect(Subscription.last.user).to eq user
+        end
+
+        it 'renders template :create' do
           post :create, params: { question_id: question }, format: :js
           expect(response).to render_template(:create)
         end
@@ -29,7 +35,7 @@ RSpec.describe SubscriptionsController, type: :controller do
           expect{ post :create, params: { question_id: question }, format: :js }.to_not change(Subscription, :count)
         end
 
-        it 'rensers template :create' do
+        it 'renders template :create' do
           post :create, params: { question_id: question }, format: :js
           expect(response).to render_template(:create)
         end

@@ -5,7 +5,7 @@
   Список:
   <table>
     <tr>
-      <% @questions.aech do |question| %>
+      <% @questions.each do |question| %>
         <td>
           <%= link_to question.title, question_url(question) %>
         <td>

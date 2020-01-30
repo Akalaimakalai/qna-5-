@@ -2,6 +2,6 @@
 
   За прошедший день на сайте было заданно  вопросов: <%= @questions.count %>
   Список:
-    <% @questions.aech do |question| %>
+    <% @questions.each do |question| %>
       <%= question.title question_url(question) %>
     <% end %>

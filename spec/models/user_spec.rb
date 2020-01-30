@@ -15,6 +15,7 @@ RSpec.describe User, type: :model do
 
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
+  let(:another_question) { create(:question) }
 
   describe '.find_for_oauth(auth)' do
     let(:auth) { "I am auth" }
@@ -26,16 +27,25 @@ RSpec.describe User, type: :model do
   end
 
   describe '#follower?(question)' do
+
     it 'proofs that user is following question' do
       expect(user).to be_follower(question)
+    end
+
+    it 'proofs that user is not following another question' do
+      expect(user).to_not be_follower(another_question)
     end
   end
 
   describe '#find_sub(question)' do
     let(:subscription) { user.subscriptions.first }
 
-    it 'finds subscription' do
+    it 'finds subscription if it is' do
       expect(user.find_sub(question)).to eq subscription
+    end
+
+    it 'does not find subscription if it is not' do
+      expect(user.find_sub(another_question)).to be_nil
     end
   end
 end
