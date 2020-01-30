@@ -18,8 +18,8 @@ RSpec.describe SubscriptionsController, type: :controller do
 
         it 'creates subscription with correct attr' do
           post :create, params: { question_id: question }, format: :js
-          expect(Subscription.last.question).to eq question
-          expect(Subscription.last.user).to eq user
+          expect(Subscription.order(created_at: :asc).last.question).to eq question
+          expect(Subscription.order(created_at: :asc).last.user).to eq user
         end
 
         it 'renders template :create' do

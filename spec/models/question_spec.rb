@@ -34,8 +34,7 @@ RSpec.describe Question, type: :model do
     let(:question) { create(:question, user: user) }
 
     it 'add author to followers' do
-      expect(question.followers).to_not be_empty
-      expect(question.followers.first).to eq user
+      expect(question.followers).to eq([user])
     end
   end
 end

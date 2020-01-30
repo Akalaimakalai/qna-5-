@@ -4,7 +4,7 @@ RSpec.describe DailyDigestMailer, type: :mailer do
 
   describe '#digest(user)' do
     let(:user) { create(:user) }
-    let!(:question) { create(:question, created_at: Time.zone.now - 1000) }
+    let!(:question) { create(:question, created_at: 1.hour.ago) }
     let(:mail) { DailyDigestMailer.digest(user).deliver_now }
 
     it 'renders the subject' do
