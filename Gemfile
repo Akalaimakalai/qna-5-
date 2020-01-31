@@ -68,6 +68,12 @@ gem 'doorkeeper'
 gem 'active_model_serializers', '~> 0.10'
 # Render json much more faster
 gem 'oj'
+# Sidekiq is a full-featured background processing framework for Ruby. Work with ActiveJob
+gem 'sidekiq'
+# Sinatra is for Sidekiq's web interface
+gem 'sinatra', require: false
+# Whenever is a Ruby gem that provides a clear syntax for writing and deploying cron jobs.
+gem 'whenever', require: false
 
 # ---end---
 

@@ -1,18 +1,22 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   use_doorkeeper
 
   concern :commentable do
-    resources :comments, shallow: true, only: %i[create destroy]
+    resources :comments, shallow: true, only: %i[ create destroy ]
   end
 
   root to: 'questions#index'
 
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
 
-  resources :questions, concerns: %i[commentable] do
-    resources :answers, except: %i[ index new ], shallow: true, concerns: %i[commentable] do
+  resources :questions, concerns: %i[ commentable ] do
+    resources :answers, except: %i[ index new ], shallow: true, concerns: %i[ commentable ] do
       post 'best', on: :member
     end
+
+    resources :subscriptions, only: %i[ create destroy ], shallow: true
   end
 
   resources :files, only: %i[ destroy ]
@@ -33,4 +37,7 @@ Rails.application.routes.draw do
   end
 
   mount ActionCable.server => '/cable'
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 end

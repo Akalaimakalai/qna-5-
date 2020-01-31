@@ -22,6 +22,7 @@ feature 'User can add medal to question', %q{
 
     click_on 'Ask'
 
+    sleep(2)
     expect(page).to have_content 'Your question successfully created.'
   end
 end

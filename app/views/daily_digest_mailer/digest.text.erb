@@ -1,0 +1,7 @@
+Ежедневное оповещение от QnA для <%= @user.email %>
+
+  За прошедший день на сайте было заданно  вопросов: <%= @questions.count %>
+  Список:
+    <% @questions.each do |question| %>
+      <%= question.title question_url(question) %>
+    <% end %>

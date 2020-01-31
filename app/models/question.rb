@@ -3,10 +3,14 @@ class Question < ApplicationRecord
   include Votable
   include Commentable
 
+  before_create { followers << user }
   after_create_commit :broadcast_question
+  after_create :calculate_reputation
 
   belongs_to :user
   has_many :answers, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
+  has_many :followers, through: :subscriptions, source: :user
   has_one :medal, dependent: :destroy
 
   has_many_attached :files
@@ -21,5 +25,9 @@ class Question < ApplicationRecord
 
   def broadcast_question
     ActionCable.server.broadcast('questions', data: self)
+  end
+
+  def calculate_reputation
+    ReputationJob.perform_later(self)
   end
 end

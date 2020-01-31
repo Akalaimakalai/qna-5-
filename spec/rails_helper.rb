@@ -8,6 +8,8 @@ require File.expand_path('../config/environment', __dir__)
 
 # authorization
 require 'cancan/matchers'
+# Sidekiq testing configs https://github.com/mperham/sidekiq/wiki/Testing
+require 'sidekiq/testing'
 
 # ---end---
 

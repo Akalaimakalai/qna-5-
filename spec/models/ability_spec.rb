@@ -32,6 +32,8 @@ RSpec.describe Ability do
     let(:file) { build(:answer, :with_file).files.first }
     let(:user_link) { build(:link, linkable: user_question) }
     let(:link) { build(:link, linkable: question) }
+    let(:user_sub) { build(:subscription, user: user) }
+    let(:sub) { build(:subscription) }
 
     it { should be_able_to :read, :all }
 
@@ -78,6 +80,13 @@ RSpec.describe Ability do
     context "Vote" do
       it { should be_able_to :create, Vote.new(votable: answer) }
       it { should_not be_able_to :create, Vote.new(votable: user_answer) }
+    end
+
+    context "Subscription" do
+      it { should be_able_to :create, Subscription }
+
+      it { should be_able_to :destroy, user_sub }
+      it { should_not be_able_to :destroy, sub }
     end
   end
 end

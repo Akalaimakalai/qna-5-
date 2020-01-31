@@ -27,14 +27,14 @@ class Ability
   def user_abilities
     guest_abilities
 
-    can :create, [ Question, Answer, Comment ]
+    can :create, [ Question, Answer, Comment, Subscription ]
     can :create, Vote do |vote|
       vote.votable.user_id != user.id
     end
 
     can :update, [ Question, Answer ], user_id: user.id
 
-    can :destroy, [ Question, Answer, Comment ], user_id: user.id
+    can :destroy, [ Question, Answer, Comment, Subscription ], user_id: user.id
     can :destroy, ActiveStorage::Attachment do |file|
       file.record.user_id == user.id
     end

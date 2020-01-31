@@ -1,0 +1,15 @@
+<h1>Ежедневное оповещение от QnA для <b><%= @user.email %></b></h1>
+
+<p>
+  За прошедший день на сайте было заданно  вопросов: <b><%= @questions.count %></b>
+  Список:
+  <table>
+    <tr>
+      <% @questions.each do |question| %>
+        <td>
+          <%= link_to question.title, question_url(question) %>
+        <td>
+      <% end %>
+    </tr>
+  </table>
+</p>
