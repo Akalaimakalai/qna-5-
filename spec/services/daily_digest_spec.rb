@@ -14,8 +14,9 @@ RSpec.describe DailyDigestService do
 
   context 'was no questions for the past day' do
 
-    it 'do nothing' do
-      expect(DailyDigestService.send_digest).to be_nil
+    it 'does not call DailyDigestMailer' do
+      users.each { |user| expect(DailyDigestMailer).to_not receive(:digest) }
+      DailyDigestService.send_digest
     end
   end
 end

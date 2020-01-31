@@ -11,6 +11,7 @@ RSpec.describe SubscriptionsController, type: :controller do
       before { login(user) }
 
       context 'is not following question yet' do
+        let(:created_subscription) { Subscription.order(created_at: :asc).last }
 
         it 'creates subscription' do
           expect{ post :create, params: { question_id: question }, format: :js }.to change(Subscription, :count).by(1)
@@ -18,8 +19,9 @@ RSpec.describe SubscriptionsController, type: :controller do
 
         it 'creates subscription with correct attr' do
           post :create, params: { question_id: question }, format: :js
-          expect(Subscription.order(created_at: :asc).last.question).to eq question
-          expect(Subscription.order(created_at: :asc).last.user).to eq user
+
+          expect(created_subscription.question).to eq question
+          expect(created_subscription.user).to eq user
         end
 
         it 'renders template :create' do
