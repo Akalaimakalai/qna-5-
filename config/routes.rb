@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   resources :links, only: %i[ destroy ]
   resources :medals, only: %i[ index ]
   resources :votes, only: %i[ create ]
+  get '/search', to: 'search#index'
 
   namespace :api do
     namespace :v1 do
