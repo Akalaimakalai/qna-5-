@@ -132,6 +132,8 @@ group :test do
   gem 'webdrivers', '~> 4.0'
   # Opening letters in tests
   gem 'capybara-email'
+  # Use it in sphinx_helper.rb
+  gem 'database_cleaner-active_record'
 
   # ---end---
 end

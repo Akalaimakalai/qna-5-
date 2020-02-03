@@ -33,5 +33,6 @@ rubocop_pre_commit_hook.rb
 config/*.sphinx.conf
 db/sphinx
 dump.rdb
+thinking_sphinx.yml
 
 # ---end---

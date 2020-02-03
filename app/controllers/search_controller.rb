@@ -5,7 +5,7 @@ class SearchController < ApplicationController
     "Ответы" => Answer,
     "Комментарии" => Comment,
     "Пользователи" => User
-}.freeze
+  }.freeze
 
   def index
     @results = ThinkingSphinx.search(params[:search], classes: [find_class])
