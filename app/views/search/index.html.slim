@@ -1,4 +1,6 @@
-h2 Results
+h2 Results:
 
-p
-  = render @results
+- if @results.empty?
+  p No matches
+- else
+  p = render @results
