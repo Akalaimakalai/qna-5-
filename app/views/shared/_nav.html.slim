@@ -8,9 +8,9 @@ p
     =< current_user.email
   - else
     = link_to "Sign in", new_user_session_path
-  = form_with url: "/search", method: :get, local: true do |f|
+  = form_with url: search_path, method: :get, local: true do |f|
         = f.label :classes, "Search in:"
-        = f.select(:classes, options_for_select(['Везде', 'Вопросы', 'Ответы', 'Комментарии', 'Пользователи']))
+        = f.select(:classes, options_for_select(SearchService::CLASSES.keys))
         = f.label :search, "Search for:"
         = f.text_field :search
         = f.submit 'search'
