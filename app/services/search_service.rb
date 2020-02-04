@@ -9,6 +9,6 @@ class SearchService
 
   def self.do_search(user_string, search_klass)
     return [] if user_string.delete(" ").empty? || !CLASSES.include?(search_klass)
-    ThinkingSphinx.search(user_string, classes: [CLASSES[search_klass]])
+    ThinkingSphinx.search(ThinkingSphinx::Query.escape(user_string), classes: [CLASSES[search_klass]])
   end
 end
