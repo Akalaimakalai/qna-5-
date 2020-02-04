@@ -2,45 +2,47 @@ require 'sphinx_helper'
 
 RSpec.describe SearchService do
 
-  describe 'self.do_search(user_string, search_klass)' do
+  describe '#call(query, scope: nil)' do
 
     context 'user searches empty string' do
+      let(:service) { SearchService.new("    ") }
+
       it 'does not initiate search' do
         expect(ThinkingSphinx).to_not receive(:search)
-        SearchService.do_search("    ", "Везде")
+        service.call
       end
 
       it 'returns empty array' do
-        expect(SearchService.do_search("    ", "Везде")).to eq []
+        expect(service.call).to eq []
       end
     end
 
     context 'user searches in incorrect category' do
-      it 'does not initiate search' do
-        expect(ThinkingSphinx).to_not receive(:search)
-        SearchService.do_search("test", "Imagination")
-      end
+      let(:service) { SearchService.new("test", scope: "Imagination") }
 
-      it 'returns empty array' do
-        expect(SearchService.do_search("test", "Imagination")).to eq []
+      it 'initiates search in all categories' do
+        expect(ThinkingSphinx).to receive(:search).with('test', classes: [nil])
+        service.call
       end
     end
 
     context 'user searches what we have' do
+      let(:service) { SearchService.new("test", scope: "Везде") }
       let!(:question) { create(:question, title: 'test question') }
 
       it 'initiates search' do
         expect(ThinkingSphinx).to receive(:search).with("test", classes: [nil])
-        SearchService.do_search("test", "Везде")
+        service.call
       end
     end
 
     context 'user searches what we do not have' do
+      let(:service) { SearchService.new("Happy", scope: "Везде") }
       let!(:question) { create(:question, title: 'test question') }
 
       it 'initiates search' do
         expect(ThinkingSphinx).to receive(:search).with("Happy", classes: [nil])
-        SearchService.do_search("Happy", "Везде")
+        service.call
       end
     end
   end

@@ -7,8 +7,13 @@ class SearchService
     "Пользователи" => User
   }.freeze
 
-  def self.do_search(user_string, search_klass)
-    return [] if user_string.delete(" ").empty? || !CLASSES.include?(search_klass)
-    ThinkingSphinx.search(ThinkingSphinx::Query.escape(user_string), classes: [CLASSES[search_klass]])
+  def initialize(query, scope: nil)
+    @query = ThinkingSphinx::Query.escape(query)
+    @scope = CLASSES[scope]
+  end
+
+  def call
+    return [] if @query.delete(" ").empty?
+    ThinkingSphinx.search(@query, classes: [@scope])
   end
 end
