@@ -74,6 +74,9 @@ gem 'sidekiq'
 gem 'sinatra', require: false
 # Whenever is a Ruby gem that provides a clear syntax for writing and deploying cron jobs.
 gem 'whenever', require: false
+# Sphinx is a very fast search engine
+gem 'mysql2'
+gem 'thinking-sphinx'
 
 # ---end---
 
@@ -129,6 +132,8 @@ group :test do
   gem 'webdrivers', '~> 4.0'
   # Opening letters in tests
   gem 'capybara-email'
+  # Use it in sphinx_helper.rb
+  gem 'database_cleaner-active_record'
 
   # ---end---
 end
