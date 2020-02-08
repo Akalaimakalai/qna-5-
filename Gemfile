@@ -77,6 +77,8 @@ gem 'whenever', require: false
 # Sphinx is a very fast search engine
 gem 'mysql2'
 gem 'thinking-sphinx'
+# JavaScript runtime
+gem 'mini_racer'
 
 # ---end---
 
@@ -111,6 +113,12 @@ group :development do
 
   # Auto opening letters from ActionMailer
   gem "letter_opener"
+  # Deploy
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rvm', require: false
+  gem 'capistrano-passenger', require: false
 
   # ---end---
 end
