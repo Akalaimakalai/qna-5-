@@ -69,7 +69,7 @@ gem 'active_model_serializers', '~> 0.10'
 # Render json much more faster
 gem 'oj'
 # Sidekiq is a full-featured background processing framework for Ruby. Work with ActiveJob
-gem 'sidekiq'
+gem 'sidekiq', '< 6'
 # Sinatra is for Sidekiq's web interface
 gem 'sinatra', require: false
 # Whenever is a Ruby gem that provides a clear syntax for writing and deploying cron jobs.
@@ -119,6 +119,7 @@ group :development do
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
   gem 'capistrano-passenger', require: false
+  gem 'capistrano-sidekiq', require: false
 
   # ---end---
 end
