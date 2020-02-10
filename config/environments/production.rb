@@ -63,6 +63,7 @@ Rails.application.configure do
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "qna_5_2_3_#{Rails.env}"
 
+  config.action_mailer.default_url_options = { host: 'http://165.22.196.122/', port: 2223 }
   config.action_mailer.perform_caching = false
 
   # Ignore bad email addresses and do not raise email delivery errors.
