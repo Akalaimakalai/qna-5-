@@ -79,6 +79,8 @@ gem 'mysql2'
 gem 'thinking-sphinx'
 # JavaScript runtime
 gem 'mini_racer'
+# App server
+gem 'unicorn'
 
 # ---end---
 
@@ -120,6 +122,7 @@ group :development do
   gem 'capistrano-rvm', require: false
   gem 'capistrano-passenger', require: false
   gem 'capistrano-sidekiq', require: false
+  gem 'capistrano3-unicorn', require: false
 
   # ---end---
 end
