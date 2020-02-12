@@ -1,9 +1,10 @@
-.question id="question-id-#{@question.id}"
-  = render 'questions/show_question', question: @question
-  
-p <b>ANSWERS:</b>
+- cache @question do 
+  .question id="question-id-#{@question.id}"
+    = render 'questions/show_question', question: @question
+    
+  p <b>ANSWERS:</b>
 
-ul class="answers"
-  = render @question.answers
+  ul class="answers"
+    = render @question.answers
 
 = render 'answers/form' if user_signed_in?
