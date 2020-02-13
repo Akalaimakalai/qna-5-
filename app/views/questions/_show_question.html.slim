@@ -1,5 +1,6 @@
-h1= question.title
-p= @question.body
+- cache @question do
+  h1= @question.title
+  p= @question.body
 -if can? :create, Subscription
   => render 'questions/follow'
 = render 'shared/score', resource: @question
