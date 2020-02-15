@@ -3,7 +3,6 @@ lock "~> 3.11.2"
 
 set :application, "qna"
 set :repo_url, "git@github.com:Akalaimakalai/qna-5-.git"
-
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
