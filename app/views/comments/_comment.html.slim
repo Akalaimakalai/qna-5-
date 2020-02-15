@@ -1,5 +1,6 @@
 li class="comment" data-id="#{comment.id}"
-  = comment.body
+  - cache comment do
+    = comment.body
   - if can? :destroy, comment
     br  
     = link_to 'delete', comment_path(comment), method: :delete, remote: true
