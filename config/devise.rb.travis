@@ -6,7 +6,7 @@ Devise.setup do |config|
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
-  # Devise will use the secret_key_base as its secret_key
+  # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
   # config.secret_key = 'c811d1dc300b3e08716df45d933de2c706ca887f7cf9fea777d180e41f34b4ad70c4b382fa8a222810c60f3fef5572b424d62742a69e0bed8cb21a4e82390a3c'
 
@@ -61,20 +61,19 @@ Devise.setup do |config|
 
   # Tell if authentication through request.params is enabled. True by default.
   # It can be set to an array that will enable params authentication only for the
-  # given strategies, for example, config.params_authenticatable = [:database] will
+  # given strategies, for example, `config.params_authenticatable = [:database]` will
   # enable it only for database (email + password) authentication.
   # config.params_authenticatable = true
 
   # Tell if authentication through HTTP Auth is enabled. False by default.
   # It can be set to an array that will enable http authentication only for the
-  # given strategies, for example, config.http_authenticatable = [:database] will
+  # given strategies, for example, `config.http_authenticatable = [:database]` will
   # enable it only for database authentication. The supported strategies are:
   # :database      = Support basic authentication with authentication key + password
   # config.http_authenticatable = false
 
   # If 401 status code should be returned for AJAX requests. True by default.
-  # config.http_auth
-enticatable_on_xhr = true
+  # config.http_authenticatable_on_xhr = true
 
   # The realm used in Http Basic Authentication. 'Application' by default.
   # config.http_authentication_realm = 'Application'
@@ -88,7 +87,7 @@ enticatable_on_xhr = true
   # particular strategies by setting this option.
   # Notice that if you are skipping storage for all authentication paths, you
   # may want to disable generating routes to Devise's sessions controller by
-  # passing skip: :sessions to devise_for in your config/routes.rb
+  # passing skip: :sessions to `devise_for` in your config/routes.rb
   config.skip_session_storage = [:http_auth]
 
   # By default, Devise cleans up the CSRF token on authentication to
@@ -152,8 +151,7 @@ enticatable_on_xhr = true
   # The time the user will be remembered without asking for credentials again.
   # config.remember_for = 2.weeks
 
-  # Invalidates all the remember me
-tokens when the user signs out.
+  # Invalidates all the remember me tokens when the user signs out.
   config.expire_all_remember_me_on_sign_out = true
 
   # If true, extends the user's remember period when remembered via cookie.
@@ -224,7 +222,7 @@ tokens when the user signs out.
   # for default behavior) and :restful_authentication_sha1 (then you should set
   # stretches to 10, and copy REST_AUTH_SITE_KEY to pepper).
   #
-  # Require the devise-encryptable gem when using anything other than bcrypt
+  # Require the `devise-encryptable` gem when using anything other than bcrypt
   # config.encryptor = :sha512
 
   # ==> Scopes configuration
@@ -246,8 +244,7 @@ tokens when the user signs out.
   # :html, should redirect to the sign in page when the user does not have
   # access, but formats like :xml or :json, should return 401.
   #
-  # If you have any extra navigation
-al formats, like :iphone or :mobile, you
+  # If you have any extra navigational formats, like :iphone or :mobile, you
   # should add them to the navigational formats lists.
   #
   # The "*/*" below is required to match Internet Explorer requests.
@@ -274,13 +271,13 @@ al formats, like :iphone or :mobile, you
   # end
 
   # ==> Mountable engine configurations
-  # When using Devise inside an engine, let's call it MyEngine, and this engine
+  # When using Devise inside an engine, let's call it `MyEngine`, and this engine
   # is mountable, there are some extra configurations to be taken into account.
   # The following options are available, assuming the engine is mounted as:
   #
   #     mount MyEngine, at: '/my_engine'
   #
-  # The router that invoked devise_for, in the example above, would be:
+  # The router that invoked `devise_for`, in the example above, would be:
   # config.router_name = :my_engine
   #
   # When using OmniAuth, Devise cannot automatically set OmniAuth path,
