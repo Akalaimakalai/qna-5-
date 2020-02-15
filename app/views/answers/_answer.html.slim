@@ -2,7 +2,8 @@ li class="answer" id="answer-id-#{answer.id}"
   - if answer.correct?
     p class="best" <b>THE BEST!</b>
 
-  p= answer.body
+  - cache answer do
+    p= answer.body
   = render 'shared/score', resource: answer
 
   - if answer.files.attached?

@@ -81,6 +81,8 @@ gem 'thinking-sphinx'
 gem 'mini_racer'
 # App server
 gem 'unicorn'
+# User redis for cache
+gem 'redis-rails'
 
 # ---end---
 

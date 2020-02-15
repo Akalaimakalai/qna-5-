@@ -6,7 +6,7 @@ class Answer < ApplicationRecord
   after_create_commit :broadcast_answer
   after_create_commit :send_notification
 
-  belongs_to :question
+  belongs_to :question, touch: true
   belongs_to :user
 
   has_many_attached :files
