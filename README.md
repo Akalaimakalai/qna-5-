@@ -1,4 +1,4 @@
-[![Build Status](https://api.travis-ci.org/Akalaimakalai/qna.svg?branch=master)]
+![Build Status](https://api.travis-ci.org/Akalaimakalai/qna.svg?branch=master)
 
 # README
 
