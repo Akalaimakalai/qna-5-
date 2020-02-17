@@ -433,6 +433,7 @@ DEPENDENCIES
   active_model_serializers (~> 0.10)
   aws-sdk-s3
   bootsnap (>= 1.1.0)
+  bundler
   cancancan
   capistrano
   capistrano-bundler

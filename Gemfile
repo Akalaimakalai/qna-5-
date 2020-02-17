@@ -83,6 +83,8 @@ gem 'mini_racer'
 gem 'unicorn'
 # User redis for cache
 gem 'redis-rails'
+# Bundler
+gem 'bundler'
 
 # ---end---
 
